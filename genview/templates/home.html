@@ -1,0 +1,18 @@
+{% extends "snag_base.html" %}
+
+{% block title %}:: SNAG ::{% endblock %}
+
+{% block content %}
+
+    <div id= mydiv>
+        {% for i in about %}
+        <h1>{{ i }}</h1>
+        {% endfor %}
+        <h1>
+        {% for i in gen %}
+             {{ i }},
+        {% endfor %}
+        </h1>
+    </div>
+
+{% endblock %}

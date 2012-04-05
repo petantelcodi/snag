@@ -66,6 +66,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.csrf.CsrfResponseMiddleware'
 )
 
 ROOT_URLCONF = 'snag.urls'
@@ -79,7 +80,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     #'dajaxice',
-    'snag.genview'
+    'snag.genview',
+    'treebeard',
+    'registration'
     )
+
+ACCOUNT_ACTIVATION_DAYS = 1 # One-week activation window; you may, of course, use a different value.
 
 # qDAJAXICE_MEDIA_PREFIX ="dajaxice"

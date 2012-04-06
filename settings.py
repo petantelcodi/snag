@@ -87,4 +87,13 @@ INSTALLED_APPS = (
 
 ACCOUNT_ACTIVATION_DAYS = 1 # One-week activation window; you may, of course, use a different value.
 
-# qDAJAXICE_MEDIA_PREFIX ="dajaxice"
+# DAJAXICE_MEDIA_PREFIX ="dajaxice"
+
+# VARS for b2n.registration app
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'jaumeriereta@gmail.com'
+EMAIL_HOST_PASSWORD = 'XXX'
+EMAIL_PORT = 587
+
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'

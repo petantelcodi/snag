@@ -1,0 +1,27 @@
+{% extends "snag_base.html" %}
+
+{% block title %}FeedMe Sign In{% endblock %}
+{% block header %}FeedMe Sign In{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<form method="post" action=".">{% csrf_token %}
+    <table>
+        <tr>a
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>b
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+    </table>
+    <br />
+    <input type="submit" value="Sign In" />
+</form>
+
+{% endblock %}

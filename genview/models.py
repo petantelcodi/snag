@@ -1,22 +1,20 @@
 __author__ = 'jaume'
 
-#from django.db import models
-from django import forms
-
-
 from django.db import models
 from treebeard.mp_tree import MP_Node
 
 class Category(MP_Node):
     name = models.CharField(max_length=30)
+    name2 = models.CharField(max_length=30)
+    namewwww = models.CharField(max_length=30)
+    namerrr = models.CharField(max_length=30)
 
     node_order_by = ['name']
 
     def __unicode__(self):
         return 'Category: %s' % self.name
 
-
-'''
+"""
 
 #from tinymce import models as tinymce_models
 
@@ -73,4 +71,4 @@ class Page(models.Model):
         ordering = ["title"]
 
 
-'''
+"""

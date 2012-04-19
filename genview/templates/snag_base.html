@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>{% block title %}Nairobi conversations{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="http://media.nairobi-conversations.org/css/nc.css" />
     <!--<link rel="alternate" type="application/rss+xml"  href="http://media.nairobi-conversations.org/php/rss.php" title="Your title">-->
     <script src="http://localhost/snag-media/js/jquery.js"></script>
@@ -10,19 +10,6 @@
         $(document).ready(function(){ $("div.roundbox") .wrap('<div class="dialog">'+'<div class="bd">'+'<div class="c">'+'<div class="s">'+'</div>'+'</div>'+'</div>'+'</div>');
             $('div.dialog').prepend('<div class="hd">'+'<div class="c"></div>'+'</div>').append('<div class="ft">'+'<div class="c"></div>'+'</div>');
         });
-
-        $(document).ready(function () {
-            $("#en").click(function() {
-                $.post("/i18n/setlang/",{"language":"en"});
-            });
-            $("#de").click(function() {
-                $.post("/i18n/setlang/",{"language":"de"});
-            });
-            $("#sw").click(function() {
-                $.post("/i18n/setlang/",{"language":"sw"});
-            });
-        });
-
     </script>
 </head>
 

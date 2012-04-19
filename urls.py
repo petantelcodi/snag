@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 
 # snag. genview
 from genview.views import *
-from registration import backends
+#from registration import backends
 
 # Added dajaxice
 #from dajaxice.core import dajaxice_autodiscover
@@ -16,6 +16,9 @@ urlpatterns = patterns('',
     (r'^$', home),
     # Example:
     # (r'^snag/', include('snag.foo.urls')),
+
+    # Testpage
+    (r'^testpage/', testpage),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

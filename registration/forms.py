@@ -8,6 +8,10 @@ from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+from django.forms.fields import DateField, ChoiceField, MultipleChoiceField
+from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
+from django.forms.extras.widgets import SelectDateWidget
+from django.forms import IntegerField, URLField
 
 # I put this on all required fields, because it's easier to pick up
 # on them with CSS or JavaScript if they have a class of "required"
@@ -41,6 +45,20 @@ class RegistrationForm(forms.Form):
                                 label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
                                 label=_("Password (again)"))
+
+    name = forms.CharField(widget=forms.TextInput)
+    GROUP_CHOICES = (
+        ('S', 'Student'),
+        ('T', 'Teacher'),
+    )
+    group = ChoiceField(widget=RadioSelect, choices=GROUP_CHOICES)
+    age = forms.IntegerField()
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    )
+    gender = ChoiceField(widget=RadioSelect, choices=GENDER_CHOICES)
     
     def clean_username(self):
         """

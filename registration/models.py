@@ -270,8 +270,19 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     # Other fields here
-    accepted_eula = models.BooleanField()
-    favorite_animal = models.CharField(max_length=20, default="Dragons.")
+    name = models.CharField(max_length=30)
+    registration_date = models.DateField(_("Date"), default=datetime.date.today)
+    GROUP_CHOICES = (
+        ('S', 'Student'),
+        ('T', 'Teacher'),
+        )
+    group = models.CharField(max_length=1, choices=GROUP_CHOICES)
+    age = models.PositiveIntegerField(default="0")
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        )
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
 
     from django.contrib.auth.models import User
 from django.db.models.signals import post_save

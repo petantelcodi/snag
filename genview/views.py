@@ -23,6 +23,15 @@ def home(request):
     ##pic_random = pics_list[r]
     return render_to_response('home.html', {'home': home, 'about': about, 'gen': gen, 'auth': auth})
 
+# Test page: javascript timing test
+def testpage(request):
+    if request.user.is_authenticated():
+        auth = "<p>User is authenticated</p>"
+    else:
+        auth = "<p>User is anonymous</p>"
+
+    return render_to_response('testpage.html', {'testpage': testpage, 'auth': auth})
+
 def profile(request):
 
     if request.user.is_authenticated():

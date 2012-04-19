@@ -1,1 +1,1 @@
-[FeedMe] Account Activation - {{ site }}
+[SNAG] Account Activation - {{ site }}

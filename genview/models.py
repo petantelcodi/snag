@@ -1,18 +1,51 @@
 __author__ = 'jaume'
-
+import datetime
 from django.db import models
-from treebeard.mp_tree import MP_Node
 
-class Category(MP_Node):
-    name = models.CharField(max_length=30)
-    name2 = models.CharField(max_length=30)
-    namewwww = models.CharField(max_length=30)
-    namerrr = models.CharField(max_length=30)
+try:
+    from django.utils.timezone import now as datetime_now
+except ImportError:
+    datetime_now = datetime.datetime.now
 
-    node_order_by = ['name']
-
+class Creature(models.Model):
+    creation_date = models.DateField(default=datetime.date.today)
     def __unicode__(self):
-        return 'Category: %s' % self.name
+        return 'Ccreature: %s' % self.creation_date
+
+class Generation(models.Model):
+    number = models.PositiveIntegerField(default="0")
+    creature_id = models.ForeignKey(Creature)
+    def __unicode__(self):
+        return 'Generation: %s' % (self.number, self.creation_id)
+
+class Chromosome(models.Model):
+    data = models.TextField(max_length=2000)
+    generation_id = models.ForeignKey(Generation)
+    def __unicode__(self):
+        return 'Chromosomes: %s | $s' % (self.data, self.generation_id)
+
+class Gens(models.Model):
+    name = models.TextField(max_length=2000)
+    def __unicode__(self):
+        return 'Gens: %s' % self.name
+
+class Contents(models.Model):
+    question = models.TextField(max_length=2000)
+    answer = models.TextField(max_length=2000)
+    gen_id = models.ForeignKey(Gens)
+    def __unicode__(self):
+        return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
+
+class Tasks(models.Model):
+    chromosome_id = models.ForeignKey(Chromosome)
+    test_date = models.DateField(default=datetime.date.today)
+    total_test_time = models.IntegerField()
+    contents_id = models.ForeignKey(Contents)
+    test_ok = models.BooleanField()
+    def __unicode__(self):
+        return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
+
+
 
 """
 

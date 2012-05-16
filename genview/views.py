@@ -6,7 +6,7 @@ from sys import *
 
 # Home page
 def home(request):
-    @ about
+    # about
     about = ['un', 'dos', 'tres']
 
     # gen

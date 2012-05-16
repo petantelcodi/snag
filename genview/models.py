@@ -2,7 +2,6 @@ import registration
 
 __author__ = 'jaume'
 import datetime
-#import registration
 from snag.registration import models
 from django.db import models
 from django.contrib.auth.models import User

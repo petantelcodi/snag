@@ -6,14 +6,19 @@ from sys import *
 
 # Home page
 def home(request):
+    @ about
     about = ['un', 'dos', 'tres']
+
+    # gen
     gen = []
     for alels in range(1, 33):
         gen.append(alels)
     shuffle(gen)
 
+    # auth
     if request.user.is_authenticated():
-        auth = "<p>User is authenticated</p>"
+        auth = "<p>User is authenticated as: <b>"+request.user.username+"</b></p>"
+
     else:
         auth = "<p>User is anonymous</p>"
 

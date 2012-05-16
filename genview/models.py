@@ -1,6 +1,12 @@
+import registration
+
 __author__ = 'jaume'
 import datetime
+#import registration
+from snag.registration import models
 from django.db import models
+from django.contrib.auth.models import User
+
 
 try:
     from django.utils.timezone import now as datetime_now
@@ -37,6 +43,8 @@ class Contents(models.Model):
         return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
 
 class Tasks(models.Model):
+
+    user_id =models.OneToOneField(User)
     chromosome_id = models.ForeignKey(Chromosome)
     test_date = models.DateField(default=datetime.date.today)
     total_test_time = models.IntegerField()

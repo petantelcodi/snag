@@ -285,6 +285,7 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
 
     from django.contrib.auth.models import User
+
 from django.db.models.signals import post_save
 
 # definition of UserProfile from above

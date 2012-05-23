@@ -28,6 +28,10 @@ def home(request):
     ##pic_random = pics_list[r]
     return render_to_response('home.html', {'home': home, 'about': about, 'gen': gen, 'auth': auth})
 
+def starttest(request):
+    test =  "lalala"
+    return render_to_response('starttest.html', {'test': test})
+
 # Test page: javascript timing test
 def testpage(request):
     if request.user.is_authenticated():

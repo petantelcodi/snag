@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     (r'^$', home),
     # Example:
     # (r'^snag/', include('snag.foo.urls')),
-
+    (r'^starttest/', starttest),
     # Testpage
     (r'^testpage/', testpage),
 

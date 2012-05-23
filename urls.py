@@ -1,3 +1,4 @@
+# url define all possible url in django
 from django.conf.urls.defaults import *
 
 # snag. genview

@@ -4,6 +4,8 @@ from random import randint, shuffle, random, seed
 from snag.genview import models
 from sys import *
 
+import json
+
 # Home page
 def home(request):
     # about
@@ -28,6 +30,28 @@ def home(request):
     ##pic_random = pics_list[r]
     return render_to_response('home.html', {'home': home, 'about': about, 'gen': gen, 'auth': auth})
 
+def startAnel(request):
+    data2 = [
+                        ["0101",
+                                [ "010102",[ "01010105", "01010208", "01010311"]],
+                                [ "010203",[ "01020106", "01020209", "01020312"]],
+                                [ "010304",[ "01030107", "01030210", "01030313"]]
+                        ],
+                        ["0214",
+                                [ "020115",[ "02010118", "02010221", "02010324"]],
+                                [ "020216",[ "02020119", "02020222", "02020325"]],
+                                [ "020317",[ "02030120", "02030223", "02030326"]]
+                        ],
+                        ["0327",
+                                [ "030128",[ "03010131", "03010234", "03010337"]],
+                                [ "030229",[ "03020132", "03020235", "03020338"]],
+                                [ "030330",[ "03030133", "03030236", "03030339"]]
+                        ]
+                ]
+
+
+    return json.dumps(data2)
+    
 def starttest(request):
     test =  "lalala"
     return render_to_response('starttest.html', {'test': test})

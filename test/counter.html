@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript">
+		var c=0;
+		var t;
+		var timer_is_on = 0;
+		var maxtime = 10
+		var click = 0
+		function timedCount()
+			{
+				document.getElementById('txt').value=' seconds: '+ c;
+				c=c+1;
+				if (c > maxtime){
+					alert('Max time reached! ... restarting time');
+					c=0;
+				}
+				if (click)
+				{
+					alert('Answer clicked! ... stoping timer. The data clicked is: ');
+					c=0;
+				}
+				else
+				{
+					t=setTimeout("timedCount()",1000);
+				}
+			}
+		function doTimer()
+			{
+				if (!timer_is_on)
+					{
+						timer_is_on = 1;
+						timedCount();
+					}
+			}
+		</script> 
+	</head>
+
+	<body>
+		<form>
+			<input type="button" value="Start count!" onClick="doTimer()">
+			<input type="text" id="txt">
+		</form>
+	<p>Click on the button above. The input field will count forever, starting at 0.</p>
+		<ul>
+			<li>Opcion 1 <input type="button" class="b" value="button 1"></li>
+			<li>Opcion 2 <input type="button" class="b" value="button 2"></li>
+			<li>Opcion 3 <input type="button" class="b" value="button 3"></li>
+			<li>Opcion 4 <input type="button" class="b" value="button 4"></li>
+		</ul>
+		
+<!-- starting jquery  magic -->
+
+		<script> 
+		$(".b").click(function() 
+			{
+				if (timer_is_on)
+					{
+						gettext = $(this).parent().text();
+						alert('Value: '+this.value+' | Text: '+gettext+' |time: '+document.getElementById('txt').value);
+						t=clearTimeout(t);
+						timer_is_on = 0;
+					}
+			});
+		</script> 
+	</body>
+</html>

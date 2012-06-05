@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http,//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http,//www.w3.org/1999/xhtml" xml,lang="en" lang="en">
+<head>
+<title>,, SNAG ,,</title>
+<script type="text/javascript" src="http://v.subvideo.tv/snag-media/js/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$("#nav2 ul > li").hide()
+	$("#nav3 ul > li").hide()
+	
+///////////////////////////
+// Debug actions
+
+	$(".first, .01, .02, .03").click(function() {
+			//idd = $(this).attr('id')
+			idd = $(this).html()
+			//alert("id: "+idd);
+			$("."+idd).siblings().hide()
+			$("."+idd).toggle()
+	});
+	
+/*	// Click alleles listener:
+	$("#nav2222 li").click(function() {
+		allele = $(this).attr('id');
+		alert("id: "+$(this).attr('id')+" | allele: "+allele );
+		show(allele);
+	});
+
+*/
+});
+</script>
+
+<style type="text/css">
+.first {
+
+}
+#page { position:absolute;top:0;left:0;margin:0 20%;width 960px;height:100%;border:4px solid grey}
+#mydiv { position:relative; float:left; width:200px; height:120px; border:2px solid red; float:left;}
+#nav1 { position:relative; float:left; width:735px; height:120px; border:2px solid blue;}
+#nav2 { position:relative; float:left; width:200px;  border:2px solid green;}
+#nav3 { position:relative; float:left; width:730px; border:2px solid magenta;}
+</style>
+
+</head>
+
+<body>
+<div id="page">
+	<div id="mydiv">
+	</div>
+
+	<div id='nav1'>
+		<ul>
+			<li id='01' class='first'>01</li>	
+			<li id='14' class='first'>02</li>	
+			<li id='27' class='first'>03</li>	
+		</ul>
+	</div>
+	<div style="clear:both;"></div>
+	<div id ='nav2'>
+		<ul>
+			<li id='02' class='01'>0101</li>
+			<li id='03' class='01'>0102</li>
+			<li id='04' class='01'>0103</li>
+			<li id='15' class='02'>0201</li>
+			<li id='17' class='02'>0203</li>
+			<li id='16' class='02'>0202</li>
+			<li id='28' class='03'>0301</li>
+			<li id='29' class='03'>0302</li>
+			<li id='30' class='03'>0303</li>
+		</ul>
+	</div>
+
+	<div id ='nav3'>
+		<ul>
+			<li id='05' class='0101'>010101</li>
+			<li id='08' class='0101'>010102</li>
+			<li id='11' class='0101'>010103</li>
+			<li id='06' class='0102'>010201</li>
+			<li id='09' class='0102'>010202</li>
+			<li id='12' class='0102'>010203</li>
+			<li id='07' class='0103'>010301</li>
+			<li id='10' class='0103'>010302</li>
+			<li id='13' class='0103'>010303</li>
+			<li id='24' class='0201'>020103</li>
+			<li id='21' class='0201'>020102</li>
+			<li id='18' class='0201'>020101</li>
+			<li id='20' class='0203'>020301</li>
+			<li id='25' class='0202'>020203</li>
+			<li id='22' class='0202'>020202</li>
+			<li id='19' class='0202'>020201</li>
+			<li id='31' class='0301'>030101</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>
+
+
+
+

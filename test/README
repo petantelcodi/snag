@@ -1,0 +1,35 @@
+SNAG project:
+-------------
+This is a directory for pure tests as part of SNAG project
+by Jaume Nualart & Mar Canet
+
+-> counter.html
+
+	- Is a javascript timer that probably feeds on our needs
+	- Needs jquery from js/
+
+-> data2html.py
+
+	- Generates a tree of html tags (div > ul > li) from a data string, like the one in the file
+	- From an ajax call, this file sends the HTML tree to insert in the test page
+
+-> starttest-beta.html
+
+	- This is a test of brwosing example with a HTML tree generated with data2html.py and included inside the appropiate HTML head with JS and CSS defined
+	- Needs jquery from js/
+
+--------------------------------------------
+
+
+TODO: 
+
+1) Needs to integrate the JS clock counter + start test button
+
+2) Ajax get new test. 
+	SEND: id-user(id)
+	RECEIVE: id-user(id), id-chromosome(id), data-chromosome(string), tag-id(id), tag(name), question(text), tag-id-solution(id)
+
+3) Ajax end of text. 
+	SEND: to server vars: id-user(id), id-chromosome(id), tag-id(id), tag-id-solution(id), test-time(seconds)
+
+4) ...  

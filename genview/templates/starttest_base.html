@@ -55,11 +55,24 @@
                 newcontents = $("#c-"+this.id).html();
                 //alert("newcontents: "+newcontents);
                 $("#contents").html	(newcontents);
+                activatebutton();
 
             });
             $(".first").click(function() {
                 $("#nav3 ul li").hide()
             });
+            function activatebutton() {
+                $(".b").click(function()
+                {
+                    if (timer_is_on)
+                    {
+                        gettext = $(this).parent().text();
+                        alert('Value: '+this.value+' | Text: '+gettext+' |time: '+document.getElementById('txt').value);
+                        t=clearTimeout(t);
+                        timer_is_on = 0;
+                    }
+                });
+            }
         });
     </script>
 
@@ -89,17 +102,5 @@
     {% block content %}{% endblock %}
 
 </div>
-<script>
-    $(".b").click(function()
-    {
-        if (timer_is_on)
-        {
-            gettext = $(this).parent().text();
-            alert('Value: '+this.value+' | Text: '+gettext+' |time: '+document.getElementById('txt').value);
-            t=clearTimeout(t);
-            timer_is_on = 0;
-        }
-    });
-</script>
 </body>
 </html>

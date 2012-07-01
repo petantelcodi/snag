@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http,//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http,//www.w3.org/1999/xhtml" xml,lang="en" lang="en">
+<head>
+    <title>,, SNAG ,,</title>
+    <script type="text/javascript" src="http://v.subvideo.tv/snag-media/js/jquery.js"></script>
+    <script type="text/javascript">
+
+        // Timer
+        var c=0;
+        var t;
+        var timer_is_on = 0;
+        var maxtime = 10
+        var click = 0
+        function timedCount()
+        {
+            document.getElementById('txt').value=' seconds: '+ c;
+            c=c+1;
+            if (c > maxtime){
+                alert('Max time reached! ... restarting time');
+                c=0;
+            }
+            if (click)
+            {
+                alert('Answer clicked! ... stoping timer. The data clicked is: ');
+                c=0;
+            }
+            else
+            {
+                t=setTimeout("timedCount()",1000);
+            }
+        }
+        function doTimer()
+        {
+            if (!timer_is_on)
+            {
+                timer_is_on = 1;
+                timedCount();
+            }
+        }
+
+        // tags hide/show
+        $(document).ready(function() {
+
+            $("#nav2 ul > li").hide()
+            $("#nav3 ul > li").hide()
+
+            // Maximum = 5 levels
+            $(".first, .second, .third").click(function() {
+                idd = $(this).attr('id').split("-");
+                //alert("id: "+idd[1]);
+                $("."+idd[1]).siblings().hide();
+                $("."+idd[1]).toggle();
+
+                newcontents = $("#c-"+this.id).html();
+                //alert("newcontents: "+newcontents);
+                $("#contents").html	(newcontents);
+
+            });
+            $(".first").click(function() {
+                $("#nav3 ul li").hide()
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        #page { position:absolute;top:0;left:0;margin:0 20%;width 960px;height:120%;border:5px dotted grey}
+        #mydiv { position:relative; float:left; width:200px; height:120px; border:1px solid #66ff33;padding:15px;}
+        #nav1 { position:relative; float:left; width:100%; border:1px solid #33ccff;padding:15px;}
+        #nav2 { position:relative; float:left; width:45%; height:70px; border:1px solid #cc33ff;padding:15px;}
+        #nav3 { position:relative; float:left; width:45%; height:70px;border:1px solid magenta;padding:15px;}
+        #contents { position:relative; float:left; width:91%; border:1px solid #ff6633;padding:25px;}
+        #hiddencontents { display:none;position:relative; float:left; width:720px; border:1px solid grey;}
+
+        #nav1 p span {padding:4px;border:1px solid green;}
+    </style>
+
+</head>
+
+<body>
+<div id="page">
+    <div id="mydiv">
+        <p>Welcome to SNAG Test page</p>
+        <form>
+            <input type="button" value="Start count!" onClick="doTimer()">
+            <input type="text" id="txt" size="8">
+        </form>
+    </div>
+    {% block content %}{% endblock %}
+
+</div>
+<script>
+    $(".b").click(function()
+    {
+        if (timer_is_on)
+        {
+            gettext = $(this).parent().text();
+            alert('Value: '+this.value+' | Text: '+gettext+' |time: '+document.getElementById('txt').value);
+            t=clearTimeout(t);
+            timer_is_on = 0;
+        }
+    });
+</script>
+</body>
+</html>

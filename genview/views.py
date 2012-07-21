@@ -37,15 +37,13 @@ def home(request):
 #######################################################
 def endtest(request):
     if request.method == 'POST':
-        form = MyForm(request.POST)
-    if form.is_valid():
         # You may process these variables here
-        user_id = form.user_id
-        chromosome_id = form.chromosome_id
-        test_date = form.test_date
-        total_test_time = form.total_test_time
-        contents_id = form.contents_id
-        test_ok = form.test_ok
+        user_id = request.POST['user_id']
+        chromosome_id = request.POST['chromosome_id']
+        test_date = request.POST['test_date']
+        total_test_time = request.POST['total_test_time']
+        contents_id = request.POST['contents_id']
+        test_ok = request.POST['test_ok
         Task.objects.create(test_ok=test_ok,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
         
     if not request.user.is_authenticated():

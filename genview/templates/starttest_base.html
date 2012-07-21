@@ -71,8 +71,20 @@
                         var time = document.getElementById('txt').value;
                         // alert('Value: '+this.value+' | Text: '+gettext+' |time: '+time);
                         // send to form
+                        
+                        var today = new Date();
+                        var dd = today.getDate();
+                        var mm = today.getMonth()+1; //January is 0!
+                        var yyyy = today.getFullYear();
+                        
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
+                        oFormObject.elements["test_ok"].value = (time<10);
+                        oFormObject.elements["user_id"].value = $("#userid").html();     
+                        oFormObject.elements["chromosome_id"].value = 1;
+                        oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;
+                        oFormObject.elements["contents_id"].value = 1;
+                        
                         document.forms["testEndForm"].submit(); 
                         
                         t=clearTimeout(t);
@@ -100,8 +112,13 @@
 
 <body>
     <div style="display:none;">
-        <form id="testEndForm" method="POST" action="http://subvideo.tv:8008/endtest">
+        <form id="testEndForm" method="POST" action="/endtest/">
                 <input type='text' name='time' />
+                <input type='text' name='user_id' />
+                <input type='text' name='test_ok' />    
+                <input type='text' name='chromosome_id' />    
+                <input type='text' name='test_date' />    
+                <input type='text' name='contents_id' />    
         </form>
     </div>
     

@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
 from snag.genview import models
 from sys import *
-from snag.genview.models import Gens, Contents
+from snag.genview.models import Gens, Contents, Tasks
 from django.utils.encoding import smart_str, smart_unicode
 
 import json
@@ -38,20 +38,22 @@ def home(request):
 def endtest(request):
     if request.method == 'POST':
         # You may process these variables here
-        #user_id = request.POST['user_id']
-        #chromosome_id = request.POST['chromosome_id']
-        #test_date = request.POST['test_date']
+        user_id = request.POST['user_id']
+        chromosome_id = request.POST['chromosome_id']
+        test_date = request.POST['test_date']
         total_test_time = request.POST['time']
-        #contents_id = request.POST['contents_id']
-        #test_ok = request.POST['test_ok']
-        #Task.objects.create(test_ok=test_ok,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
-        Task.objects.create(total_test_time=total_test_time)
-        
+        contents_id = request.POST['contents_id']
+        test_ok = request.POST['test_ok']
+        #Tasks.objects.create(test_ok=test_ok,user_id=user_id,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
+        #Tasks.objects.create(total_test_time=total_test_time)
+        p = Tasks(test_ok=test_ok,contents_id_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id_id=chromosome_id,user_id_id=user_id)
+        p.save()
     if not request.user.is_authenticated():
         output = "<h1>You don't have direct access to this page!</h1>"
         template = 'home.html'
         username = ""
     else:
+        output = ""
         template = 'endtest.html'
         username = request.user.username
     return render_to_response(template, {'username': username,'output': output } )    
@@ -89,9 +91,11 @@ def starttest(request):
         output = "<h1>You need to login before to take a test!</h1>"
         template = 'home.html'
         username = ""
+        userid=""
     else:
         template = 'starttest.html'
         username = request.user.username
+        userid = request.user.id
         data = ["0101", "010102", "01010105", "01010208", "01010311", "010203", "01020106", "01020209", "01020312", "010304", "01030107", "01030210", "01030313", "0214", "020115", "02010118", "02010221", "02010324", "020216", "02020119", "02020222", "02020325", "020317", "02030120", "0327", "030439", "030128", "03010131", "030229"];
         #tags = {1:"Acceso remoto (desde fuera de la universidad)", 2:"Archivo general", 3:"Archivo hist&oacute;rico", 4:"Archivos", 5:"Autenticaci&oacute;n en los servicios en l&iacute;nea", 6:"Bibliograf&iacute;as", 7:"Bibliograf&iacute;as por asignaturas", 8:"Bibliograf&iacute;as por materias", 9:"Bibliograf&iacute;as por titulaciones", 10:"Carn&eacute; de usuario", 11:"Colecci&oacute;n de libros electr&oacute;nicos", 12:"Colecciones", 13:"Derechos de autor", 14:"Fondo antiguo", 15:"Formaci&oacute;n", 16:"Formaci&oacute;n a medida", 17:"Formaci&oacute;n en l&iacute;nea", 18:"Gu&iacute;as", 19:"Gu&iacute;as por materias", 20:"Gu&iacute;as tem&aacute;ticas", 21:"Internet", 22:"Legislaci&oacute;n y jurisprudencia", 23:"Libros", 24:"Multimedia", 25:"Normativa de pr&eacute;stamo", 26:"Nuevas adquisiciones", 27:"Organismos de normalizaci&oacute;n", 28:"Partituras y grabaciones sonoras", 29:"Patentes", 30:"Pel&iacute;culas", 31:"Pr&eacute;stamo", 32:"Pr&eacute;stamo interbibliotecario", 33:"Recursos electr&oacute;nicos", 34:"Revistas", 35:"Revistas electr&oacute;nicas", 36:"Revistas impresas", 37:"Servicios", 38:"Talleres formativos", 39:"Zona Wi-Fi y Eduroam"}
         contents = {
@@ -211,7 +215,7 @@ def starttest(request):
         nav3 = nav3+"<div id='contents'><ul></ul></div>\n"
         con = con+"\n</div>\n"
         output = output+nav3+con
-    return render_to_response(template, {'username': username,'output': output } )
+    return render_to_response(template, {'username': username,'userid': userid,'output': output } )
 
 #######################################################
 # Test page: javascript timing test

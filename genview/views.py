@@ -41,9 +41,9 @@ def endtest(request):
         user_id = request.POST['user_id']
         chromosome_id = request.POST['chromosome_id']
         test_date = request.POST['test_date']
-        total_test_time = request.POST['total_test_time']
+        total_test_time = request.POST['time']
         contents_id = request.POST['contents_id']
-        test_ok = request.POST['test_ok
+        test_ok = request.POST['test_ok']
         Task.objects.create(test_ok=test_ok,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
         
     if not request.user.is_authenticated():

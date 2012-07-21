@@ -21,6 +21,9 @@ urlpatterns = patterns('',
     # Testpage
     (r'^testpage/', testpage),
 
+    # Ajax example
+    (r'^myexample/', myexample),
+
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),

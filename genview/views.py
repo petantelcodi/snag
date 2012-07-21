@@ -4,6 +4,8 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
 from snag.genview import models
 from sys import *
+from snag.genview.models import Gens, Contents
+from django.utils.encoding import smart_str, smart_unicode
 
 import json
 
@@ -67,7 +69,7 @@ def starttest(request):
 
 
     data = ["0101", "010102", "01010105", "01010208", "01010311", "010203", "01020106", "01020209", "01020312", "010304", "01030107", "01030210", "01030313", "0214", "020115", "02010118", "02010221", "02010324", "020216", "02020119", "02020222", "02020325", "020317", "02030120", "0327", "030439", "030128", "03010131", "030229"];
-    tags = {1:"Acceso remoto (desde fuera de la universidad)", 2:"Archivo general", 3:"Archivo hist&oacute;rico", 4:"Archivos", 5:"Autenticaci&oacute;n en los servicios en l&iacute;nea", 6:"Bibliograf&iacute;as", 7:"Bibliograf&iacute;as por asignaturas", 8:"Bibliograf&iacute;as por materias", 9:"Bibliograf&iacute;as por titulaciones", 10:"Carn&eacute; de usuario", 11:"Colecci&oacute;n de libros electr&oacute;nicos", 12:"Colecciones", 13:"Derechos de autor", 14:"Fondo antiguo", 15:"Formaci&oacute;n", 16:"Formaci&oacute;n a medida", 17:"Formaci&oacute;n en l&iacute;nea", 18:"Gu&iacute;as", 19:"Gu&iacute;as por materias", 20:"Gu&iacute;as tem&aacute;ticas", 21:"Internet", 22:"Legislaci&oacute;n y jurisprudencia", 23:"Libros", 24:"Multimedia", 25:"Normativa de pr&eacute;stamo", 26:"Nuevas adquisiciones", 27:"Organismos de normalizaci&oacute;n", 28:"Partituras y grabaciones sonoras", 29:"Patentes", 30:"Pel&iacute;culas", 31:"Pr&eacute;stamo", 32:"Pr&eacute;stamo interbibliotecario", 33:"Recursos electr&oacute;nicos", 34:"Revistas", 35:"Revistas electr&oacute;nicas", 36:"Revistas impresas", 37:"Servicios", 38:"Talleres formativos", 39:"Zona Wi-Fi y Eduroam"}
+    #tags = {1:"Acceso remoto (desde fuera de la universidad)", 2:"Archivo general", 3:"Archivo hist&oacute;rico", 4:"Archivos", 5:"Autenticaci&oacute;n en los servicios en l&iacute;nea", 6:"Bibliograf&iacute;as", 7:"Bibliograf&iacute;as por asignaturas", 8:"Bibliograf&iacute;as por materias", 9:"Bibliograf&iacute;as por titulaciones", 10:"Carn&eacute; de usuario", 11:"Colecci&oacute;n de libros electr&oacute;nicos", 12:"Colecciones", 13:"Derechos de autor", 14:"Fondo antiguo", 15:"Formaci&oacute;n", 16:"Formaci&oacute;n a medida", 17:"Formaci&oacute;n en l&iacute;nea", 18:"Gu&iacute;as", 19:"Gu&iacute;as por materias", 20:"Gu&iacute;as tem&aacute;ticas", 21:"Internet", 22:"Legislaci&oacute;n y jurisprudencia", 23:"Libros", 24:"Multimedia", 25:"Normativa de pr&eacute;stamo", 26:"Nuevas adquisiciones", 27:"Organismos de normalizaci&oacute;n", 28:"Partituras y grabaciones sonoras", 29:"Patentes", 30:"Pel&iacute;culas", 31:"Pr&eacute;stamo", 32:"Pr&eacute;stamo interbibliotecario", 33:"Recursos electr&oacute;nicos", 34:"Revistas", 35:"Revistas electr&oacute;nicas", 36:"Revistas impresas", 37:"Servicios", 38:"Talleres formativos", 39:"Zona Wi-Fi y Eduroam"}
     contents = {
         1:"<li>En la universidad existe acceso remoto</li><li>Tienen derecho al acceso remoto profesores, investigadores, estudiantes y personal administrativo</li><li>El acceso remoto permite consultar bases de datos cient&iacute;ficas y peri&oacute;dicos</li>",
         2:"<li>El archivo general se encuentra en el edificio de los servicios centrales</li><li>El archivo general se cre&oacute; en 1952</li><li>El archivo general alberga m&aacute;s de un mill&oacute;n de documentos</li>",
@@ -110,6 +112,11 @@ def starttest(request):
         39:"<li>Pueden utilizar la red Wi-Fi profesores, investigadores, estudiantes y personal administrativo.</li><li>Todos los espacios de la biblioteca tiene cobertura para la conexi&oacute;n inal&aacute;mbrica a Internet.</li><li>La biblioteca ofrece conexi&oacute;n v&iacute;a Eduroam a la comunidad universitaria y a visitantes procedentes de instituciones afiliadas a esta inciativa."
     }
 
+
+    tags = []
+    for x in Gens.objects.all():
+        tags.append(smart_str(x.name))
+
     output = ""
     mytree = dict()
     for allele in data:
@@ -132,9 +139,9 @@ def starttest(request):
             c = 1
             for i in contents[knum].split("</li><li>"):
                 button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+mytree[k]+"-"+str(c)+"'>"
-                infos = infos+i+button+"</li><li>"
+                infos = infos+"<li>"+i+button+"</li>"
                 c = c+1
-            con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
+            con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos[4:]+"</div>"
             first.append(mytree[k])
 
     nav1 = nav1+"\n</p></div>"
@@ -152,7 +159,7 @@ def starttest(request):
                 c = 1
                 for i in contents[knum].split("</li><li>"):
                     button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+mytree[k]+"-"+str(c)+"'>"
-                    infos = infos+i+button+"</li><li>"
+                    infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
                 con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
                 second.append(mytree[k])
@@ -172,7 +179,7 @@ def starttest(request):
                 c = 1
                 for i in contents[knum].split("</li><li>"):
                     button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+mytree[k]+"-"+str(c)+"'>"
-                    infos = infos+i+button+"</li><li>"
+                    infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
                 con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
 
@@ -207,6 +214,21 @@ def profile(request):
     ##r = randint(0, (len(pics_list)-1))
     ##pic_random = pics_list[r]
     return render_to_response('profile.html', {'auth': auth })
+
+from dajax.core.Dajax import Dajax
+
+
+def myexample(request):
+    '''
+    test getting data from ddbb
+    '''
+    contents = [range(0, 40)]
+    for x in Contents.objects.all():
+        for y in range(0, 40):
+            if y == x.gen_id_id:
+                contents[y].append(smart_str(x.answer))
+    tags = contents1
+    return render_to_response('myexample.html', tags)
 
 
 '''

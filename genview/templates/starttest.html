@@ -4,6 +4,7 @@
 
 {% block content %}
 <h1>Hello, {{username}}</h1>
+<span id="username" style="display:none;">{{username}}</span>
 {{ output|safe }}
 
 {% endblock %}

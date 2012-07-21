@@ -73,6 +73,12 @@
                         // send to form
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
+                        oFormObject.elements["test_ok"].value = (time<10);
+                        oFormObject.elements["user_id"].value = 1;     
+                        oFormObject.elements["chromosome_id"].value = 1;
+                        oFormObject.elements["test_date"].value = 1;
+                        oFormObject.elements["contents_id"].value = 1;
+                        
                         document.forms["testEndForm"].submit(); 
                         
                         t=clearTimeout(t);
@@ -102,6 +108,11 @@
     <div style="display:none;">
         <form id="testEndForm" method="POST" action="/endtest/">
                 <input type='text' name='time' />
+                <input type='text' name='user_id' />
+                <input type='text' name='test_ok' />    
+                <input type='text' name='chromosome_id' />    
+                <input type='text' name='test_date' />    
+                <input type='text' name='contents_id' />    
         </form>
     </div>
     

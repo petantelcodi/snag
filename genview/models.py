@@ -42,7 +42,6 @@ class Contents(models.Model):
         return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
 
 class Tasks(models.Model):
-
     user_id =models.OneToOneField(User)
     chromosome_id = models.ForeignKey(Chromosome)
     test_date = models.DateField(default=datetime.date.today)

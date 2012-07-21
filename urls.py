@@ -25,7 +25,8 @@ urlpatterns = patterns('',
     (r'^myexample/', myexample),
     
     # endtest
-    (r'^endtest/', endtest),
+    (r'endtest/', endtest),
+
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

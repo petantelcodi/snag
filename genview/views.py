@@ -37,7 +37,7 @@ def home(request):
 #######################################################
 def endtest(request):
     if request.method == 'POST':
-    form = MyForm(request.POST)
+        form = MyForm(request.POST)
     if form.is_valid():
         # You may process these variables here
         user_id = form.user_id

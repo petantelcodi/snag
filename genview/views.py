@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
 from snag.genview import models
 from sys import *
-from snag.genview.models import Gens, Contents
+from snag.genview.models import Gens, Contents, Tasks
 from django.utils.encoding import smart_str, smart_unicode
 
 import json
@@ -45,7 +45,7 @@ def endtest(request):
         #contents_id = request.POST['contents_id']
         #test_ok = request.POST['test_ok']
         #Task.objects.create(test_ok=test_ok,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
-        Task.objects.create(total_test_time=total_test_time)
+        Tasks.objects.create(total_test_time=total_test_time)
         
     if not request.user.is_authenticated():
         output = "<h1>You don't have direct access to this page!</h1>"

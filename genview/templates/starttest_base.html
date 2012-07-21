@@ -80,7 +80,7 @@
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
                         oFormObject.elements["test_ok"].value = (time<10);
-                        oFormObject.elements["user_id"].value = 1;     
+                        oFormObject.elements["user_id"].value = $("#userid").html();     
                         oFormObject.elements["chromosome_id"].value = 1;
                         oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;
                         oFormObject.elements["contents_id"].value = 1;

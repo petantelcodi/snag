@@ -144,7 +144,7 @@ def starttest(request):
         }
         
         #choose a question
-        idQuestion = random(39*3)
+        idQuestion = randint(1, 39*3)
         
         questions = []
         for x in Contents.objects.all():

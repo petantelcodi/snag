@@ -53,6 +53,7 @@ def endtest(request):
         template = 'home.html'
         username = ""
     else:
+        output = ""
         template = 'endtest.html'
         username = request.user.username
     return render_to_response(template, {'username': username,'output': output } )    

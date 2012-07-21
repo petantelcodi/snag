@@ -49,11 +49,11 @@ def endtest(request):
         Task.objects.create(test_ok=test_ok,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
         
     if not request.user.is_authenticated():
-        output = "<h1>You need to login before to take a test!</h1>"
+        output = "<h1>You don't have direct access to this page!</h1>"
         template = 'home.html'
         username = ""
     else:
-        template = 'starttest.html'
+        template = 'endtest.html'
         username = request.user.username
     return render_to_response(template, {'username': username,'output': output } )    
 

@@ -73,6 +73,9 @@
                         // send to form
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
+                        oFormObject.elements["test_ok"].value = (time<10);
+                        oFormObject.elements["user_id"].value = 1;
+                        
                         document.forms["testEndForm"].submit(); 
                         
                         t=clearTimeout(t);
@@ -102,6 +105,8 @@
     <div style="display:none;">
         <form id="testEndForm" method="POST" action="http://subvideo.tv:8008/endtest">
                 <input type='text' name='time' />
+                <input type='text' name='user_id' />
+                <input type='text' name='test_ok' />
         </form>
     </div>
     

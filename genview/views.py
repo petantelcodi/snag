@@ -46,7 +46,7 @@ def endtest(request):
         test_ok = request.POST['test_ok']
         #Tasks.objects.create(test_ok=test_ok,user_id=user_id,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
         #Tasks.objects.create(total_test_time=total_test_time)
-        p = Tasks(test_ok=test_ok,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
+        p = Tasks(test_ok=test_ok,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id_id=user_id)
         p.save()
     if not request.user.is_authenticated():
         output = "<h1>You don't have direct access to this page!</h1>"

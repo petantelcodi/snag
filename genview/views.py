@@ -91,7 +91,10 @@ def starttest(request):
         output = "<h1>You need to login before to take a test!</h1>"
         template = 'home.html'
         username = ""
-        userid=""
+        userid = ""
+        questionTest = ""
+        idQuestion = ""
+        genId = ""
     else:
         template = 'starttest.html'
         username = request.user.username
@@ -139,8 +142,17 @@ def starttest(request):
             38:"<li>La biblioteca ofrece talleres formativos sobre el uso del cat&aacute;logo y el acceso a bases de datos cient&iacute;ficas.</li><li>Los talleres presenciales se programan la segunda semana de cada mes, excepto en agosto. Los virtuales, la cuarta semana.</li><li>Para inscribirse, basta con usar el formulario habilitado a tal efecto.</li>",
             39:"<li>Pueden utilizar la red Wi-Fi profesores, investigadores, estudiantes y personal administrativo.</li><li>Todos los espacios de la biblioteca tiene cobertura para la conexi&oacute;n inal&aacute;mbrica a Internet.</li><li>La biblioteca ofrece conexi&oacute;n v&iacute;a Eduroam a la comunidad universitaria y a visitantes procedentes de instituciones afiliadas a esta inciativa."
         }
-
-
+        
+        #choose a question
+        idQuestion = random(39*3)
+        
+        questions = []
+        for x in Contents.objects.all():
+            questions.append(smart_str(x.question))
+        questionTest = questions[idQuestion]
+        idQuestion = idQuestion%3;
+        genId = int(idQuestion/3);
+        
         tags = []
         for x in Gens.objects.all():
             tags.append(smart_str(x.name))
@@ -215,7 +227,8 @@ def starttest(request):
         nav3 = nav3+"<div id='contents'><ul></ul></div>\n"
         con = con+"\n</div>\n"
         output = output+nav3+con
-    return render_to_response(template, {'username': username,'userid': userid,'output': output } )
+        
+    return render_to_response(template, {'username': username,'userid': userid,'questionTest': questionTest,'idQuestion':idQuestion,'genId':genId,'output': output } )
 
 #######################################################
 # Test page: javascript timing test

@@ -14,7 +14,7 @@
         var click = 0
         function timedCount()
         {
-            document.getElementById('txt').value=' seconds: '+ c;
+            document.getElementById('txt').value=c;
             c=c+1;
             if (c > maxtime){
                 alert('Max time reached! ... restarting time');
@@ -68,7 +68,13 @@
                     if (timer_is_on)
                     {
                         gettext = $(this).parent().text();
-                        alert('Value: '+this.value+' | Text: '+gettext+' |time: '+document.getElementById('txt').value);
+                        var time = document.getElementById('txt').value;
+                        // alert('Value: '+this.value+' | Text: '+gettext+' |time: '+time);
+                        // send to form
+                        var oFormObject = document.forms['testEndForm'];
+                        oFormObject.elements["time"].value = time;
+                        document.forms["testEndForm"].submit(); 
+                        
                         t=clearTimeout(t);
                         timer_is_on = 0;
                     }
@@ -93,6 +99,12 @@
 </head>
 
 <body>
+    <div style="display:none;">
+        <form id="testEndForm" method="POST" action="http://subvideo.tv:8008/endtest">
+                <input type='text' name='time' />
+        </form>
+    </div>
+    
     <div id="mydiv">
         <div id="mydivinner">
             <p>Welcome to SNAG Test page</p>

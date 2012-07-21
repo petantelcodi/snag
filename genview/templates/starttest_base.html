@@ -36,6 +36,7 @@
             {
                 timer_is_on = 1;
                 timedCount();
+                $("#mydiv").hide()
             }
         }
 
@@ -78,27 +79,30 @@
 
     <style type="text/css">
         #page { position:absolute;top:0;left:0;margin:0 20%;width 960px;height:120%;border:5px dotted grey}
-        #mydiv { position:relative; float:left; width:200px; height:120px; border:1px solid #66ff33;padding:15px;}
+        #mydiv { position:absolute;opacity:.9;background-color:grey;width:98%; height:98%; border:5px solid #000000;top:0;left:0;z-index:10;}
         #nav1 { position:relative; float:left; width:100%; border:1px solid #33ccff;padding:15px;}
         #nav2 { position:relative; float:left; width:45%; height:70px; border:1px solid #cc33ff;padding:15px;}
         #nav3 { position:relative; float:left; width:45%; height:70px;border:1px solid magenta;padding:15px;}
         #contents { position:relative; float:left; width:91%; border:1px solid #ff6633;padding:25px;}
         #hiddencontents { display:none;position:relative; float:left; width:720px; border:1px solid grey;}
-
+        #mydivinner {position:relative;margin:20%;border:4px solid #ffffff;padding:20px;}
         #nav1 p span {padding:4px;border:1px solid green;}
+        #txt {display:none;}
     </style>
 
 </head>
 
 <body>
-<div id="page">
     <div id="mydiv">
-        <p>Welcome to SNAG Test page</p>
-        <form>
-            <input type="button" value="Start count!" onClick="doTimer()">
-            <input type="text" id="txt" size="8">
-        </form>
+        <div id="mydivinner">
+            <p>Welcome to SNAG Test page</p>
+            <form>
+                <input type="button" value="Start Test" onClick="doTimer()">
+                <input type="text" id="txt" size="8">
+            </form>
+        </div>
     </div>
+    <div id="page">
     {% block content %}{% endblock %}
 
 </div>

@@ -42,7 +42,8 @@
 
         // tags hide/show
         $(document).ready(function() {
-
+        
+            $("#questionText").html( $("#questionTest").html() );
             $("#nav2 ul > li").hide()
             $("#nav3 ul > li").hide()
 
@@ -125,6 +126,7 @@
     <div id="mydiv">
         <div id="mydivinner">
             <p>Welcome to SNAG Test page</p>
+            <p id="questionText"></p>
             <form>
                 <input type="button" value="Start Test" onClick="doTimer()">
                 <input type="text" id="txt" size="8">

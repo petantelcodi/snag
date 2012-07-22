@@ -6,7 +6,7 @@ from snag.genview import models
 from sys import *
 from snag.genview.models import Gens, Contents, Tasks
 from django.utils.encoding import smart_str, smart_unicode
-
+import math
 import json
 
 #######################################################

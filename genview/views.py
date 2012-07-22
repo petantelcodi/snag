@@ -231,16 +231,6 @@ def starttest(request):
     return render_to_response(template, {'username': username,'userid': userid,'questionTest': questionTest,'idQuestion':idQuestion,'genId':genId,'output': output } )
 
 #######################################################
-# Test page: javascript timing test
-def testpage(request):
-    if request.user.is_authenticated():
-        auth = "<p>User is authenticated</p>"
-    else:
-        auth = "<p>User is anonymous</p>"
-
-    return render_to_response('testpage.html', {'testpage': testpage, 'auth': auth})
-
-#######################################################
 def profile(request):
 
     if request.user.is_authenticated():
@@ -249,27 +239,33 @@ def profile(request):
     else:
         auth = "<p>User is anonymous</p>"
 
-    #about = models.Page.objects.get(id=1)
-    #pics_list = models.Pic.objects.order_by('-id')[:49]
-    ##r = randint(0, (len(pics_list)-1))
-    ##pic_random = pics_list[r]
     return render_to_response('profile.html', {'auth': auth })
 
-from dajax.core.Dajax import Dajax
-
-
+#######################################################
 def myexample(request):
     '''
     test getting data from ddbb
     '''
-    contents = [range(0, 40)]
-    for x in Contents.objects.all():
-        for y in range(0, 40):
-            if y == x.gen_id_id:
-                contents[y].append(smart_str(x.answer))
-    tags = contents1
-    return render_to_response('myexample.html', tags)
+    #Base emptey chromosome 3x3x3 structure:
+    data_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "030303",];
+    tags = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"]
+    shuffle(tags)
+    mydata = []
+    c = 0
+    for d in data_base:
+        mydata.append(d+tags[c])
+        c = c + 1
 
+    return render_to_response('myexample.html', {'mydata': mydata})
+
+#######################################################
+def testpage(request):
+    if request.user.is_authenticated():
+        auth = "<p>User is authenticated</p>"
+    else:
+        auth = "<p>User is anonymous</p>"
+
+    return render_to_response('testpage.html', {'testpage': testpage, 'auth': auth})
 
 '''
 # Conversations

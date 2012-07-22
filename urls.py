@@ -15,16 +15,14 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^$', home),
-    # Example:
-    # (r'^snag/', include('snag.foo.urls')),
-    (r'^starttest/', starttest),
-    # Testpage
-    (r'^testpage/', testpage),
 
-    # Ajax example
+    # Page just for testing:
     (r'^myexample/', myexample),
-    
-    # endtest
+
+    # Main user chromosome test
+    (r'^starttest/', starttest),
+
+    # endtest: page to go after a user chromosome test
     (r'^endtest/', endtest),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 

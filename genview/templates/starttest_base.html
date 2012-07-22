@@ -83,11 +83,11 @@
                         var time = document.getElementById('txt').value;
                         // alert('Value: '+this.value+' | Text: '+gettext+' |time: '+time);
                         // send to form
-
+                        var test_ok = 0;
                         // Checking if the test answer is correct?
                         var myquestionId = $("#genid").html()+'-'+$("#idQuestion").html();
                         var userAnswerId = value;
-                        if (myquestionId==userAnswerId) {test_ok = 1} else {test_ok = 0}
+                        if (myquestionId==userAnswerId){ test_ok = 1; }
                         alert("myquestionId:"+myquestionId+' | userAnswerId:'+userAnswerId+' | '+test_ok);
 
                         var today = new Date();

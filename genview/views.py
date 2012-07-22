@@ -120,7 +120,7 @@ def starttest(request):
         }
         
         #choose a question
-        idRamdom = 52 #randint(0, 117)
+        idRamdom = randint(0, 117)
         answers = []
         questions = []
         for x in Contents.objects.all():

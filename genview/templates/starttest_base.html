@@ -23,7 +23,7 @@
             c=c+1;
             if (c > maxtime){
                 alert('Max time reached! ... restarting time');
-                submitFormToEndTest();
+                submitFormToEndTest(value='');
                 c=0;
             }
             /*if (click)
@@ -63,7 +63,7 @@
 
                 newcontents = $("#c-"+this.id).html();
                 //alert("newcontents: "+newcontents);
-                $("#contents").html        (newcontents);
+                $("#contents").html(newcontents);
                 activatebutton();
 
             });
@@ -73,17 +73,23 @@
             function activatebutton() {
                 $(".b").click(function()
                 {
-                    submitFormToEndTest();
+                    submitFormToEndTest(this.value);
                 });
             }
-            function submitFormToEndTest() {
+            function submitFormToEndTest(value) {
                     if (timer_is_on)
                     {
                         gettext = $(this).parent().text();
                         var time = document.getElementById('txt').value;
                         // alert('Value: '+this.value+' | Text: '+gettext+' |time: '+time);
                         // send to form
-                        
+
+                        // Checking if the test answer is correct?
+                        var myquestionId = $("#genid").html()+'-'+$("#idQuestion").html();
+                        var userAnswerId = value;
+                        if (myquestionId==userAnswerId) {test_ok = 1} else {test_ok = 0}
+                        alert("myquestionId:"+myquestionId+' | userAnswerId:'+userAnswerId+' | '+test_ok);
+
                         var today = new Date();
                         var dd = today.getDate();
                         var mm = today.getMonth()+1; //January is 0!
@@ -91,7 +97,7 @@
                         
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
-                        oFormObject.elements["test_ok"].value = (time<maxtime);
+                        oFormObject.elements["test_ok"].value = test_ok;
                         oFormObject.elements["user_id"].value = $("#userid").html();     
                         oFormObject.elements["chromosome_id"].value = 1;
                         oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;

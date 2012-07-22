@@ -8,6 +8,7 @@ from snag.genview.models import Gens, Contents, Tasks
 from django.utils.encoding import smart_str, smart_unicode
 import math
 import json
+import math
 
 #######################################################
 # Home page
@@ -146,7 +147,7 @@ def starttest(request):
         }
         
         #choose a question
-        idQuestion = randint(1, 39*3)
+        idQuestion = randint(1, 118)
         answers = []
         questions = []
         for x in Contents.objects.all():
@@ -155,8 +156,9 @@ def starttest(request):
             
         questionTest = questions[idQuestion]
         answersTest = answers[idQuestion]
-        idQuestion = idQuestion%3;
-        genId = int(idQuestion/3);
+        idQuestion = idQuestion%3
+        if idQuestion==0: idQuestion=3
+        genId = int(math.ceil(float(32)/float(3)))
         
         tags = []
         for x in Gens.objects.all():
@@ -183,7 +185,7 @@ def starttest(request):
                 infos = ""
                 c = 1
                 for i in contents[knum].split("</li><li>"):
-                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+mytree[k]+"-"+str(c)+"'>"
+                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
                     infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
                 con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos[4:]+"</div>"
@@ -203,7 +205,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+mytree[k]+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
@@ -223,7 +225,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+mytree[k]+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"

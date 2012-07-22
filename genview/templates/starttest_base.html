@@ -6,7 +6,11 @@
     <script type="text/javascript" src="http://v.subvideo.tv/snag-media/js/jquery.js"></script>
     <script type="text/javascript">
 
-        // Timer
+       
+
+        // tags hide/show
+        $(document).ready(function() {
+         // Timer
         var c=0;
         var t;
         var timer_is_on = 0;
@@ -40,9 +44,6 @@
                 $("#mydiv").hide()
             }
         }
-
-        // tags hide/show
-        $(document).ready(function() {
         
             $("#questionText").html( $("#questionTest").html() );
             $("#nav2 ul > li").hide()

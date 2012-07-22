@@ -150,7 +150,7 @@ def starttest(request):
         questions = []
         for x in Contents.objects.all():
             questions.append(smart_str(x.question))
-            answers.append(smart_str(x.answers))
+            answers.append(smart_str(x.answer))
             
         questionTest = questions[idQuestion]
         answersTest = answers[idQuestion]

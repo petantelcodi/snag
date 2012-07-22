@@ -10,14 +10,15 @@
         var c=0;
         var t;
         var timer_is_on = 0;
-        var maxtime = 10
+        var maxtime = 30
         var click = 0
         function timedCount()
         {
             document.getElementById('txt').value=c;
             c=c+1;
             if (c > maxtime){
-                alert('Max time reached! ... restarting time');
+                //alert('Max time reached! ... restarting time');
+                submitFormToEndTest();
                 c=0;
             }
             if (click)
@@ -56,7 +57,7 @@
 
                 newcontents = $("#c-"+this.id).html();
                 //alert("newcontents: "+newcontents);
-                $("#contents").html	(newcontents);
+                $("#contents").html        (newcontents);
                 activatebutton();
 
             });
@@ -66,6 +67,10 @@
             function activatebutton() {
                 $(".b").click(function()
                 {
+                    submitFormToEndTest();
+                });
+            }
+            function submitFormToEndTest() {
                     if (timer_is_on)
                     {
                         gettext = $(this).parent().text();
@@ -80,7 +85,7 @@
                         
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
-                        oFormObject.elements["test_ok"].value = (time<10);
+                        oFormObject.elements["test_ok"].value = (time<maxtime);
                         oFormObject.elements["user_id"].value = $("#userid").html();     
                         oFormObject.elements["chromosome_id"].value = 1;
                         oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;
@@ -91,7 +96,6 @@
                         t=clearTimeout(t);
                         timer_is_on = 0;
                     }
-                });
             }
         });
     </script>

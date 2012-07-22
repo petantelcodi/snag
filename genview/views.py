@@ -93,6 +93,7 @@ def starttest(request):
         username = ""
         userid = ""
         questionTest = ""
+        answersTest = ""
         idQuestion = ""
         genId = ""
     else:
@@ -145,11 +146,14 @@ def starttest(request):
         
         #choose a question
         idQuestion = randint(1, 39*3)
-        
+        answers = []
         questions = []
         for x in Contents.objects.all():
             questions.append(smart_str(x.question))
+            answers.append(smart_str(x.answers))
+            
         questionTest = questions[idQuestion]
+        answersTest = answers[idQuestion]
         idQuestion = idQuestion%3;
         genId = int(idQuestion/3);
         
@@ -228,7 +232,7 @@ def starttest(request):
         con = con+"\n</div>\n"
         output = output+nav3+con
         
-    return render_to_response(template, {'username': username,'userid': userid,'questionTest': questionTest,'idQuestion':idQuestion,'genId':genId,'output': output } )
+    return render_to_response(template, {'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'genId':genId,'output': output } )
 
 #######################################################
 def profile(request):

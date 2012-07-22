@@ -8,32 +8,18 @@ from snag.genview.models import Gens, Contents, Tasks
 from django.utils.encoding import smart_str, smart_unicode
 import math
 import json
-import math
 
 #######################################################
 # Home page
 def home(request):
-    # about
-    about = ['un', 'dos', 'tres']
-
-    # gen
-    gen = []
-    for alels in range(1, 33):
-        gen.append(alels)
-    shuffle(gen)
-
     # auth
     if request.user.is_authenticated():
         auth = "<p>User is authenticated as: <b>"+request.user.username+"</b></p>"
 
     else:
-        auth = "<p>User is anonymous</p>"
+        auth = "<p>User is anonymous</p><p>Instructions for anonymous users here.</p>"
 
-    #about = models.Page.objects.get(id=1)
-    #pics_list = models.Pic.objects.order_by('-id')[:49]
-    ##r = randint(0, (len(pics_list)-1))
-    ##pic_random = pics_list[r]
-    return render_to_response('home.html', {'home': home, 'about': about, 'gen': gen, 'auth': auth})
+    return render_to_response('home.html', {'home': home, 'auth': auth})
 
 #######################################################
 def endtest(request):
@@ -45,9 +31,7 @@ def endtest(request):
         total_test_time = request.POST['time']
         contents_id = request.POST['contents_id']
         test_ok = request.POST['test_ok']
-        #Tasks.objects.create(test_ok=test_ok,user_id=user_id,contents_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id=chromosome_id,user_id=user_id)
-        #Tasks.objects.create(total_test_time=total_test_time)
-        p = Tasks(test_ok=test_ok,contents_id_id=contents_id,total_test_time=total_test_time,test_date=test_date,chromosome_id_id=chromosome_id,user_id_id=user_id)
+        p = Tasks(contents_id_id=contents_id,test_ok=test_ok,total_test_time=total_test_time,test_date=test_date,chromosome_id_id=chromosome_id,user_id_id=user_id)
         p.save()
     if not request.user.is_authenticated():
         output = "<h1>You don't have direct access to this page!</h1>"
@@ -60,28 +44,6 @@ def endtest(request):
     return render_to_response(template, {'username': username,'output': output } )    
 
 #######################################################
-def startAnel(request):
-    data2 = [
-                        ["0101",
-                                [ "010102",[ "01010105", "01010208", "01010311"]],
-                                [ "010203",[ "01020106", "01020209", "01020312"]],
-                                [ "010304",[ "01030107", "01030210", "01030313"]]
-                        ],
-                        ["0214",
-                                [ "020115",[ "02010118", "02010221", "02010324"]],
-                                [ "020216",[ "02020119", "02020222", "02020325"]],
-                                [ "020317",[ "02030120", "02030223", "02030326"]]
-                        ],
-                        ["0327",
-                                [ "030128",[ "03010131", "03010234", "03010337"]],
-                                [ "030229",[ "03020132", "03020235", "03020338"]],
-                                [ "030330",[ "03030133", "03030236", "03030339"]]
-                        ]
-                ]
-
-
-    return json.dumps(data2)
-    
 def starttest(request):
     """
     This function build a webpage for the test.
@@ -102,8 +64,19 @@ def starttest(request):
         username = request.user.username
         userid = request.user.id
         #data = ["0101", "010102", "01010105", "01010208", "01010311", "010203", "01020106", "01020209", "01020312", "010304", "01030107", "01030210", "01030313", "0214", "020115", "02010118", "02010221", "02010324", "020216", "02020119", "02020222", "02020325", "020317", "02030120", "0327", "030439", "030128", "03010131", "030229"];
-        data = ['0109', '010118', '01010114', '01010217', '01010332', '010230', '01020112', '01020206', '01020329', '010333', '01030101', '01030231', '01030319', '0203', '020120', '02010127', '02010208', '02010328', '020225', '02020107', '02020239', '02020313', '020326', '02030102', '02030235', '02030334', '0336', '030137', '03010116', '03010223', '03010321', '030215', '03020110', '03020204', '03020324', '030305', '03030111', '03030238', '03030322']
+        #data = ['0109', '010118', '01010114', '01010217', '01010332', '010230', '01020112', '01020206', '01020329', '010333', '01030101', '01030231', '01030319', '0203', '020120', '02010127', '02010208', '02010328', '020225', '02020107', '02020239', '02020313', '020326', '02030102', '02030235', '02030334', '0336', '030137', '03010116', '03010223', '03010321', '030215', '03020110', '03020204', '03020324', '030305', '03030111', '03030238', '03030322']
+        #Base emptey chromosome 3x3x3 structure:
+        data_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "030303",];
+        tags_ids = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"]
+        shuffle(tags_ids)
+        data = []
+        c = 0
+        for d in data_base:
+            data.append(d+tags_ids[c])
+            c = c + 1
+
         #tags = {1:"Acceso remoto (desde fuera de la universidad)", 2:"Archivo general", 3:"Archivo hist&oacute;rico", 4:"Archivos", 5:"Autenticaci&oacute;n en los servicios en l&iacute;nea", 6:"Bibliograf&iacute;as", 7:"Bibliograf&iacute;as por asignaturas", 8:"Bibliograf&iacute;as por materias", 9:"Bibliograf&iacute;as por titulaciones", 10:"Carn&eacute; de usuario", 11:"Colecci&oacute;n de libros electr&oacute;nicos", 12:"Colecciones", 13:"Derechos de autor", 14:"Fondo antiguo", 15:"Formaci&oacute;n", 16:"Formaci&oacute;n a medida", 17:"Formaci&oacute;n en l&iacute;nea", 18:"Gu&iacute;as", 19:"Gu&iacute;as por materias", 20:"Gu&iacute;as tem&aacute;ticas", 21:"Internet", 22:"Legislaci&oacute;n y jurisprudencia", 23:"Libros", 24:"Multimedia", 25:"Normativa de pr&eacute;stamo", 26:"Nuevas adquisiciones", 27:"Organismos de normalizaci&oacute;n", 28:"Partituras y grabaciones sonoras", 29:"Patentes", 30:"Pel&iacute;culas", 31:"Pr&eacute;stamo", 32:"Pr&eacute;stamo interbibliotecario", 33:"Recursos electr&oacute;nicos", 34:"Revistas", 35:"Revistas electr&oacute;nicas", 36:"Revistas impresas", 37:"Servicios", 38:"Talleres formativos", 39:"Zona Wi-Fi y Eduroam"}
+        tags = {1:"Acceso remoto (desde fuera de la universidad)", 2:"Archivo general", 3:"Archivo hist&oacute;rico", 4:"Archivos", 5:"Autenticaci&oacute;n en los servicios en l&iacute;nea", 6:"Bibliograf&iacute;as", 7:"Bibliograf&iacute;as por asignaturas", 8:"Bibliograf&iacute;as por materias", 9:"Bibliograf&iacute;as por titulaciones", 10:"Carn&eacute; de usuario", 11:"Colecci&oacute;n de libros electr&oacute;nicos", 12:"Colecciones", 13:"Derechos de autor", 14:"Fondo antiguo", 15:"Formaci&oacute;n", 16:"Formaci&oacute;n a medida", 17:"Formaci&oacute;n en l&iacute;nea", 18:"Gu&iacute;as", 19:"Gu&iacute;as por materias", 20:"Gu&iacute;as tem&aacute;ticas", 21:"Internet", 22:"Legislaci&oacute;n y jurisprudencia", 23:"Libros", 24:"Multimedia", 25:"Normativa de pr&eacute;stamo", 26:"Nuevas adquisiciones", 27:"Organismos de normalizaci&oacute;n", 28:"Partituras y grabaciones sonoras", 29:"Patentes", 30:"Pel&iacute;culas", 31:"Pr&eacute;stamo", 32:"Pr&eacute;stamo interbibliotecario", 33:"Recursos electr&oacute;nicos", 34:"Revistas", 35:"Revistas electr&oacute;nicas", 36:"Revistas impresas", 37:"Servicios", 38:"Talleres formativos", 39:"Zona Wi-Fi y Eduroam"}
         contents = {
             1:"<li>En la universidad existe acceso remoto</li><li>Tienen derecho al acceso remoto profesores, investigadores, estudiantes y personal administrativo</li><li>El acceso remoto permite consultar bases de datos cient&iacute;ficas y peri&oacute;dicos</li>",
             2:"<li>El archivo general se encuentra en el edificio de los servicios centrales</li><li>El archivo general se cre&oacute; en 1952</li><li>El archivo general alberga m&aacute;s de un mill&oacute;n de documentos</li>",
@@ -147,22 +120,26 @@ def starttest(request):
         }
         
         #choose a question
-        idQuestion = randint(1, 118)
+        idRamdom = 52 #randint(0, 117)
         answers = []
         questions = []
         for x in Contents.objects.all():
             questions.append(smart_str(x.question))
             answers.append(smart_str(x.answer))
             
-        questionTest = questions[idQuestion]
-        answersTest = answers[idQuestion]
-        idQuestion = idQuestion%3
+        questionTest = questions[idRamdom-1]
+        answersTest = answers[idRamdom-1]
+        idQuestion = idRamdom%3
         if idQuestion==0: idQuestion=3
-        genId = int(math.ceil(float(32)/float(3)))
-        
-        tags = []
-        for x in Gens.objects.all():
-            tags.append(smart_str(x.name))
+        genId = int(math.ceil(float(idRamdom)/float(3)))
+        if genId<10: genId = "0"+str(genId) ## For example: genId = 3, needs to be genId = "03"
+        genId = str(genId)
+        # snagQuestionId:19-1 | userAnswerId:18-1 | test_ok=0
+
+        # This tag doesn't work, it needs to start index at 1, not at 0. I'm getting the static tag var from line 78
+        #tags = []
+        #for x in Gens.objects.all():
+        #    tags.append(smart_str(x.name))
 
         output = ""
         mytree = dict()

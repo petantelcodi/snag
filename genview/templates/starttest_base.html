@@ -76,19 +76,18 @@
                     submitFormToEndTest(this.value);
                 });
             }
-            function submitFormToEndTest(value) {
+            function submitFormToEndTest(userAnswerId) {
                     if (timer_is_on)
                     {
                         gettext = $(this).parent().text();
                         var time = document.getElementById('txt').value;
                         // alert('Value: '+this.value+' | Text: '+gettext+' |time: '+time);
-                        // send to form
+
                         var test_ok = 0;
                         // Checking if the test answer is correct?
-                        var myquestionId = $("#genid").html()+'-'+$("#idQuestion").html();
-                        var userAnswerId = value;
-                        if (myquestionId==userAnswerId){ test_ok = 1; }
-                        alert("myquestionId:"+myquestionId+' | userAnswerId:'+userAnswerId+' | '+test_ok);
+                        var snagQuestionId = $("#genId").html()+'-'+$("#idQuestion").html();
+                        if (snagQuestionId==userAnswerId){ test_ok = 1; }
+                        alert("snagQuestionId:"+snagQuestionId+' | userAnswerId:'+userAnswerId+' | test_ok='+test_ok);
 
                         var today = new Date();
                         var dd = today.getDate();

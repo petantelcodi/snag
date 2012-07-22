@@ -6,11 +6,11 @@
     <script type="text/javascript" src="http://v.subvideo.tv/snag-media/js/jquery.js"></script>
     <script type="text/javascript">
 
-       
+  
 
         // tags hide/show
         $(document).ready(function() {
-         // Timer
+                      // Timer
         var c=0;
         var t;
         var timer_is_on = 0;
@@ -44,6 +44,10 @@
                 $("#mydiv").hide()
             }
         }
+        
+            $("#startTestButton").click(function(){
+                doTimer();
+            });
         
             $("#questionText").html( $("#questionTest").html() );
             $("#nav2 ul > li").hide()
@@ -133,7 +137,7 @@
             <p>Welcome to SNAG Test page</p>
             <p id="questionText"></p>
             <form>
-                <input type="button" value="Start Test" onClick="doTimer()">
+                <input id="startTestButton" type="button" value="Start Test" onClick="doTimer()">
                 <input type="text" id="txt" size="8">
             </form>
         </div>

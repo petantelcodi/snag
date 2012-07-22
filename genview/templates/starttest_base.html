@@ -6,28 +6,34 @@
     <script type="text/javascript" src="http://v.subvideo.tv/snag-media/js/jquery.js"></script>
     <script type="text/javascript">
 
-        // Timer
+  
+
+        // tags hide/show
+        $(document).ready(function() {
+                      // Timer
         var c=0;
         var t;
         var timer_is_on = 0;
-        var maxtime = 10
+        var maxtime = 30
         var click = 0
         function timedCount()
         {
+            //alert("timer called");
             document.getElementById('txt').value=c;
             c=c+1;
             if (c > maxtime){
                 alert('Max time reached! ... restarting time');
+                submitFormToEndTest();
                 c=0;
             }
-            if (click)
+            /*if (click)
             {
                 alert('Answer clicked! ... stoping timer. The data clicked is: ');
                 c=0;
-            }
+            }*/
             else
             {
-                t=setTimeout("timedCount()",1000);
+                t=window.setTimeout(timedCount,1000);
             }
         }
         function doTimer()
@@ -39,9 +45,10 @@
                 $("#mydiv").hide()
             }
         }
-
-        // tags hide/show
-        $(document).ready(function() {
+        
+            $("#startTestButton").click(function(){
+                doTimer();
+            });
         
             $("#questionText").html( $("#questionTest").html() );
             $("#nav2 ul > li").hide()
@@ -56,7 +63,7 @@
 
                 newcontents = $("#c-"+this.id).html();
                 //alert("newcontents: "+newcontents);
-                $("#contents").html	(newcontents);
+                $("#contents").html        (newcontents);
                 activatebutton();
 
             });
@@ -66,6 +73,10 @@
             function activatebutton() {
                 $(".b").click(function()
                 {
+                    submitFormToEndTest();
+                });
+            }
+            function submitFormToEndTest() {
                     if (timer_is_on)
                     {
                         gettext = $(this).parent().text();
@@ -80,7 +91,7 @@
                         
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
-                        oFormObject.elements["test_ok"].value = (time<10);
+                        oFormObject.elements["test_ok"].value = (time<maxtime);
                         oFormObject.elements["user_id"].value = $("#userid").html();     
                         oFormObject.elements["chromosome_id"].value = 1;
                         oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;
@@ -91,7 +102,6 @@
                         t=clearTimeout(t);
                         timer_is_on = 0;
                     }
-                });
             }
         });
     </script>
@@ -107,6 +117,7 @@
         #mydivinner {position:relative;margin:20%;border:4px solid #ffffff;padding:20px;}
         #nav1 p span {padding:4px;border:1px solid green;}
         #txt {display:none;}
+        .first, .second, .third {cursor:pointer;}
     </style>
 
 </head>
@@ -128,7 +139,7 @@
             <p>Welcome to SNAG Test page</p>
             <p id="questionText"></p>
             <form>
-                <input type="button" value="Start Test" onClick="doTimer()">
+                <input id="startTestButton" type="button" value="Start Test" onClick="doTimer()">
                 <input type="text" id="txt" size="8">
             </form>
         </div>

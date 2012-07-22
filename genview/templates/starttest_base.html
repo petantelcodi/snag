@@ -18,6 +18,7 @@
         var click = 0
         function timedCount()
         {
+            alert("timer called");
             document.getElementById('txt').value=c;
             c=c+1;
             if (c > maxtime){
@@ -25,11 +26,11 @@
                 submitFormToEndTest();
                 c=0;
             }
-            if (click)
+            /*if (click)
             {
                 alert('Answer clicked! ... stoping timer. The data clicked is: ');
                 c=0;
-            }
+            }*/
             else
             {
                 t=setTimeout("timedCount()",1000);

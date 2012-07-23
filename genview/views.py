@@ -120,9 +120,11 @@ def starttest(request):
         }
         
         #choose a question
-        idRamdom = 0#randint(0, 117)
+        idRamdom = randint(1, 118)
         answers = []
         questions = []
+        questions.append("")
+        answers.append("")
         for x in Contents.objects.all():
             questions.append(smart_str(x.question))
             answers.append(smart_str(x.answer))
@@ -163,7 +165,7 @@ def starttest(request):
                 infos = ""
                 c = 1
                 for i in contents[knum].split("</li><li>"):
-                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(int(k)-1)+"-"+str(c)+"'>"
+                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
                     infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
                 con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos[4:]+"</div>"
@@ -183,7 +185,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(int(k)-1)+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
@@ -203,7 +205,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(int(k)-1)+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"

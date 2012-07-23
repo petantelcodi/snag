@@ -120,15 +120,15 @@ def starttest(request):
         }
         
         #choose a question
-        idRamdom = randint(0, 117)
+        idRamdom = randint(1, 117)
         answers = []
         questions = []
         for x in Contents.objects.all():
             questions.append(smart_str(x.question))
             answers.append(smart_str(x.answer))
             
-        questionTest = questions[idRamdom-1]
-        answersTest = answers[idRamdom-1]
+        questionTest = questions[idRamdom]
+        answersTest = answers[idRamdom]
         idQuestion = idRamdom%3
         if idQuestion==0: idQuestion=3
         genId = int(math.ceil(float(idRamdom)/float(3)))

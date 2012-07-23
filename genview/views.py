@@ -120,7 +120,7 @@ def starttest(request):
         }
         
         #choose a question
-        idRamdom = randint(1, 117)
+        idRamdom = 0#randint(0, 117)
         answers = []
         questions = []
         for x in Contents.objects.all():
@@ -130,7 +130,8 @@ def starttest(request):
         questionTest = questions[idRamdom]
         answersTest = answers[idRamdom]
         idQuestion = idRamdom%3
-        if idQuestion==0: idQuestion=3
+        if idQuestion==0: 
+	    idQuestion=3
         genId = int(math.ceil(float(idRamdom)/float(3)))
         if genId<10: genId = "0"+str(genId) ## For example: genId = 3, needs to be genId = "03"
         genId = str(genId)
@@ -162,7 +163,7 @@ def starttest(request):
                 infos = ""
                 c = 1
                 for i in contents[knum].split("</li><li>"):
-                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(int(k)-1)+"-"+str(c)+"'>"
                     infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
                 con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos[4:]+"</div>"
@@ -182,7 +183,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(int(k)-1)+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
@@ -202,7 +203,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(int(k)-1)+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"

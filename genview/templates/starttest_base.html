@@ -14,7 +14,7 @@
         var c=0;
         var t;
         var timer_is_on = 0;
-        var maxtime = 30
+        var maxtime = 300  // MAX TEST TIME
         var click = 0
         function timedCount()
         {
@@ -53,9 +53,10 @@
             $("#questionText").html( $("#questionTest").html() );
             $("#nav2 ul > li").hide()
             $("#nav3 ul > li").hide()
+            $("#nav4 ul > li").hide()
 
             // Maximum = 5 levels
-            $(".first, .second, .third").click(function() {
+            $(".first, .second, .third, .fourth").click(function() {
                 idd = $(this).attr('id').split("-");
                 //alert("id: "+idd[1]);
                 $("."+idd[1]).siblings().hide();
@@ -69,6 +70,7 @@
             });
             $(".first").click(function() {
                 $("#nav3 ul li").hide()
+                $("#nav4 ul li").hide()
             });
             function activatebutton() {
                 $(".b").click(function()
@@ -117,12 +119,13 @@
         #nav1 { position:relative; float:left; width:100%; border:1px solid #33ccff;padding:15px;}
         #nav2 { position:relative; float:left; width:45%; height:70px; border:1px solid #cc33ff;padding:15px;}
         #nav3 { position:relative; float:left; width:45%; height:70px;border:1px solid magenta;padding:15px;}
+        #nav4 { position:relative; float:left; width:100%; height:40px;border:1px solid magenta;padding:15px;}
         #contents { position:relative; float:left; width:91%; border:1px solid #ff6633;padding:25px;}
         #hiddencontents { display:none;position:relative; float:left; width:720px; border:1px solid grey;}
         #mydivinner {position:relative;margin:20%;border:4px solid #ffffff;padding:20px;}
         #nav1 p span {padding:4px;border:1px solid green;}
         #txt {display:none;}
-        .first, .second, .third {cursor:pointer;}
+        .first, .second, .third, .fourth {cursor:pointer;}
     </style>
 
 </head>

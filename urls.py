@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     # endtest: page to go after a user chromosome test
     (r'^endtest/', endtest),
 
+    # snagadmin: generate creatures, assign generations to users,...
+    (r'^snagadmin/', include('snagadmin.urls')),
+
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),

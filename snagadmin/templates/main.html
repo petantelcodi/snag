@@ -3,8 +3,29 @@
 <html>
 <head>
     <title></title>
+    <style>
+        td {border:0px solid red;padding:5px;background-color:grey;}
+    </style>
 </head>
 <body>
-<h1>HELLO, HERE SNAGADMIN</h1>
+<h1>SNAG Admin interface</h1>
+{{ auth|safe }}
+<h2>List of creatures:</h2>
+{{usersReport|safe}}
+<hr />
+<h2>List of users:</h2>
+{{usersReport|safe}}
+<hr />
+<h2>List of Tasks:</h2>
+<table>
+{% for task in tasksList %}
+    <tr>
+    {% for t in task %}
+    <td>{{t}}</td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+<hr />
 </body>
 </html>

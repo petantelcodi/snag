@@ -21,7 +21,7 @@ def main(request):
         # Getting Chromosomes list
         chromosomesList = []
         for c in Chromosome.objects.all():
-            chromosomesList.append(smart_str(c.id), smart_str(c.data), smart_str(c.generation_id_id))
+            chromosomesList.append([smart_str(c.id), smart_str(c.data), smart_str(c.creature_id_id)])
 
         # Getting user list
         userList = []

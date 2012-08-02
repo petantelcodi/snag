@@ -14,20 +14,23 @@ except ImportError:
 
 class Creature(models.Model):
     creation_date = models.DateField(default=datetime.date.today)
+    generation = models.IntegerField(default="0")
     def __unicode__(self):
-        return 'Ccreature: %s' % self.creation_date
+        return '%s' % self.id
 
+'''
 class Generation(models.Model):
     number = models.PositiveIntegerField(default="0")
     creature_id = models.ForeignKey(Creature)
     def __unicode__(self):
-        return 'Generation: %s' % (self.number, self.creation_id)
+        return 'Generation: %s, Creation %s' % (self.number, self.creation_id)
+'''
 
 class Chromosome(models.Model):
     data = models.TextField(max_length=2000)
-    generation_id = models.ForeignKey(Generation)
+    creature_id = models.ForeignKey(Creature)
     def __unicode__(self):
-        return 'Chromosomes: %s | $s' % (self.data, self.generation_id)
+        return 'Chromosomes: %s, generation: %s' % (self.data, self.generation_id)
 
 class Gens(models.Model):
     name = models.TextField(max_length=2000)

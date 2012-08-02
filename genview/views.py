@@ -238,7 +238,7 @@ def starttest(request):
         con = con+"\n</div>\n"
         output = output+nav4+con
 
-    return render_to_response(template, {'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'genId':genId,'output': output } )
+    return render_to_response(template, {'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'genId':genId,'output': output})
 
 #######################################################
 def profile(request):

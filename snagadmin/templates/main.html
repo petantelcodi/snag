@@ -10,11 +10,23 @@
 <body>
 <h1>SNAG Admin interface</h1>
 {{ auth|safe }}
+<h2>Admin actions:</h2>
+<ul>
+    <li>Create a creature: 1 creature in generation 0 with 50 chromosomes: <a href="/snagadmin/createcreature">CREATE</a></li>
+    <li></li>
+</ul>
+<hr />
 <h2>List of creatures:</h2>
-{{usersReport|safe}}
+{{chromosomesList|safe}}
 <hr />
 <h2>List of users:</h2>
-{{usersReport|safe}}
+<table>
+    {% for user in userList %}
+    <tr><td>
+        {{user|safe}}
+    </td></tr>
+    {% endfor %}
+</table>
 <hr />
 <h2>List of Tasks:</h2>
 <table>

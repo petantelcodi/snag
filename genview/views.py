@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
 from snag.genview import models
 from sys import *
-from snag.genview.models import Gens, Contents, Tasks
+from snag.genview.models import Tasks
 from django.utils.encoding import smart_str, smart_unicode
 import math
 import json

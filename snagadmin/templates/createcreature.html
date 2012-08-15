@@ -3,12 +3,13 @@
 <html>
 <head>
     <title></title>
+    <meta http-equiv="refresh" content="10;url=/snagadmin/main">
 </head>
 <body>
 <h1>SNAG Admin interface</h1>
 {{ auth|safe }}
 <h2>A new creature has been created!</h2>
-<h3> mycreature: {{ mycreature}}</h3>
+<h3> New creature id = <b>{{ mycreature}}</b></h3>
 <table>
     {% for c in creature %}
     <tr><td>

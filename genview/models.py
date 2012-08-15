@@ -34,6 +34,11 @@ class Tasks(models.Model):
     def __unicode__(self):
         return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
 
+class Users2generations(models.Model):
+    user_id =models.ForeignKey(User)
+    creature_id = models.ForeignKey(Creature)
+    generation = models.PositiveIntegerField(default="0")
+
 '''
 class Generation(models.Model):
     number = models.PositiveIntegerField(default="0")

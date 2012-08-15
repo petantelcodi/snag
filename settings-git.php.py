@@ -12,8 +12,8 @@ MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'snag'              # Or path to database file if using sqlite3.
-DATABASE_USER = 'root'              # Not used with sqlite3.
-DATABASE_PASSWORD = 'gotic'         # Not used with sqlite3.
+DATABASE_USER = 'snag_user'         # Not used with sqlite3.
+DATABASE_PASSWORD = 'XXXXX'         # Not used with sqlite3.
 DATABASE_HOST = 'localhost'         # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''                  # Set to empty string for default. Not used with sqlite3.
 
@@ -49,7 +49,7 @@ MEDIA_URL = 'http://localhost/snag-media'
 ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'd2s96_l#$)&8ad-k3ni86k$#&4&x!)tfa()-a2!l+5#xhfw3gn'
+SECRET_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -90,11 +90,11 @@ ACCOUNT_ACTIVATION_DAYS = 1 # One-week activation window; you may, of course, us
 
 # DAJAXICE_MEDIA_PREFIX ="dajaxice"
 
-# VARS for b2n.registration app
+# VARS for snag.registration app
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'jaumeriereta@gmail.com'
-EMAIL_HOST_PASSWORD = 'XXXXX'
+EMAIL_HOST_USER = 'XXXXXXXXXXXXX'
+EMAIL_HOST_PASSWORD = 'XXXXXXXXXXXXXXX'
 EMAIL_PORT = 587
 
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'

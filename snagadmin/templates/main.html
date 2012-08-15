@@ -13,11 +13,45 @@
 <h2>Admin actions:</h2>
 <ul>
     <li>Create a creature: 1 creature in generation 0 with 50 chromosomes: <a href="/snagadmin/createcreature">CREATE</a></li>
-    <li></li>
+    <p>{{new_creature}}</p>
 </ul>
 <hr />
-<h2>List of creatures:</h2>
-{{chromosomesList|safe}}
+<h2>Creatures with less than 20 generations (in process):</h2>
+<table>
+    <tr><td>Creature id</td><td>Creation date</td><td>Current generation</td></tr>
+    {% for cre in creatureListInProcess %}
+    <tr>
+        {% for c in cre %}
+        <td>{{c|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<hr />
+<h2>Creatures with 20 generations (finished):</h2>
+<table>
+    <tr><td>Creature id</td><td>Creation date</td><td>Current generation</td></tr>
+    {% for cre in creatureListFinished %}
+    <tr>
+        {% for c in cre %}
+        <td>{{c|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<hr />
+<h2>List of Chromosomes:</h2>
+<table>
+    <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td></tr>
+    {% for chr in chromosomesList %}
+    <tr>
+        {% for c in chr %}
+        <td>{{c|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
 <hr />
 <h2>List of users:</h2>
 <table>

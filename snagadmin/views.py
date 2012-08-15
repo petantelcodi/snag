@@ -17,16 +17,29 @@ def main(request):
     tasksList = []
     userList = []
     chromosomesList = []
+    creatureListInProcess = []
+    creatureListFinished = []
     auth = ''
     go = ''
+    new_creature = ''
     # auth
     if request.user.is_authenticated() and request.user.username == "admin":
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
         go = 'main.html'
-        # Getting Chromosomes list
+
+        # getting Creatures wuth generation > 0:
+        creatureListInProcess = []
+        for creature in Creature.objects.filter(current_generation ='20'):
+            creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+        # getting the number of finished Creatures (current generation = 50
+        creatureListFinished = []
+        for creature in Creature.objects.filter(current_generation__lte='19'):
+            creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+
+        # Getting Chromosomes list:
         chromosomesList = []
         for c in Chromosome.objects.all():
-            chromosomesList.append([smart_str(c.id), smart_str(c.data), smart_str(c.creature_id_id)])
+            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation)])
 
         # Getting user list
         userList = []
@@ -42,21 +55,23 @@ def main(request):
     else:
         auth = "<p>This page is only accessible for admin users</p>"
         go = "noaccess.html"
-    return render_to_response(go, {'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList})
+    return render_to_response(go, {'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList, 'creatureListInProcess': creatureListInProcess, 'creatureListFinished': creatureListFinished})
 
 #######################################################
 # Create creature page
 def createcreature(request):
-    
+
     # vars:
     auth = "<p>This page is only accessible for admin users</p>"
     creature = []
     mycreature = []
+    new_creature = ''
     go = 'createcreature.html'
 
     if request.user.is_authenticated() and request.user.username == "admin":
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
         go = 'createcreature.html'
+
         # Building 50 random chromosomes with 39 gens each of them with the structure 3x3x3
         struc_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "030303",];
         tags_ids = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"]

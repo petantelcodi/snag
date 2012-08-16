@@ -49,16 +49,19 @@ def starttest(request):
     This function build a webpage for the test.
     First version id taking a fix gen data
     """
+    # vars:
+    output = ""
+    template = ''
+    username = ""
+    userid = ""
+    questionTest = ""
+    answersTest = ""
+    idQuestion = ""
+    genId = ""
     #First, check if user is autetificated:
     if not request.user.is_authenticated():
         output = "<h1>You need to login before to take a test!</h1>"
         template = 'home.html'
-        username = ""
-        userid = ""
-        questionTest = ""
-        answersTest = ""
-        idQuestion = ""
-        genId = ""
     else:
         template = 'starttest.html'
         username = request.user.username
@@ -74,8 +77,12 @@ def starttest(request):
         for d in data_base:
             data.append(d+tags_ids[c])
             c = c + 1
+        #######################
+        # FIXME: we need to get the next available task for the userid
 
-        #tags = {1:"Acceso remoto (desde fuera de la universidad)", 2:"Archivo general", 3:"Archivo hist&oacute;rico", 4:"Archivos", 5:"Autenticaci&oacute;n en los servicios en l&iacute;nea", 6:"Bibliograf&iacute;as", 7:"Bibliograf&iacute;as por asignaturas", 8:"Bibliograf&iacute;as por materias", 9:"Bibliograf&iacute;as por titulaciones", 10:"Carn&eacute; de usuario", 11:"Colecci&oacute;n de libros electr&oacute;nicos", 12:"Colecciones", 13:"Derechos de autor", 14:"Fondo antiguo", 15:"Formaci&oacute;n", 16:"Formaci&oacute;n a medida", 17:"Formaci&oacute;n en l&iacute;nea", 18:"Gu&iacute;as", 19:"Gu&iacute;as por materias", 20:"Gu&iacute;as tem&aacute;ticas", 21:"Internet", 22:"Legislaci&oacute;n y jurisprudencia", 23:"Libros", 24:"Multimedia", 25:"Normativa de pr&eacute;stamo", 26:"Nuevas adquisiciones", 27:"Organismos de normalizaci&oacute;n", 28:"Partituras y grabaciones sonoras", 29:"Patentes", 30:"Pel&iacute;culas", 31:"Pr&eacute;stamo", 32:"Pr&eacute;stamo interbibliotecario", 33:"Recursos electr&oacute;nicos", 34:"Revistas", 35:"Revistas electr&oacute;nicas", 36:"Revistas impresas", 37:"Servicios", 38:"Talleres formativos", 39:"Zona Wi-Fi y Eduroam"}
+
+        #######################
+        # Choosing random question / answer
         tags = {1:"Acceso remoto (desde fuera de la universidad)", 2:"Archivo general", 3:"Archivo hist&oacute;rico", 4:"Archivos", 5:"Autenticaci&oacute;n en los servicios en l&iacute;nea", 6:"Bibliograf&iacute;as", 7:"Bibliograf&iacute;as por asignaturas", 8:"Bibliograf&iacute;as por materias", 9:"Bibliograf&iacute;as por titulaciones", 10:"Carn&eacute; de usuario", 11:"Colecci&oacute;n de libros electr&oacute;nicos", 12:"Colecciones", 13:"Derechos de autor", 14:"Fondo antiguo", 15:"Formaci&oacute;n", 16:"Formaci&oacute;n a medida", 17:"Formaci&oacute;n en l&iacute;nea", 18:"Gu&iacute;as", 19:"Gu&iacute;as por materias", 20:"Gu&iacute;as tem&aacute;ticas", 21:"Internet", 22:"Legislaci&oacute;n y jurisprudencia", 23:"Libros", 24:"Multimedia", 25:"Normativa de pr&eacute;stamo", 26:"Nuevas adquisiciones", 27:"Organismos de normalizaci&oacute;n", 28:"Partituras y grabaciones sonoras", 29:"Patentes", 30:"Pel&iacute;culas", 31:"Pr&eacute;stamo", 32:"Pr&eacute;stamo interbibliotecario", 33:"Recursos electr&oacute;nicos", 34:"Revistas", 35:"Revistas electr&oacute;nicas", 36:"Revistas impresas", 37:"Servicios", 38:"Talleres formativos", 39:"Zona Wi-Fi y Eduroam"}
         contents = {
             1:"<li>En la universidad existe acceso remoto</li><li>Tienen derecho al acceso remoto profesores, investigadores, estudiantes y personal administrativo</li><li>El acceso remoto permite consultar bases de datos cient&iacute;ficas y peri&oacute;dicos</li>",
@@ -133,9 +140,10 @@ def starttest(request):
         answersTest = answers[idRamdom]
         idQuestion = idRamdom%3
         if idQuestion==0: 
-	    idQuestion=3
+            idQuestion=3
         genId = int(math.ceil(float(idRamdom)/float(3)))
-        if genId<10: genId = "0"+str(genId) ## For example: genId = 3, needs to be genId = "03"
+        if genId<10:
+            genId = "0"+str(genId) ## For example: genId = 3, needs to be genId = "03"
         genId = str(genId)
         # snagQuestionId:19-1 | userAnswerId:18-1 | test_ok=0
 

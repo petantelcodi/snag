@@ -22,6 +22,7 @@ class Chromosome(models.Model):
     data = models.TextField(max_length=2000)
     creature_id = models.ForeignKey(Creature)
     generation = models.PositiveIntegerField(default="0")
+    user_id =models.ForeignKey(User)
     def __unicode__(self):
         return 'Chromosomes: %s, generation: %s' % (self.data, self.generation_id)
 
@@ -33,11 +34,6 @@ class Tasks(models.Model):
     test_ok = models.IntegerField()
     def __unicode__(self):
         return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
-
-class Users2generations(models.Model):
-    user_id =models.ForeignKey(User)
-    creature_id = models.ForeignKey(Creature)
-    generation = models.PositiveIntegerField(default="0")
 
 '''
 class Generation(models.Model):

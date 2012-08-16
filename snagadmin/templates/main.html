@@ -40,14 +40,19 @@
     {% endfor %}
 </table>
 <hr />
-<h2>List of Chromosomes:</h2>
+<h2>List of Chromosomes:FIXME: NEEDS TO BE FILTERED BY USER=NULL, not assigned</h2>
 <table>
-    <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td></tr>
+    <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td><td>User name</td></tr>
     {% for chr in chromosomesList %}
     <tr>
         {% for c in chr %}
         <td>{{c|safe}}</td>
         {% endfor %}
+        <td><select>
+            {% for user in userList %}
+                <option>{{user|safe}}</option>
+            {% endfor %}
+        </select></td>
     </tr>
     {% endfor %}
 </table>

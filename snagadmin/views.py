@@ -19,6 +19,7 @@ def main(request):
     chromosomesList = []
     creatureListInProcess = []
     creatureListFinished = []
+    users2generationsList = []
     auth = ''
     go = ''
     new_creature = ''
@@ -26,6 +27,8 @@ def main(request):
     if request.user.is_authenticated() and request.user.username == "admin":
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
         go = 'main.html'
+
+        # getting users2generations list:
 
         # getting Creatures wuth generation > 0:
         creatureListInProcess = []

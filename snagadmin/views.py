@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from genview.models import Creature
 from snag.genview.models import Tasks, Chromosome, Creature
@@ -27,37 +28,41 @@ def main(request):
     if request.user.is_authenticated() and request.user.username == "admin":
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
         go = 'main.html'
+        # Check f this is an AJX call:
+        if request.is_ajax() or request.method == 'POST':
+            #form = DonateForm(data=request.POST)
+            return HttpResponse("Success")
+        else:
+            # getting Creatures with generation > 0:
+            creatureListInProcess = []
+            for creature in Creature.objects.filter(current_generation ='20'):
+                creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
-        # getting Creatures with generation > 0:
-        creatureListInProcess = []
-        for creature in Creature.objects.filter(current_generation ='20'):
-            creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+            # getting the number of finished Creatures (current generation = 50
+            creatureListFinished = []
+            for creature in Creature.objects.filter(current_generation__lte='19'):
+                creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
-        # getting the number of finished Creatures (current generation = 50
-        creatureListFinished = []
-        for creature in Creature.objects.filter(current_generation__lte='19'):
-            creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+            # Getting user list
+            userList = []
+            for u in User.objects.all():
+                userList.append(smart_str(u.username))
+            # HTML <select> dropdows nuild upon user list:
+            select = '<select>'
+            for u in userList:
+                select = select+'<option>'+u+'</option>'
+            select = select+'</select'
+            # Getting Chromosomes list:
+            chromosomesList = []
+            for c in Chromosome.objects.all():
+                if not c.user_id_id:
+                    c.user_id_id = select
+                chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(c.user_id_id)])
 
-        # Getting user list
-        userList = []
-        for u in User.objects.all():
-            userList.append(smart_str(u.username))
-        # HTML <select> dropdows nuild upon user list:
-        select = '<select>'
-        for u in userList:
-            select = select+'<option>'+u+'</option>'
-        select = select+'</select'
-        # Getting Chromosomes list:
-        chromosomesList = []
-        for c in Chromosome.objects.all():
-            if not c.user_id_id:
-                c.user_id_id = select
-            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(c.user_id_id)])
-
-        # Getting and reordering Tasks
-        tasksList = []
-        for x in Tasks.objects.all():
-            tasksList.append([smart_str(x.user_id), smart_str(x.chromosome_id_id), smart_str(x.test_date), smart_str(x.total_test_time), smart_str(x.test_ok) ])
+            # Getting and reordering Tasks
+            tasksList = []
+            for x in Tasks.objects.all():
+                tasksList.append([smart_str(x.user_id), smart_str(x.chromosome_id_id), smart_str(x.test_date), smart_str(x.total_test_time), smart_str(x.test_ok) ])
 
 
     else:

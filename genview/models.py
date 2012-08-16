@@ -50,12 +50,12 @@ class Gens(models.Model):
         return 'Gens: %s' % self.name
 '''
 
-'''
+
 class Contents(models.Model):
     question = models.TextField(max_length=2000)
     answer = models.TextField(max_length=2000)
-    gen_id = models.ForeignKey(Gens)
+    #gen_id = models.ForeignKey(Gens)
     def __unicode__(self):
         return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
-'''
+
 

@@ -3,6 +3,29 @@
 <html>
 <head>
     <title></title>
+    <script type="text/javascript" src="http://v.subvideo.tv/snag-media/js/jquery.js"></script>
+    <script type="text/javascript">
+        $("#form").submit(function(e) {
+            e.preventDefault();
+            serializedData = $("#form").serialize();
+
+            $.ajax({
+                url: "/donate/",
+                type: "post",
+                data: serializeData,
+                cache: 'false',
+                dataType: "json",
+                async: 'true',
+
+                success: function(data) {
+                    alert(data)
+                },
+                error:function(data) {
+                    alert("error in getting from server")
+                },
+            });
+        });
+    </script>
     <style>
         td {border:0px solid red;padding:5px;background-color:grey;}
     </style>

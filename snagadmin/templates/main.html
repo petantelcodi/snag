@@ -39,6 +39,21 @@
     <p>{{new_creature}}</p>
 </ul>
 <hr />
+<!--
+<form method="POST" action="/snagadmin/main" id="form">
+    <input type="text" id="id_name" name="name" value="">
+    <input type="text" id="id_total" name="total" value="">
+    <input type="submit" id="send_form" value="Send">
+</form>
+-->
+<div>
+    <ul>
+        {% for field in form %}
+        <li>{{ field }}</li>
+        {% endfor %}
+    </ul>
+</div>
+<hr />
 <h2>Creatures with less than 20 generations (in process):</h2>
 <table>
     <tr><td>Creature id</td><td>Creation date</td><td>Current generation</td></tr>
@@ -63,7 +78,8 @@
     {% endfor %}
 </table>
 <hr />
-<h2>List of Chromosomes:FIXME: NEEDS TO BE FILTERED BY USER=NULL, not assigned</h2>
+<h2>List of Chromosomes:</h2>
+
 <table>
     <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td><td>User name</td></tr>
     {% for chr in chromosomesList %}

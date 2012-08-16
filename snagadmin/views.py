@@ -20,7 +20,7 @@ def main(request):
     chromosomesList = []
     creatureListInProcess = []
     creatureListFinished = []
-    users2generationsList = []
+    form = []
     auth = ''
     go = ''
     new_creature = ''
@@ -28,47 +28,52 @@ def main(request):
     if request.user.is_authenticated() and request.user.username == "admin":
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
         go = 'main.html'
-        # Check f this is an AJX call:
+        # Check if this is an AJAX call and proceed:
         if request.is_ajax() or request.method == 'POST':
-            #form = DonateForm(data=request.POST)
-            return HttpResponse("Success")
-        else:
+            #return HttpResponse("Success")
+            form =request.POST
+
             # getting Creatures with generation > 0:
-            creatureListInProcess = []
-            for creature in Creature.objects.filter(current_generation ='20'):
-                creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+        creatureListInProcess = []
+        for creature in Creature.objects.filter(current_generation ='20'):
+            creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
-            # getting the number of finished Creatures (current generation = 50
-            creatureListFinished = []
-            for creature in Creature.objects.filter(current_generation__lte='19'):
-                creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+        # getting the number of finished Creatures (current generation = 50
+        creatureListFinished = []
+        for creature in Creature.objects.filter(current_generation__lte='19'):
+            creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
-            # Getting user list
-            userList = []
-            for u in User.objects.all():
-                userList.append(smart_str(u.username))
-            # HTML <select> dropdows nuild upon user list:
-            select = '<select>'
-            for u in userList:
-                select = select+'<option>'+u+'</option>'
-            select = select+'</select'
-            # Getting Chromosomes list:
-            chromosomesList = []
-            for c in Chromosome.objects.all():
-                if not c.user_id_id:
-                    c.user_id_id = select
-                chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(c.user_id_id)])
+        # Getting user list
+        userList = []
+        for u in User.objects.all():
+            userList.append(smart_str(u.username))
+        # HTML <select> dropdows nuild upon user list
+        #select = '<select id="" name="myselect"><option value="0"><-- Select One --></option>'
+        options = ''
+        for u in userList:
+            options = options+'<option value="'+u+'">'+u+'</option>'
 
-            # Getting and reordering Tasks
-            tasksList = []
-            for x in Tasks.objects.all():
-                tasksList.append([smart_str(x.user_id), smart_str(x.chromosome_id_id), smart_str(x.test_date), smart_str(x.total_test_time), smart_str(x.test_ok) ])
+        #select = select+options+'</select>'
+
+        # Getting Chromosomes list:
+        chromosomesList = []
+        submit_b = ''
+        for c in Chromosome.objects.all():
+            if not c.user_id_id:
+                c.user_id_id = '<form method="POST" action="/snagadmin/main" id="form"><select name="s-'+str(c.id)+'"><option value="0"><-- Select One --></option>'+options+'z/select>'
+                submit_b = '<input type="submit" id="send_form-'+str(c.id)+'" name="'+str(c.id)+'"></form>'  # submit button to assig user to chromosome/generation
+            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(c.user_id_id), submit_b])
+
+        # Getting and reordering Tasks
+        tasksList = []
+        for x in Tasks.objects.all():
+            tasksList.append([smart_str(x.user_id), smart_str(x.chromosome_id_id), smart_str(x.test_date), smart_str(x.total_test_time), smart_str(x.test_ok) ])
 
 
     else:
         auth = "<p>This page is only accessible for admin users</p>"
         go = "noaccess.html"
-    return render_to_response(go, {'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList, 'creatureListInProcess': creatureListInProcess, 'creatureListFinished': creatureListFinished})
+    return render_to_response(go, {'form':form, 'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList, 'creatureListInProcess': creatureListInProcess, 'creatureListFinished': creatureListFinished})
 
 #######################################################
 # Create creature page

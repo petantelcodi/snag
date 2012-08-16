@@ -48,11 +48,6 @@
         {% for c in chr %}
         <td>{{c|safe}}</td>
         {% endfor %}
-        <td><select>
-            {% for user in userList %}
-                <option>{{user|safe}}</option>
-            {% endfor %}
-        </select></td>
     </tr>
     {% endfor %}
 </table>

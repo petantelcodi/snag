@@ -28,26 +28,31 @@ def main(request):
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
         go = 'main.html'
 
-        # getting users2generations list:
-
-        # getting Creatures wuth generation > 0:
+        # getting Creatures with generation > 0:
         creatureListInProcess = []
         for creature in Creature.objects.filter(current_generation ='20'):
             creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+
         # getting the number of finished Creatures (current generation = 50
         creatureListFinished = []
         for creature in Creature.objects.filter(current_generation__lte='19'):
             creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
-        # Getting Chromosomes list:
-        chromosomesList = []
-        for c in Chromosome.objects.all():
-            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation)])
-
         # Getting user list
         userList = []
         for u in User.objects.all():
             userList.append(smart_str(u.username))
+        # HTML <select> dropdows nuild upon user list:
+        select = '<select>'
+        for u in userList:
+            select = select+'<option>'+u+'</option>'
+        select = select+'</select'
+        # Getting Chromosomes list:
+        chromosomesList = []
+        for c in Chromosome.objects.all():
+            if not c.user_id_id:
+                c.user_id_id = select
+            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(c.user_id_id)])
 
         # Getting and reordering Tasks
         tasksList = []

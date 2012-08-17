@@ -20,7 +20,7 @@ def main(request):
     chromosomesList = []
     creatureListInProcess = []
     creatureListFinished = []
-    form = []
+    form_response = ''
     auth = ''
     go = ''
     new_creature = ''
@@ -31,7 +31,17 @@ def main(request):
         # Check if this is an AJAX call and proceed:
         if request.is_ajax() or request.method == 'POST':
             #return HttpResponse("Success")
-            form =request.POST
+            myChromosomeId = request.POST.get('chr')
+            myUserId_name = request.POST.get('s')
+            myUserId = myUserId_name[0]
+            # Assigning User to Chromosome:
+            if str(myUserId_name)=='0':
+                form_response='<div id="form_esponse"><b>You must choose a user from dropdwon menu!</b></div>'
+            else:
+                p = Chromosome.objects.get(id=myChromosomeId)
+                p.user_id_id=myUserId
+                p.save()
+                form_response = '<div id="form_esponse">Chromosome id <b>'+str(myChromosomeId)+'</b> has been assigned to user <b>'+str(myUserId_name)+'</b></div>'
 
             # getting Creatures with generation > 0:
         creatureListInProcess = []
@@ -46,23 +56,28 @@ def main(request):
         # Getting user list
         userList = []
         for u in User.objects.all():
-            userList.append(smart_str(u.username))
+            userList.append([smart_str(u.id), smart_str(u.username)])
         # HTML <select> dropdows nuild upon user list
         #select = '<select id="" name="myselect"><option value="0"><-- Select One --></option>'
         options = ''
         for u in userList:
-            options = options+'<option value="'+u+'">'+u+'</option>'
+            options = options+'<option value="'+u[0]+'-'+u[1]+'">'+u[1]+'</option>'
 
         #select = select+options+'</select>'
 
         # Getting Chromosomes list:
         chromosomesList = []
         submit_b = ''
+        count = 0
         for c in Chromosome.objects.all():
-            if not c.user_id_id:
-                c.user_id_id = '<form method="POST" action="/snagadmin/main" id="form"><select name="s-'+str(c.id)+'"><option value="0"><-- Select One --></option>'+options+'z/select>'
-                submit_b = '<input type="submit" id="send_form-'+str(c.id)+'" name="'+str(c.id)+'"></form>'  # submit button to assig user to chromosome/generation
-            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(c.user_id_id), submit_b])
+            if c.user_id_id==0:
+                myusername = '<form method="POST" action="/snagadmin/main" id="form-'+str(c.id)+'"><select name="s"><option value="0"><-- Select One --></option>'+options+'z/select>'
+                submit_b = '<input type="submit" id="send_form-'+str(c.id)+'" name="chr" value="'+str(c.id)+'"></form>'  # submit button to assig user to chromosome/generation
+            else:
+                myusername = userList[count][1]
+                submit_b = ''
+            count = count + 1
+            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(myusername), submit_b])
 
         # Getting and reordering Tasks
         tasksList = []
@@ -73,7 +88,7 @@ def main(request):
     else:
         auth = "<p>This page is only accessible for admin users</p>"
         go = "noaccess.html"
-    return render_to_response(go, {'form':form, 'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList, 'creatureListInProcess': creatureListInProcess, 'creatureListFinished': creatureListFinished})
+    return render_to_response(go, {'form_response':form_response, 'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList, 'creatureListInProcess': creatureListInProcess, 'creatureListFinished': creatureListFinished})
 
 #######################################################
 # Create creature page

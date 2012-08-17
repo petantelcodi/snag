@@ -22,7 +22,7 @@ class Chromosome(models.Model):
     data = models.TextField(max_length=2000)
     creature_id = models.ForeignKey(Creature)
     generation = models.PositiveIntegerField(default="0")
-    user_id =models.ForeignKey(User, null=True, blank=True, default = None)
+    user_id =models.ForeignKey(User, default = 0)
     def __unicode__(self):
         return 'Chromosomes: %s, generation: %s' % (self.data, self.generation_id)
 

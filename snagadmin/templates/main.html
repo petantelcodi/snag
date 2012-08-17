@@ -28,6 +28,7 @@
     </script>
     <style>
         td {border:0px solid red;padding:5px;background-color:grey;}
+        #form_esponse {padding: 20px;background-color: #dcdcdc;border: 1px solid green;width:50%; }
     </style>
 </head>
 <body>
@@ -38,22 +39,27 @@
     <li>Create a creature: 1 creature in generation 0 with 50 chromosomes: <a href="/snagadmin/createcreature">CREATE</a></li>
     <p>{{new_creature}}</p>
 </ul>
+
 <hr />
-<!--
-<form method="POST" action="/snagadmin/main" id="form">
-    <input type="text" id="id_name" name="name" value="">
-    <input type="text" id="id_total" name="total" value="">
-    <input type="submit" id="send_form" value="Send">
-</form>
--->
-<div>
-    <ul>
-        {% for field in form %}
-        <li>{{ field }}</li>
+
+{{ form_response|safe }}
+
+<hr />
+
+<h2>Assignation of Chromosomes to users:</h2>
+<table>
+    <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td><td>User name</td><td>Submit</td></tr>
+    {% for chr in chromosomesList %}
+    <tr>
+        {% for c in chr %}
+        <td>{{c|safe}}</td>
         {% endfor %}
-    </ul>
-</div>
+    </tr>
+    {% endfor %}
+</table>
+
 <hr />
+
 <h2>Creatures with less than 20 generations (in process):</h2>
 <table>
     <tr><td>Creature id</td><td>Creation date</td><td>Current generation</td></tr>
@@ -65,7 +71,9 @@
     </tr>
     {% endfor %}
 </table>
+
 <hr />
+
 <h2>Creatures with 20 generations (finished):</h2>
 <table>
     <tr><td>Creature id</td><td>Creation date</td><td>Current generation</td></tr>
@@ -77,21 +85,9 @@
     </tr>
     {% endfor %}
 </table>
-<hr />
-<h2>List of Chromosomes:</h2>
-
-<table>
-    <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td><td>User name</td></tr>
-    {% for chr in chromosomesList %}
-    <tr>
-        {% for c in chr %}
-        <td>{{c|safe}}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
 
 <hr />
+
 <h2>List of users:</h2>
 <table>
     {% for user in userList %}
@@ -100,7 +96,9 @@
     </td></tr>
     {% endfor %}
 </table>
+
 <hr />
+
 <h2>List of Tasks:</h2>
 <table>
 {% for task in tasksList %}
@@ -111,6 +109,8 @@
     </tr>
 {% endfor %}
 </table>
+
 <hr />
+
 </body>
 </html>

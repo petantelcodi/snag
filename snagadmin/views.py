@@ -45,12 +45,12 @@ def main(request):
 
             # getting Creatures with generation > 0:
         creatureListInProcess = []
-        for creature in Creature.objects.filter(current_generation ='20'):
+        for creature in Creature.objects.filter(current_generation__lte ='19'):
             creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
         # getting the number of finished Creatures (current generation = 50
         creatureListFinished = []
-        for creature in Creature.objects.filter(current_generation__lte='19'):
+        for creature in Creature.objects.filter(current_generation='20'):
             creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
         # Getting user list

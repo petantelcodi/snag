@@ -170,7 +170,7 @@ def starttest(request):
         first = []
         nav1 = "<div id='nav1'><p>"
         con = "<div id='hiddencontents'>"
-        #FIXME We need to reorder de values, like 01xx, 02yy, 03zz
+        # We need to reorder de values, like 01xx, 02yy, 03zz
         mytree_sortedByValues = sorted(mytree.iteritems(), key=operator.itemgetter(1))
         for  k in mytree_sortedByValues:
             knum = int(k[0])
@@ -182,7 +182,7 @@ def starttest(request):
                     button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
                     infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
-                con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k[0]]+"'>"+infos[4:]+"</div>"
+                con = con+"\n\t<div id='c-"+str(k[0])+"-"+k[1]+"'>"+infos[4:]+"</div>"
                 first.append(k[1])
 
         nav1 = nav1+"\n</p></div>"

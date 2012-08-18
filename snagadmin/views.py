@@ -1,3 +1,4 @@
+from django.contrib.gis.gdal.prototypes import generation
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from genview.models import Creature
@@ -9,6 +10,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
+from django.db import reset_queries, close_connection
 from sys import *
 import math
 
@@ -137,4 +139,36 @@ def createcreature(request):
     return render_to_response(go, {'auth': auth, 'mycreature': mycreature})
 
 #######################################################
-# Create creature page
+# User page
+def userpage(request):
+    #vars:
+    username = ''
+    userid = ''
+    chromosomeListInProcess = []
+    chromosomeListFinished = []
+    tasksDone = []
+
+    if request.user.is_authenticated():
+        auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
+        go = 'userpage.html'
+        username = request.user.username
+        userid = request.user.id
+
+        ## List of pending chromosomes for the username
+        mychromosome = Chromosome.objects.filter(generation__lte='19', user_id=userid)
+        for c in mychromosome:
+            chromosomeListInProcess.append([smart_str(c.creature_id), smart_str(c.generation)])
+        ## List of finished chromosomes for the user
+        mychromosome1 = Chromosome.objects.filter(generation='20', user_id=userid)
+        for c in mychromosome1:
+            chromosomeListFinished.append([smart_str(c.creature_id), smart_str(c.generation)])
+
+        ## List of tasks done for the username
+        for task in Tasks.objects.filter(user_id=userid):
+            tasksDone.append([smart_str(task.chromosome_id_id), smart_str(task.test_date), smart_str(task.total_test_time), smart_str(task.test_ok)])
+
+    else:
+        auth = "<p>This page is only accessible for authetificated users</p>"
+        go = 'noaccess.html'
+
+    return render_to_response(go, {'auth': auth, 'username':username, 'chromosomeListInProcess': chromosomeListInProcess, 'chromosomeListFinished': chromosomeListFinished, 'tasksDone':tasksDone})

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>SNAG :: user page</title>
+    <style>
+        td {border:0px solid red;padding:5px;background-color:grey;}
+    </style>
+</head>
+<body>
+<div id="container">
+    <h1>Welcome to snag</h1>
+    <!--    <div class="roundbox">-->
+    <div id="features_bar">
+        <p><a href="/">home</a> - <a href="/accounts/register/">register here</a></a> - <a href="/accounts/logout/">logout</a> - <a href="/accounts/login/">login</a> - <a href="/snagadmin/main">admin</a></p>
+        <hr />
+    </div>
+    <h1>Welcome, <b>{{username|safe}}</b> this is your User page</h1>
+    <h2>---------:</h2>
+    <table>
+        <tr><td>Creature id</td><td>Generation</td></tr>
+        {% for chr in chromosomeListInProcess %}
+        <tr>
+            {% for c in chr %}
+            <td>{{c|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <hr />
+
+    <h2>----------:</h2>
+    <table>
+        <tr><td>Creature id</td><td>Generation</td>
+        {% for cre in chromosomeListFinished %}
+        <tr>
+            {% for c in cre %}
+            <td>{{c|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <hr />
+
+    <h2>-----</h2>
+    <table>
+        <tr><td>Chromosome id</td><td>Test date</td><td>Total test time</td><td>Test ok? (0/1)</td></tr>
+        {% for cre in tasksDone %}
+        <tr>
+            {% for c in cre %}
+            <td>{{c|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

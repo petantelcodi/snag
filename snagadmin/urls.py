@@ -10,4 +10,7 @@ urlpatterns = patterns('',
 
     # create a creature in generation 0 with 50 random chromosomes
     (r'createcreature$', createcreature),
+
+    # user page
+    (r'user$', userpage),
 )

@@ -4,9 +4,10 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
 from snag.genview import models
 from sys import *
-from snag.genview.models import Tasks, Contents
+from snag.genview.models import Tasks, Contents, Chromosome
 from django.utils.encoding import smart_str, smart_unicode
 import math
+import operator
 import json
 
 #######################################################
@@ -67,9 +68,19 @@ def starttest(request):
         template = 'starttest.html'
         username = request.user.username
         userid = request.user.id
-        #data = ["0101", "010102", "01010105", "01010208", "01010311", "010203", "01020106", "01020209", "01020312", "010304", "01030107", "01030210", "01030313", "0214", "020115", "02010118", "02010221", "02010324", "020216", "02020119", "02020222", "02020325", "020317", "02030120", "0327", "030439", "030128", "03010131", "030229"];
-        #data = ['0109', '010118', '01010114', '01010217', '01010332', '010230', '01020112', '01020206', '01020329', '010333', '01030101', '01030231', '01030319', '0203', '020120', '02010127', '02010208', '02010328', '020225', '02020107', '02020239', '02020313', '020326', '02030102', '02030235', '02030334', '0336', '030137', '03010116', '03010223', '03010321', '030215', '03020110', '03020204', '03020324', '030305', '03030111', '03030238', '03030322']
-        #Base emptey chromosome 3x3x3 structure:
+        data1 = []
+        data=['0127', '010132', '01010125', '01010219', '01010320', '010216', '01020117', '01020204', '01020329', '010321', '01030110', '01030215', '01030308', '0213', '020133', '02010118', '02010223', '02010301', '020234', '02020138', '02020228', '02020307', '020305', '02030109', '02030211', '02030331', '0324', '030136', '03010130', '03010202', '03010306', '030214', '03020139', '03020237', '03020312', '030303', '03030122', '03030226', '03030335']
+        # FIXME checking for available test for this user. In case there are some waiting, give the first one. Else, give no test
+        userChromosome = Chromosome.objects.filter(user_id=userid).order_by('id')
+        for u in userChromosome:
+            data1 = u.data
+        data = eval(data1) ##data1[1:-1].split(',')
+        if len(data)==0:
+            return render_to_response('home.html')
+        #data1.append(int(userid))
+
+        '''
+        #Base empty chromosome 3x3x3 structure:
         data_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "03030201",];
         tags_ids = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"]
         shuffle(tags_ids)
@@ -78,9 +89,7 @@ def starttest(request):
         for d in data_base:
             data.append(d+tags_ids[c])
             c = c + 1
-        #######################
-        # FIXME: we need to get the next available task for the userid
-
+        '''
 
         #######################
         # Choosing random question / answer
@@ -146,12 +155,6 @@ def starttest(request):
         if genId<10:
             genId = "0"+str(genId) ## For example: genId = 3, needs to be genId = "03"
         genId = str(genId)
-        # snagQuestionId:19-1 | userAnswerId:18-1 | test_ok=0
-
-        # This tag doesn't work, it needs to start index at 1, not at 0. I'm getting the static tag var from line 78
-        #tags = []
-        #for x in Gens.objects.all():
-        #    tags.append(smart_str(x.name))
 
         output = ""
         mytree = dict()
@@ -160,25 +163,27 @@ def starttest(request):
             pre = allele[:(len(allele)-2)]
             # sufix -> id
             suf = allele[(len(allele)-2):len(allele)]
-            #print allele+" = "+pre+" + "+suf
             mytree[suf] = pre
+
 
         # frist nav bar
         first = []
         nav1 = "<div id='nav1'><p>"
         con = "<div id='hiddencontents'>"
-        for  k in mytree.keys():
-            knum = int(k)
-            if len(mytree[k]) == 2:
-                nav1 = nav1+"\n\t<span id='"+str(k)+"-"+mytree[k]+"' class='first'>"+str(tags[knum])+"</span>"
+        #FIXME We need to reorder de values, like 01xx, 02yy, 03zz
+        mytree_sortedByValues = sorted(mytree.iteritems(), key=operator.itemgetter(1))
+        for  k in mytree_sortedByValues:
+            knum = int(k[0])
+            if len(k[1]) == 2:
+                nav1 = nav1+"\n\t<span id='"+str(k[0])+"-"+k[1]+"' class='first'>"+str(tags[knum])+"</span>"
                 infos = ""
                 c = 1
                 for i in contents[knum].split("</li><li>"):
-                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
                     infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
-                con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos[4:]+"</div>"
-                first.append(mytree[k])
+                con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k[0]]+"'>"+infos[4:]+"</div>"
+                first.append(k[1])
 
         nav1 = nav1+"\n</p></div>"
         output = output+nav1
@@ -187,18 +192,18 @@ def starttest(request):
         second = []
         nav2 = "<div id ='nav2'><ul>"
         for f in first:
-            for  k in mytree.keys():
-                knum = int(k)
-                if f == mytree[k][0:len(f)] and len(mytree[k]) == 4:
-                    nav2 = nav2+"\n\t<li id='"+str(k)+"-"+mytree[k]+"' class='"+str(f)+" second'>"+str(tags[knum])+"</li>"
+            for  k in mytree_sortedByValues:
+                knum = int(k[0])
+                if f == k[1][0:len(f)] and len(k[1]) == 4:
+                    nav2 = nav2+"\n\t<li id='"+str(k[0])+"-"+k[1]+"' class='"+str(f)+" second'>"+str(tags[knum])+"</li>"
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
-                    con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
-                    second.append(mytree[k])
+                    con = con+"\n\t<div id='c-"+str(k[0])+"-"+k[1]+"'>"+infos+"</div>"
+                    second.append(k[1])
 
         nav2 = nav2+"\n</ul></div>\n"
         output = output+nav2
@@ -207,18 +212,18 @@ def starttest(request):
         third = []
         nav3 = "<div id ='nav3'><ul>"
         for f in second:
-            for  k in mytree.keys():
-                knum = int(k)
-                if f == mytree[k][0:len(f)] and len(mytree[k]) == 6:
-                    nav3 = nav3+"\n\t<li id='"+str(k)+"-"+mytree[k]+"' class='"+str(f)+" third'>"+str(tags[knum])+"</li>"
+            for  k in mytree_sortedByValues:
+                knum = int(k[0])
+                if f == k[1][0:len(f)] and len(k[1]) == 6:
+                    nav3 = nav3+"\n\t<li id='"+str(k[0])+"-"+k[1]+"' class='"+str(f)+" third'>"+str(tags[knum])+"</li>"
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
-                    con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"
-                    third.append(mytree[k])
+                    con = con+"\n\t<div id='c-"+str(k[0])+"-"+k[1]+"'>"+infos+"</div>"
+                    third.append(k[1])
 
         nav3 = nav3+"\n</ul></div>\n"
         #nav3 = nav3+"<div id='contents'><ul></ul></div>\n"
@@ -247,7 +252,7 @@ def starttest(request):
         con = con+"\n</div>\n"
         output = output+nav4+con
 
-    return render_to_response(template, {'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'genId':genId,'output': output})
+    return render_to_response(template, {'data1':data1, 'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'genId':genId,'output': output})
 
 #######################################################
 def profile(request):

@@ -100,12 +100,12 @@ def createcreature(request):
     auth = "<p>This page is only accessible for admin users</p>"
     creature = []
     mycreature = []
-    new_creature = ''
     go = 'createcreature.html'
 
     if request.user.is_authenticated() and request.user.username == "admin":
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
         go = 'createcreature.html'
+        userid = request.user.id
 
         # Building 50 random chromosomes with 39 gens each of them with the structure 3x3x3
         struc_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "030303",];
@@ -119,16 +119,20 @@ def createcreature(request):
                 chromosome.append(d+tags_ids[c])
                 c = c + 1
             chromosomes.append(chromosome)
-        # Inserting new creature in generation 0
+        # Inserting new creature (generation 0) in Creature Table
         now = datetime.datetime.now()
         datenow = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
         new = Creature.objects.create(creation_date=datenow, current_generation=0)
         new.save()
-        # Inserting the new 50 chromosome
+        # Inserting the new 50 chromosome and the new 50 pending tasks in Tasks
         mycreature = Creature.objects.latest('id')
         for c in chromosomes:
-            entry = Chromosome(data=str(c), creature_id_id=str(mycreature))
-            entry.save()
+            newChromosomes = Chromosome(data=str(c), creature_id_id=str(mycreature))
+            newChromosomes.save()
+            latestId=newChromosomes.id
+            newTasks = Tasks(user_id_id=userid, chromosome_id_id=str(latestId))
+            newTasks.save()
+
 
         # Getting Chromosomes list
 

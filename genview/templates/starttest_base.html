@@ -100,9 +100,8 @@
                         oFormObject.elements["time"].value = time;
                         oFormObject.elements["test_ok"].value = test_ok;
                         oFormObject.elements["user_id"].value = $("#userid").html();     
-                        oFormObject.elements["chromosome_id"].value = 1;
+                        oFormObject.elements["chromosome_id"].value = $("#chromosomeId").html();
                         oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;
-                        oFormObject.elements["contents_id"].value = 1;
                         
                         document.forms["testEndForm"].submit(); 
                         

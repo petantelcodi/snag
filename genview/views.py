@@ -24,25 +24,35 @@ def home(request):
 
 #######################################################
 def endtest(request):
+    # vars:
+    mychromosome_id = ''
     if request.method == 'POST':
         # You may process these variables here
         user_id = request.POST['user_id']
-        chromosome_id = request.POST['chromosome_id']
-        test_date = request.POST['test_date']
-        total_test_time = request.POST['time']
-        #contents_id = request.POST['contents_id']
-        test_ok = request.POST['test_ok']
-        #p = Tasks(contents_id_id=contents_id,test_ok=test_ok,total_test_time=total_test_time,test_date=test_date,chromosome_id_id=chromosome_id,user_id_id=user_id)
-        p = Tasks(test_ok=test_ok,total_test_time=total_test_time,test_date=test_date,chromosome_id_id=chromosome_id,user_id_id=user_id)
-        p.save()
+        mychromosome_id = request.POST['chromosome_id']
+        mytest_date = request.POST['test_date']
+        mytotal_test_time = request.POST['time']
+        mytest_ok = request.POST['test_ok']
+
     if not request.user.is_authenticated():
         output = "<h1>You don't have direct access to this page!</h1>"
         template = 'home.html'
         username = ""
     else:
-        output = ""
+        if mychromosome_id:
+            # Save the test results in Tasks table, where chromosome_id_id=chromosome_id
+            Tasks.objects.filter(chromosome_id=mychromosome_id).update(test_ok=mytest_ok,total_test_time=mytotal_test_time,test_date=mytest_date,test_done=1)
+
+            output= '<h1>Thanks. The test has been recorded!</h1>'
+            ## old query:
+            #p = Tasks(test_ok=test_ok,total_test_time=total_test_time,test_date=test_date,chromosome_id_id=chromosome_id,user_id_id=user_id)
+            #p.save()
+        else:
+            output = "<h1>Sorry, there is no free tests for you!</h1>"
+
         template = 'endtest.html'
         username = request.user.username
+
     return render_to_response(template, {'username': username,'output': output } )    
 
 #######################################################
@@ -52,14 +62,14 @@ def starttest(request):
     First version id taking a fix gen data
     """
     # vars:
-    output = ""
+    output = ''
     template = ''
-    username = ""
-    userid = ""
-    questionTest = ""
-    answersTest = ""
-    idQuestion = ""
-    genId = ""
+    username = ''
+    userid = ''
+    questionTest = ''
+    answersTest = ''
+    idQuestion = ''
+    chromosome_id = ''
     #First, check if user is autetificated:
     if not request.user.is_authenticated():
         output = "<h1>You need to login before to take a test!</h1>"
@@ -68,12 +78,28 @@ def starttest(request):
         template = 'starttest.html'
         username = request.user.username
         userid = request.user.id
+        data = []
         data1 = []
-        data=['0127', '010132', '01010125', '01010219', '01010320', '010216', '01020117', '01020204', '01020329', '010321', '01030110', '01030215', '01030308', '0213', '020133', '02010118', '02010223', '02010301', '020234', '02020138', '02020228', '02020307', '020305', '02030109', '02030211', '02030331', '0324', '030136', '03010130', '03010202', '03010306', '030214', '03020139', '03020237', '03020312', '030303', '03030122', '03030226', '03030335']
-        # FIXME checking for available test for this user. In case there are some waiting, give the first one. Else, give no test
-        userChromosome = Chromosome.objects.filter(user_id=userid).order_by('id')
+        #data=['0127', '010132', '01010125', '01010219', '01010320', '010216', '01020117', '01020204', '01020329', '010321', '01030110', '01030215', '01030308', '0213', '020133', '02010118', '02010223', '02010301', '020234', '02020138', '02020228', '02020307', '020305', '02030109', '02030211', '02030331', '0324', '030136', '03010130', '03010202', '03010306', '030214', '03020139', '03020237', '03020312', '030303', '03030122', '03030226', '03030335']
+        # Checking for available test for this user. In case there are some waiting, give the first one. Else, give no test
+
+        ##### Checking for available tests in Tasks table, and then get the data from Chromosome table
+        myTasks = Tasks.objects.filter(user_id=userid, test_done=0)
+        # Id not available tasks for the user, leave:
+        if len(myTasks)<1:
+            output = '<h1>Sorry, there are no test available for the user, <b>'+username+'</b></h1><p>Please contact SNAG team.</p>'
+            template = 'endtest.html'
+            return render_to_response(template, {'username': username,'output': output})
+
+        # Pending tasks for the user:
+        tasksPending = []
+        for t in myTasks:
+            tasksPending.append(t.chromosome_id)
+        chromosome_id = myTasks[0].chromosome_id_id
+        userChromosome = Chromosome.objects.filter(id=chromosome_id)
         for u in userChromosome:
             data1 = u.data
+            #chromosome_idTest = u.id
         data = eval(data1) ##data1[1:-1].split(',')
         if len(data)==0:
             return render_to_response('home.html')
@@ -252,7 +278,7 @@ def starttest(request):
         con = con+"\n</div>\n"
         output = output+nav4+con
 
-    return render_to_response(template, {'data1':data1, 'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'genId':genId,'output': output})
+    return render_to_response(template, {'data1':data1, 'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'chromosome_id':chromosome_id,'output': output})
 
 #######################################################
 def profile(request):

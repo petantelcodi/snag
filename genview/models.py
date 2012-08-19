@@ -21,19 +21,20 @@ class Creature(models.Model):
 class Chromosome(models.Model):
     data = models.TextField(max_length=2000)
     creature_id = models.ForeignKey(Creature)
-    generation = models.PositiveIntegerField(default="0")
+    generation = models.PositiveIntegerField(default=0)
     user_id =models.ForeignKey(User, default = 0)
     def __unicode__(self):
-        return 'Chromosomes: %s, generation: %s' % (self.data, self.generation_id)
+        return '%s, %s' % (self.data, self.generation)
 
 class Tasks(models.Model):
     user_id =models.ForeignKey(User)
     chromosome_id = models.ForeignKey(Chromosome)
-    test_date = models.DateField(default=datetime.date.today)
-    total_test_time = models.IntegerField()
-    test_ok = models.IntegerField()
+    test_date = models.DateField(default=datetime.date.today, null=True)
+    total_test_time = models.IntegerField(default=None, null=True)
+    test_ok = models.IntegerField(default=None, null=True)
+    test_done = models.IntegerField(default=0)
     def __unicode__(self):
-        return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
+        return '%s, %s' % (self.chromosome_id, self.test_done)
 
 '''
 class Generation(models.Model):
@@ -54,8 +55,7 @@ class Gens(models.Model):
 class Contents(models.Model):
     question = models.TextField(max_length=2000)
     answer = models.TextField(max_length=2000)
-    #gen_id = models.ForeignKey(Gens)
     def __unicode__(self):
-        return 'Contents: %s | %s | %s' % (self.question, self.answer, self.gen_id)
+        return 'Contents: %s | %s | %s' % (self.question, self.answer)
 
 

@@ -151,6 +151,7 @@ def userpage(request):
     chromosomeListInProcess = []
     chromosomeListFinished = []
     tasksDone = []
+    tasksPending = []
 
     if request.user.is_authenticated():
         auth = "<p>Welcome <b>"+request.user.username+"</b></p>"
@@ -167,6 +168,11 @@ def userpage(request):
         for c in mychromosome1:
             chromosomeListFinished.append([smart_str(c.creature_id), smart_str(c.generation)])
 
+        ## List of your pending tasks
+        for task in Tasks.objects.filter(user_id=userid).filter(test_done=0):
+            tasksPending.append([smart_str(task.chromosome_id_id), smart_str(task.test_date), smart_str(task.total_test_time), smart_str(task.test_ok)])
+
+
         ## List of tasks done for the username
         for task in Tasks.objects.filter(user_id=userid):
             tasksDone.append([smart_str(task.chromosome_id_id), smart_str(task.test_date), smart_str(task.total_test_time), smart_str(task.test_ok)])
@@ -175,4 +181,4 @@ def userpage(request):
         auth = "<p>This page is only accessible for authetificated users</p>"
         go = 'noaccess.html'
 
-    return render_to_response(go, {'auth': auth, 'username':username, 'chromosomeListInProcess': chromosomeListInProcess, 'chromosomeListFinished': chromosomeListFinished, 'tasksDone':tasksDone})
+    return render_to_response(go, {'auth': auth, 'username':username, 'chromosomeListInProcess': chromosomeListInProcess, 'chromosomeListFinished': chromosomeListFinished, 'tasksDone':tasksDone, 'tasksPending': tasksPending})

@@ -6,7 +6,6 @@ from snag.registration import models
 from django.db import models
 from django.contrib.auth.models import User
 
-
 try:
     from django.utils.timezone import now as datetime_now
 except ImportError:
@@ -36,6 +35,13 @@ class Tasks(models.Model):
     def __unicode__(self):
         return '%s, %s' % (self.chromosome_id, self.test_done)
 
+class Contents(models.Model):
+    question = models.TextField(max_length=2000)
+    answer = models.TextField(max_length=2000)
+    def __unicode__(self):
+        return 'Contents: %s | %s | %s' % (self.question, self.answer)
+
+
 '''
 class Generation(models.Model):
     number = models.PositiveIntegerField(default="0")
@@ -50,12 +56,3 @@ class Gens(models.Model):
     def __unicode__(self):
         return 'Gens: %s' % self.name
 '''
-
-
-class Contents(models.Model):
-    question = models.TextField(max_length=2000)
-    answer = models.TextField(max_length=2000)
-    def __unicode__(self):
-        return 'Contents: %s | %s | %s' % (self.question, self.answer)
-
-

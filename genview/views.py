@@ -83,8 +83,11 @@ def starttest(request):
         #data=['0127', '010132', '01010125', '01010219', '01010320', '010216', '01020117', '01020204', '01020329', '010321', '01030110', '01030215', '01030308', '0213', '020133', '02010118', '02010223', '02010301', '020234', '02020138', '02020228', '02020307', '020305', '02030109', '02030211', '02030331', '0324', '030136', '03010130', '03010202', '03010306', '030214', '03020139', '03020237', '03020312', '030303', '03030122', '03030226', '03030335']
         # Checking for available test for this user. In case there are some waiting, give the first one. Else, give no test
 
-        ##### Checking for available tests in Tasks table, and then get the data from Chromosome table
-        myTasks = Tasks.objects.filter(user_id=userid, test_done=0)
+        if request.GET.get('cid'):
+            myTasks = Tasks.objects.filter(chromosome_id=request.GET.get('cid'))
+        else:
+            ##### Checking for available tests in Tasks table, and then get the data from Chromosome table
+            myTasks = Tasks.objects.filter(user_id=userid, test_done='0')
         # Id not available tasks for the user, leave:
         if len(myTasks)<1:
             output = '<h1>Sorry, there are no test available for the user, <b>'+username+'</b></h1><p>Please contact SNAG team.</p>'

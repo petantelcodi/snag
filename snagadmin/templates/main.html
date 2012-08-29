@@ -46,6 +46,21 @@
 
 {{ form_response|safe }}
 
+
+<hr />
+
+<h2>Assignation of Creatures to users:</h2>
+<table>
+    <tr><td>Creature id</td><td>Generation</td><td>User id</td></tr>
+    {% for chr in creatureListInProcess %}
+    <tr>
+        {% for c in chr %}
+        <td>{{c|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
 <hr />
 
 <h2>Assignation of Chromosomes to users:</h2>

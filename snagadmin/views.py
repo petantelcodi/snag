@@ -33,30 +33,28 @@ def main(request):
         # Check if this is an AJAX call and proceed:
         if request.is_ajax() or request.method == 'POST':
             #return HttpResponse("Success")
-            myChromosomeId = request.POST.get('chr')
+            myCreatureId = request.POST.get('chr')
             myUserId_name = request.POST.get('s')
             myUserIdl = myUserId_name.split("-")
             myUserId = myUserIdl[0]
             #myUserId = myUserId_name[0]
+            form_response = ''
             # Assigning User to Chromosome:
             if str(myUserId_name)=='0':
                 form_response='<div id="form_response"><b>You must choose a user from dropdwon menu!</b></div>'
             else:
-                p = Chromosome.objects.get(id=myChromosomeId)
-                p.user_id_id=myUserId
-                p.save()
-                form_response = '<div id="form_esponse">Chromosome id <b>'+str(myChromosomeId)+'</b> has been assigned to user <b>'+str(myUserId_name)+' | '+str(myUserId)+'</b></div>'
-                t = Tasks.objects.get(chromosome_id=myChromosomeId)
-                t.user_id_id=myUserId
-                t.save()
-            # getting Creatures with generation > 0:
-        creatureListInProcess = []
-        for creature in Creature.objects.filter(current_generation__lte ='19'):
-            creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+
+                for m in Chromosome.objects.filter(creature_id=myCreatureId):
+                    m.user_id_id=myUserId
+                    m.save()
+                    form_response = '<div id="form_response">Chromosome id <b>'+str(myCreatureId)+'</b> has been assigned to user <b>'+str(myUserId_name)+' | '+str(myUserId)+'</b></div>'
+                    t = Tasks.objects.get(chromosome_id=m.id)
+                    t.user_id_id=myUserId
+                    t.save()
 
         # getting the number of finished Creatures (current generation = 50
         creatureListFinished = []
-        for creature in Creature.objects.filter(current_generation='20'):
+        for creature in Creature.objects.filter(current_generation='0'):
             creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
         # Getting user list
@@ -69,24 +67,40 @@ def main(request):
         for u in userList:
             options = options+'<option value="'+u[0]+'-'+u[1]+'">'+u[1]+'</option>'
 
+
         # Getting Chromosomes list:
         chromosomesList = []
         submit_b = ''
         count = 0
         for c in Chromosome.objects.all():
             if c.user_id_id==0:
-                myusername = '<form method="POST" action="/snagadmin/main" id="form-'+str(c.id)+'"><select name="s"><option value="0"><-- Select One --></option>'+options+'z/select>'
-                submit_b = '<input type="submit" id="send_form-'+str(c.id)+'" name="chr" value="'+str(c.id)+'"></form>'  # submit button to assig user to chromosome/generation
+                #myusername = '<form method="POST" action="/snagadmin/main" id="form-'+str(c.id)+'"><select name="s"><option value="0"><-- Select One --></option>'+options+'z/select>'
+                #submit_b = '<input type="submit" id="send_form-'+str(c.id)+'" name="chr" value="'+str(c.id)+'"></form>'  # submit button to assig user to chromosome/generation
+                pass
             else:
-                myusername = User.objects.get(id=c.user_id_id)
-                submit_b = ''
+                #myusername = User.objects.get(id=c.user_id_id)
+                #submit_b = ''
+                pass
             count = count + 1
-            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(myusername), submit_b])
+            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), submit_b])
 
         # Getting and reordering Tasks
         tasksList = []
         for x in Tasks.objects.all():
             tasksList.append([smart_str(x.user_id_id), smart_str(x.chromosome_id_id), smart_str(x.test_date), smart_str(x.total_test_time), smart_str(x.test_ok) ])
+
+        # getting Creatures with generation > 0:
+        #creatureListInProcess = []
+        #for creature in Creature.objects.filter(current_generation__lte ='19'):
+        #    creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
+        creatureListInProcess = [[0]]
+        for creature in Chromosome.objects.filter(user_id=0).order_by('creature_id').distinct('creature_id'):
+            #raw("SELECT DISTINCT  `creature_id_id`` FROM  `genview_chromosome` WHERE  `user_id_id` =0"):
+            #filter(user_id=0).order_by('creature_id').distinct('creature_id'):
+            #FIXME : it needs a relacional query: select distinct creature in table Chromosomes where creature_id=creature.id
+            myusername = '<form method="POST" action="/snagadmin/main" id="form-'+str(creature.creature_id)+'"><select name="s"><option value="0"><-- Select One --></option>'+options+'z/select>'
+            submit_b = '<input type="submit" id="send_form-'+str(creature.creature_id)+'" name="chr" value="'+str(creature.creature_id)+'"></form>'  # submit button to assig user to chromosome/generation
+            creatureListInProcess.append([smart_str(creature.creature_id), smart_str(creature.generation), smart_str(creature.user_id_id), smart_str(myusername), submit_b])
 
 
     else:

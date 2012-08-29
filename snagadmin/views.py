@@ -54,7 +54,7 @@ def main(request):
 
         # getting the number of finished Creatures (current generation = 50
         creatureListFinished = []
-        for creature in Creature.objects.filter(current_generation='0'):
+        for creature in Creature.objects.filter(current_generation__gte='20'):
             creatureListFinished.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
 
         # Getting user list
@@ -82,7 +82,7 @@ def main(request):
                 #submit_b = ''
                 pass
             count = count + 1
-            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), submit_b])
+            chromosomesList.append([smart_str(c.id), smart_str(c.creature_id_id), smart_str(c.generation), smart_str(c.user_id_id)])
 
         # Getting and reordering Tasks
         tasksList = []
@@ -93,9 +93,9 @@ def main(request):
         #creatureListInProcess = []
         #for creature in Creature.objects.filter(current_generation__lte ='19'):
         #    creatureListInProcess.append([smart_str(creature.id), smart_str(creature.creation_date), smart_str(creature.current_generation)])
-        creatureListInProcess = [[0]]
-        for creature in Chromosome.objects.filter(user_id=0).order_by('creature_id').distinct('creature_id'):
-            #raw("SELECT DISTINCT  `creature_id_id`` FROM  `genview_chromosome` WHERE  `user_id_id` =0"):
+        creatureListInProcess = []
+        for creature in Chromosome.objects.raw("SELECT DISTINCT  `creature_id_id`, `id` FROM  `genview_chromosome` WHERE  `user_id_id` =0 group by `creature_id_id`;"):
+            #raw("SELECT DISTINCT  `creature_id_id` FROM  `genview_chromosome` WHERE  `user_id_id` =0 group by `creature_id_id`;"):
             #filter(user_id=0).order_by('creature_id').distinct('creature_id'):
             #FIXME : it needs a relacional query: select distinct creature in table Chromosomes where creature_id=creature.id
             myusername = '<form method="POST" action="/snagadmin/main" id="form-'+str(creature.creature_id)+'"><select name="s"><option value="0"><-- Select One --></option>'+options+'z/select>'
@@ -176,7 +176,9 @@ def userpage(request):
         userid = request.user.id
 
         ## List of pending chromosomes for the username
-        mychromosome = Chromosome.objects.filter(generation__lte='19', user_id=userid)
+        mychromosome = Chromosome.objects.raw("SELECT DISTINCT  `creature_id_id`, `id` FROM  `genview_chromosome` WHERE  `user_id_id` ='"+str(userid)+"' group by `creature_id_id`;")
+        #filter(generation__lte='19', user_id=userid).order_by('creature_id').distinct('creature_id_id')
+        #mychromosome.group_by = ['creature_id_id']
         for c in mychromosome:
             chromosomeListInProcess.append([smart_str(c.creature_id), smart_str(c.generation)])
         ## List of finished chromosomes for the user
@@ -190,8 +192,8 @@ def userpage(request):
 
 
         ## List of tasks done for the username
-        for task in Tasks.objects.filter(user_id=userid).filter(test_done=1):
-            tasksDone.append([smart_str(task.chromosome_id_id), smart_str(task.test_date), smart_str(task.total_test_time), smart_str(task.test_ok)])
+        for task in Tasks.objects.filter(user_id=userid).filter(test_done__gte=1):
+            tasksDone.append([smart_str(task.chromosome_id_id), smart_str(task.test_date), smart_str(task.total_test_time), smart_str(task.test_done)])
 
     else:
         auth = "<p>This page is only accessible for authetificated users</p>"

@@ -63,9 +63,9 @@
 
 <hr />
 
-<h2>Assignation of Chromosomes to users:</h2>
+<h2>List of Chromosomes to users:</h2>
 <table>
-    <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td><td>User name</td><td>Submit</td></tr>
+    <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td><td>User name</td></tr>
     {% for chr in chromosomesList %}
     <tr>
         {% for c in chr %}
@@ -77,23 +77,9 @@
 
 <hr />
 
-<h2>Creatures with less than 20 generations (in process):</h2>
-<table>
-    <tr><td>Creature id</td><td>Creation date</td><td>Current generation</td></tr>
-    {% for cre in creatureListInProcess %}
-    <tr>
-        {% for c in cre %}
-        <td>{{c|safe}}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
-
-<hr />
-
 <h2>Creatures with 20 generations (finished):</h2>
 <table>
-    <tr><td>Creature id</td><td>Creation date</td><td>Current generation</td></tr>
+    <tr><td>Creature id</td><td>Date of test</td><td>Current generation</td></tr>
     {% for cre in creatureListFinished %}
     <tr>
         {% for c in cre %}

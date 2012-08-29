@@ -9,7 +9,9 @@
             e.preventDefault();
             serializedData = $("#form").serialize();
 
+
             $.ajax({
+
                 url: "/donate/",
                 type: "post",
                 data: serializeData,
@@ -24,6 +26,7 @@
                     alert("error in getting from server")
                 },
             });
+
         });
     </script>
     <style>

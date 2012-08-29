@@ -35,7 +35,8 @@ def main(request):
             #return HttpResponse("Success")
             myChromosomeId = request.POST.get('chr')
             myUserId_name = request.POST.get('s')
-            myUserId = myUserId_name
+            myUserIdl = myUserId_name.split("-")
+            myUserId = myUserIdl[0]
             #myUserId = myUserId_name[0]
             # Assigning User to Chromosome:
             if str(myUserId_name)=='0':
@@ -44,7 +45,7 @@ def main(request):
                 p = Chromosome.objects.get(id=myChromosomeId)
                 p.user_id_id=myUserId
                 p.save()
-                form_response = '<div id="form_esponse">Chromosome id <b>'+str(myChromosomeId)+'</b> has been assigned to user <b>'+str(myUserId_name)+' and userID = '+str(myUserId)+'</b></div>'
+                form_response = '<div id="form_esponse">Chromosome id <b>'+str(myChromosomeId)+'</b> has been assigned to user <b>'+str(myUserId_name)+' | '+str(myUserId)+'</b></div>'
                 t = Tasks.objects.get(chromosome_id=myChromosomeId)
                 t.user_id_id=myUserId
                 t.save()
@@ -66,7 +67,7 @@ def main(request):
         #select = '<select id="" name="myselect"><option value="0"><-- Select One --></option>'
         options = ''
         for u in userList:
-            options = options+'<option value="'+u[0]+'">'+u[1]+'</option>'
+            options = options+'<option value="'+u[0]+'-'+u[1]+'">'+u[1]+'</option>'
 
         # Getting Chromosomes list:
         chromosomesList = []

@@ -89,21 +89,19 @@
                         // Checking if the test answer is correct?
                         var snagQuestionId = $("#genId").html()+'-'+$("#idQuestion").html();
                         if (snagQuestionId==userAnswerId){ test_ok = 1; }
-                        alert("snagQuestionId:"+snagQuestionId+' | userAnswerId:'+userAnswerId+' | test_ok='+test_ok);
-
+                        alert("->snagQuestionId:"+snagQuestionId+' | userAnswerId:'+userAnswerId+' | test_ok='+test_ok);
                         var today = new Date();
                         var dd = today.getDate();
                         var mm = today.getMonth()+1; //January is 0!
                         var yyyy = today.getFullYear();
-                        
                         var oFormObject = document.forms['testEndForm'];
                         oFormObject.elements["time"].value = time;
                         oFormObject.elements["test_ok"].value = test_ok;
                         oFormObject.elements["user_id"].value = $("#userid").html();     
                         oFormObject.elements["chromosome_id"].value = $("#chromosomeId").html();
                         oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;
-                        oFormObject.elements["gen_id"].value = $("#genId").html();
-                        
+                        oFormObject.elements["genId"].value = $("#genId").html();
+
                         document.forms["testEndForm"].submit(); 
                         
                         t=clearTimeout(t);

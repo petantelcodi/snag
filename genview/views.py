@@ -35,7 +35,7 @@ def endtest(request):
         mytest_ok = request.POST['test_ok']
 
     if not request.user.is_authenticated():
-        output = "<h1>You don't have direct access to this page!</h1>"
+        output = "<h1>Sorry, you don't have direct access to this page!</h1>"
         template = 'home.html'
         username = ""
     else:
@@ -44,11 +44,13 @@ def endtest(request):
             Tasks.objects.filter(chromosome_id=mychromosome_id).update(test_ok=mytest_ok,total_test_time=mytotal_test_time,test_date=mytest_date,test_done=1)
 
             output= '<h1>Thanks. The test has been recorded!</h1>'
-            ## old query:
-            #p = Tasks(test_ok=test_ok,total_test_time=total_test_time,test_date=test_date,chromosome_id_id=chromosome_id,user_id_id=user_id)
-            #p.save()
+
+            ########################################
+            ## Checking if a generation is complete:
+
+
         else:
-            output = "<h1>Sorry, there is no free tests for you!</h1>"
+            output = "<h1>Sorry, there is no more tests assigned to you!</h1>"
 
         template = 'endtest.html'
         username = request.user.username
@@ -59,7 +61,7 @@ def endtest(request):
 def starttest(request):
     """
     This function build a webpage for the test.
-    First version id taking a fix gen data
+    It gets the test id as chromosome id from GET cid's variable (p.e.: /?cid=123)
     """
     # vars:
     output = ''
@@ -71,6 +73,7 @@ def starttest(request):
     idQuestion = ''
     chromosome_id = ''
     genId = ''
+
     #First, check if user is autetificated:
     if not request.user.is_authenticated():
         output = "<h1>You need to login before to take a test!</h1>"
@@ -81,7 +84,10 @@ def starttest(request):
         userid = request.user.id
         data = []
         data1 = []
-        #data=['0127', '010132', '01010125', '01010219', '01010320', '010216', '01020117', '01020204', '01020329', '010321', '01030110', '01030215', '01030308', '0213', '020133', '02010118', '02010223', '02010301', '020234', '02020138', '02020228', '02020307', '020305', '02030109', '02030211', '02030331', '0324', '030136', '03010130', '03010202', '03010306', '030214', '03020139', '03020237', '03020312', '030303', '03030122', '03030226', '03030335']
+
+        # DEBUG var:
+        # data=['0127', '010132', '01010125', '01010219', '01010320', '010216', '01020117', '01020204', '01020329', '010321', '01030110', '01030215', '01030308', '0213', '020133', '02010118', '02010223', '02010301', '020234', '02020138', '02020228', '02020307', '020305', '02030109', '02030211', '02030331', '0324', '030136', '03010130', '03010202', '03010306', '030214', '03020139', '03020237', '03020312', '030303', '03030122', '03030226', '03030335']
+
         # Checking for available test for this user. In case there are some waiting, give the first one. Else, give no test
 
         if request.GET.get('cid'):
@@ -105,23 +111,9 @@ def starttest(request):
         userChromosome = Chromosome.objects.filter(id=chromosome_id)
         for u in userChromosome:
             data1 = u.data
-            #chromosome_idTest = u.id
-        data = eval(data1) ##data1[1:-1].split(',')
+        data = eval(data1)
         if len(data)==0:
             return render_to_response('home.html')
-        #data1.append(int(userid))
-
-        '''
-        #Base empty chromosome 3x3x3 structure:
-        data_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "03030201",];
-        tags_ids = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"]
-        shuffle(tags_ids)
-        data = []
-        c = 0
-        for d in data_base:
-            data.append(d+tags_ids[c])
-            c = c + 1
-        '''
 
         #######################
         # Choosing random question / answer

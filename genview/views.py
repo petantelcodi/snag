@@ -85,13 +85,15 @@ def starttest(request):
         # Checking for available test for this user. In case there are some waiting, give the first one. Else, give no test
 
         if request.GET.get('cid'):
-            myTasks = Tasks.objects.filter(chromosome_id=request.GET.get('cid'))
+            myTasks = Tasks.objects.filter(chromosome_id=request.GET.get('cid'), test_done=0)
+            out = '<h1>Sorry, this test is already done by user, <b>'+username+'</b></h1>'
         else:
             ##### Checking for available tests in Tasks table, and then get the data from Chromosome table
             myTasks = Tasks.objects.filter(user_id=userid, test_done='0')
+            out = '<h1>Sorry, there are no test available for the user, <b>'+username+'</b></h1><p>Please contact SNAG team.</p>'
         # Id not available tasks for the user, leave:
         if len(myTasks)<1:
-            output = '<h1>Sorry, there are no test available for the user, <b>'+username+'</b></h1><p>Please contact SNAG team.</p>'
+            output = out
             template = 'endtest.html'
             return render_to_response(template, {'username': username,'output': output})
 

@@ -70,6 +70,7 @@ def starttest(request):
     answersTest = ''
     idQuestion = ''
     chromosome_id = ''
+    genId = ''
     #First, check if user is autetificated:
     if not request.user.is_authenticated():
         output = "<h1>You need to login before to take a test!</h1>"
@@ -281,7 +282,7 @@ def starttest(request):
         con = con+"\n</div>\n"
         output = output+nav4+con
 
-    return render_to_response(template, {'data1':data1, 'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'chromosome_id':chromosome_id,'output': output})
+    return render_to_response(template, {'data1':data1, 'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'chromosome_id':chromosome_id, 'genId': genId,'output': output})
 
 #######################################################
 def profile(request):

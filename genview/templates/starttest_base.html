@@ -102,6 +102,7 @@
                         oFormObject.elements["user_id"].value = $("#userid").html();     
                         oFormObject.elements["chromosome_id"].value = $("#chromosomeId").html();
                         oFormObject.elements["test_date"].value = yyyy+"-"+mm+"-"+dd;
+                        oFormObject.elements["gen_id"].value = $("#genId").html();
                         
                         document.forms["testEndForm"].submit(); 
                         
@@ -137,7 +138,8 @@
                 <input type='text' name='test_ok' />    
                 <input type='text' name='chromosome_id' />    
                 <input type='text' name='test_date' />    
-                <input type='text' name='contents_id' />    
+                <input type='text' name='contents_id' />
+                <input type='text' name='genId' />
         </form>
     </div>
     

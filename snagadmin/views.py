@@ -16,6 +16,11 @@ import math
 
 #######################################################
 # Home page
+def config(var):
+    mydict = dict()
+    mydict["GENERATION_MAX_NUMBER"] = 7
+    return mydict[var]
+
 def main(request):
     tasksList = []
     userList = []
@@ -127,7 +132,8 @@ def createcreature(request):
         struc_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "030303",];
         tags_ids = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"]
         chromosomes = []
-        for n in range(1,3): ## FIXME this is for testiog. The good values is range(1,51)
+        max = int(config("GENERATION_MAX_NUMBER"))
+        for n in range(1, max+1): ## FIXME this is for testiog. The good values is range(1,51)
             shuffle(tags_ids)
             chromosome = []
             c = 0

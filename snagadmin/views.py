@@ -16,12 +16,12 @@ import math
 
 #######################################################
 # Home page
-def config(var):
+def config(key):
     mydict = dict()
     mydict["CHROMOSOMES_X_GENERATION"] = 7
     mydict["TIME_TEST_MAX"] = 300 # in seconds
     mydict["GENERATION_X_CREATURE"] = 10
-    return mydict[var]
+    return mydict[key]
 
 def main(request):
     tasksList = []

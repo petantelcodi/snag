@@ -1,7 +1,7 @@
 {% extends "starttest_base.html" %}
 
 {% block title %}:: SNAG ::{% endblock %}
-
+{% block TIME_TEST_MAX %}var maxtime = {{TIME_TEST_MAX|safe}}  // MAX TEST TIME{% endblock %}
 {% block content %}
 <h1>Hello, {{username}}</h1>
         <p>{{data1|safe}}</p>

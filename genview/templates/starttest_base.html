@@ -14,7 +14,7 @@
         var c=0;
         var t;
         var timer_is_on = 0;
-        var maxtime = 300  // MAX TEST TIME
+        {% block TIME_TEST_MAX %}{% endblock %} // Getting var maxtime from views.py -> template
         var click = 0
         function timedCount()
         {

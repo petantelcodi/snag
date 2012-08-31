@@ -5,6 +5,7 @@ from random import randint, shuffle, random, seed
 from snag.genview import models
 from sys import *
 from snag.genview.models import Tasks, Contents, Chromosome
+from snag.snagadmin.views import  config
 from django.utils.encoding import smart_str, smart_unicode
 import math
 import operator
@@ -26,6 +27,8 @@ def home(request):
 def endtest(request):
     # vars:
     mychromosome_id = ''
+    generation_x_creature = config("GENERATION_X_CREATURE")
+
     if request.method == 'POST':
         # You may process these variables here
         user_id = request.POST['user_id']
@@ -47,10 +50,28 @@ def endtest(request):
 
             ########################################
             ## Checking if a generation is complete:
+            # getting :
+            last_chromosome_modif = Chromosome.objects.get(id=mychromosome_id)
+            last_creature = last_chromosome_modif.creature_id
+            current_generation = last_chromosome_modif.generation
+            output = output +" <h1>CREATURE_id -----> "+str(last_creature)+"</h1>"
+            output = output +" <h1>CURRENT GENERATION -----> "+str(current_generation)+"</h1>"
+
+            # counting the number of chromosomes not done for the creature id and highest generation
+            number_chromosomes = Chromosome.objects.filter(creature_id=last_creature, generation=current_generation).count()
+            from django.db import connection
+            cursor = connection.cursor()
+            cursor.execute("SELECT COUNT(  `genview_chromosome`.id ) FROM snag.`genview_chromosome` INNER JOIN snag.`genview_tasks` ON  `genview_chromosome`.`id` =  `genview_tasks`.`chromosome_id_id` WHERE  `genview_chromosome`.`creature_id_id` =%s AND  `genview_tasks`.`test_done` =1 AND `genview_chromosome`.`generation`=%s ", [last_creature, current_generation])
+            total_rows = cursor.fetchone()
+            output = output +" <h1>NUMBER CHROMOSOMES -----> "+str(number_chromosomes)+"</h1>"
+            if int(list(total_rows)[0]) >= int(config("CHROMOSOMES_X_GENERATION")):
+                output = output +" <h1>GENERATION FINISHED!! NEEDS REPRODUCTION -----> "+str(config("CHROMOSOMES_X_GENERATION"))+"</h1>"
+            else:
+                output = output +" <h1>GENERATION NOT FINISHED -----> "+str(config("CHROMOSOMES_X_GENERATION"))+" | len chromosomes ="+str(int(list(total_rows)[0]))+"<br /> REMAINS = "+str(int(config("CHROMOSOMES_X_GENERATION")) -  int(list(total_rows)[0]))+" </h1>"
 
 
         else:
-            output = "<h1>Sorry, there is no more tests assigned to you!</h1>"
+            output = "<h1>Sorry, there is no more tests assigned to you or this page cannot be accessed directly!</h1>"
 
         template = 'endtest.html'
         username = request.user.username
@@ -84,6 +105,9 @@ def starttest(request):
         userid = request.user.id
         data = []
         data1 = []
+
+        # getting config var:
+        time_test_max = config("TIME_TEST_MAX")
 
         # DEBUG var:
         # data=['0127', '010132', '01010125', '01010219', '01010320', '010216', '01020117', '01020204', '01020329', '010321', '01030110', '01030215', '01030308', '0213', '020133', '02010118', '02010223', '02010301', '020234', '02020138', '02020228', '02020307', '020305', '02030109', '02030211', '02030331', '0324', '030136', '03010130', '03010202', '03010306', '030214', '03020139', '03020237', '03020312', '030303', '03030122', '03030226', '03030335']
@@ -276,7 +300,7 @@ def starttest(request):
         con = con+"\n</div>\n"
         output = output+nav4+con
 
-    return render_to_response(template, {'data1':data1, 'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'chromosome_id':chromosome_id, 'genId': genId,'output': output})
+    return render_to_response(template, {'data1':data1, 'username': username,'userid': userid,'questionTest': questionTest,'answersTest':answersTest,'idQuestion':idQuestion,'chromosome_id':chromosome_id, 'genId': genId,'output': output, 'TIME_TEST_MAX': time_test_max})
 
 #######################################################
 def profile(request):

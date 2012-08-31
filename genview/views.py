@@ -65,7 +65,8 @@ def endtest(request):
             total_rows = cursor.fetchone()
             output = output +" <h1>NUMBER CHROMOSOMES -----> "+str(number_chromosomes)+"</h1>"
             if int(list(total_rows)[0]) >= int(config("CHROMOSOMES_X_GENERATION")):
-                output = output +" <h1>GENERATION FINISHED!! NEEDS REPRODUCTION -----> "+str(config("CHROMOSOMES_X_GENERATION"))+"</h1>"
+                ## Call to genetics(last_creature, current_generation)
+                output = output +" <h1>GENERATION FINISHED!! NEEDS REPRODUCTION <br />-----> "+str(config("CHROMOSOMES_X_GENERATION"))+"</h1>"
             else:
                 output = output +" <h1>GENERATION NOT FINISHED -----> "+str(config("CHROMOSOMES_X_GENERATION"))+" | len chromosomes ="+str(int(list(total_rows)[0]))+"<br /> REMAINS = "+str(int(config("CHROMOSOMES_X_GENERATION")) -  int(list(total_rows)[0]))+" </h1>"
 

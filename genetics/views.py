@@ -26,7 +26,12 @@ class genetics:
 		self.maxDepthTree = 4
 		self.minDepthTree = 2		
 		print("_init_")
-		self.reproduce(3, 1)# this is just for testing 
+		self.test1()
+		
+	# this is just for testing 
+	def test1(self):
+		# dummy register in database
+		self.reproduce(3, 1)	
 
 	def reproduce(self, creature_id, current_generation): ## TODO: add a second argument for current generation
 		self.creature_id = creature_id
@@ -55,7 +60,7 @@ class genetics:
 		print("-----")
 		print(self.crom_list)
 		
-		# Add best cromosomes
+		# divide the best cromosomes and the rest that will be use to reproduce
 		bestTime = self.crom_list[0][4]
 		totalBestTimes = 1
 		for m in self.crom_list:
@@ -67,13 +72,13 @@ class genetics:
 			# In case there where more from each time
 			# B) # if there is already too many best chromosomes stop 		
 			if self.totalBestTimesToPreserve >=totalBestTimes and len(self.crom_list_selected)>self.totalBestTimesToPreserve:
-				self.crom_list_selected.append(m)
-				print("best chromosome:")
-				print(m[4])
+				self.crom_list_selected.append(m[1])
+				print("best chromosome - time:"+str(m[4]))
 			else:
-				self.crom_list_rest.append(m)
-				print("add chromosome to middle list ")		
-		# Step 3 : cut tree
+				self.crom_list_rest.append(m[1])
+				print("add chromosome to middle list ")
+		
+		# Step 3 : reproduce
 		
 		print("------")
 		testData =["0101", "0202","0303","030104","03010105"]
@@ -82,10 +87,17 @@ class genetics:
 		print(p)
 		b = self.arrayToChromosomes(p)
 		print(b)		
-		# Step 4 : mutation (set to 0.5% cases)
-		for m in self.crom_reproduced:			
+
+		# Step 4 : join reproduce with directaly choose
+		for m in self.crom_list_selected: 
+			self.new_chrom.append(m)
+		for m in self.crom_reproduced:
+			self.new_chrom.append(m)
+
+		# Step 5 : mutation (set to 0.5% cases)
+		for m in self.new_chrom:			
 			if(random(200)==32 or  random(200)==100):
-				self.mutateOneGen(m)
+				m = self.mutateOneGen(m)
 
 	def parseAndAddGen(self, gen):	
 		dataType = {"id":0,"child":[]}
@@ -109,9 +121,9 @@ class genetics:
 		if(len(posGenAr)==5):
                         self.selfChromosomeAr[posGenAr[0]]["child"][posGenAr[1]]["child"][posGenAr[2]]["child"][posGenAr[3]]["child"].append(dataType)
 
-	# receive a list of chromosomes in string and return array
+	# Receive a list of chromosomes in string and return array
 	def chromosomesToArray(self, l):
-		# to convert i need sort from levels in array (from level 0 to more deep levels)
+		# To convert i need sort from levels in array (from level 0 to more deep levels)
 		lSorted = sorted(l,key=len)
 		self.selfChromosomeAr = []
 		for i in lSorted:
@@ -178,14 +190,13 @@ class genetics:
 
 	# Wants an array json, but convert internally in list 
  	def mutateOneGen(self, ar):
-		arList = arrayToChromosomes(ar)
-		r1 = random(len(arList))
-		r2 = random(len(arList))
-		temp1 = arList[r1]
-		temp2 = arList[r2]
-		arList[r1] = temp1[:-2] + temp2[-2:]
-		arList[r2] = temp2[:-2] + temp1[-2:]
-		return chromosomesToArray(arList)
+		r1 = random(len(ar))
+		r2 = random(len(ar))
+		temp1 = ar[r1]
+		temp2 = ar[r2]
+		ar[r1] = temp1[:-2] + temp2[-2:]
+		ar[r2] = temp2[:-2] + temp1[-2:]
+		return ar
 		print("The chromosome had mutated!") 
 		
 	def saveToBD(self):

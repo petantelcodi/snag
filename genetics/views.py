@@ -166,18 +166,22 @@ class genetics:
                 print("CuteByEditLowerLevel")
 
 	def findTreeRepitedGens(self):
+		
 		print("findRepitedGens")		
 
 	def fillTreeGaps(self):
 		print("fillTreeGaps")
 
- 	def mutateOneGen(self, crom):
-		r1 = random(self.totalGens)
-		r2 = random(self.totalGens)
-		temp1 = crom[4][r1]
-		temp2 = crom[4][r2]
-		crom[4][r1] = temp1[:-2] + temp2[-2:]
-		crom[4][r2] = temp2[:-2] + temp1[-2:]
+	# Wants an array json, but convert internally in list 
+ 	def mutateOneGen(self, ar):
+		arList = arrayToChromosomes(ar)
+		r1 = random(len(arList))
+		r2 = random(len(arList))
+		temp1 = arList[r1]
+		temp2 = arList[r2]
+		arList[r1] = temp1[:-2] + temp2[-2:]
+		arList[r2] = temp2[:-2] + temp1[-2:]
+		return chromosomesToArray(arList)
 		print("The chromosome had mutated!") 
 		
 	def saveToBD(self):

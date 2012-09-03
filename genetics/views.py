@@ -117,7 +117,7 @@ class genetics:
 
 	def cPrepare(self,value):
 		v = str(value)
-		if len(v)>2:
+		if len(v)<2:
 			v="0"+v
 		return v			
 

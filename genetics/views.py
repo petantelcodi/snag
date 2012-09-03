@@ -19,19 +19,20 @@ import operator
 import random
 
 class genetics:
-	def __init__(self):
+	def __init__(self, generationVersion):
 		# gloval vars reproduction
 		self.total_test_time = 30
-		self.totalBestTimesToPreserve = 4
-		
+		self.totalBestTimesToPreserve = 4		
 		print("_init_")
-		self.reproduce(3)# this is just for testing 
+		self.reproduce(3, 1)# this is just for testing 
 
-	def reproduce(self, finished_creature_id): ## TODO: add a second argument for current generation
+	def reproduce(self, creature_id, current_generation): ## TODO: add a second argument for current generation
+		self.creature_id = creature_id
+		self.current_generation = current_generation 
 		print("Start reproduce chromosomes")
-		self.crom_list = [] # original cromosomes that have finish correct and on time gived
-                self.crom_list_selected = [] # the best cromosomes
-                self.crom_list_rest = [] # chromosomes which are valid bu not best
+		self.crom_list = [] # original chromosomes that have finish correct and on time gived
+                self.crom_list_selected = [] # the best time chromosomes
+                self.crom_list_rest = [] # chromosomes which are valid but not best
 		self.crom_list_rest_obj = [] 
 		self.crom_reproduced = [] # the cromosomes that we will save to database
 		print("1. Get complete generation")
@@ -44,7 +45,7 @@ class genetics:
 				print(l)
 				self.crom_list.append(l)
 			else:
-				print('cromosome discarted')
+				print('chromosome discarted')
 		# Step 2: Get two best time to preserve 
 		# Sort list to get best times first
 		# sort by colum 4		
@@ -71,6 +72,7 @@ class genetics:
 				self.crom_list_rest.append(m)
 				print("add chromosome to middle list ")		
 		# Step 3 : cut tree
+		
 		print("------")
 		testData =["0101", "0202","0303","030104","03010105"]
 		p = self.chromosomesToArray(testData)
@@ -187,17 +189,7 @@ class genetics:
 	def saveToBD(self):
 		print("Save chromosomes reproduced")
 		print(self.crom_reproduced)
-		# Save 50 chromosomes with 39 gens each of them with the structure ????
-		chromosomes = []
-		max = len(self.crom_reproduced)
-		for n in range(1, max+1): ## FIXME this is for testiog. The good values is range(1,51)
-			shuffle(tags_ids)
-			chromosome = []
-			c = 0
-			for d in struc_base:
-				chromosome.append(d+tags_ids[c])
-				c = c + 1
-		chromosomes.append(chromosome)
+		
 		# Inserting new creature (generation 0) in Creature Table
 		now = datetime.datetime.now()
 		datenow = str(now.year)+'-'+str(now.month)+'-'+str(now.day)

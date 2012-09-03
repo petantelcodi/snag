@@ -22,7 +22,9 @@ class genetics:
 	def __init__(self, generationVersion):
 		# gloval vars reproduction
 		self.total_test_time = 30
-		self.totalBestTimesToPreserve = 4		
+		self.totalBestTimesToPreserve = 4
+		self.maxDepthTree = 4
+		self.minDepthTree = 2		
 		print("_init_")
 		self.reproduce(3, 1)# this is just for testing 
 

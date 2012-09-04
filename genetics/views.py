@@ -37,7 +37,7 @@ class genetics:
 		self.creature_id = creature_id
 		self.current_generation = current_generation 
 		print("Start reproduce chromosomes")
-		self.task_chrom_list = [] # original chromosomes that have finish correct and on time gived
+		self.task_chrom_list = [] # task with original chromosomes that have finish correct and on time gived
                 self.chrom_list_selected = [] # the best time chromosomes
                 self.chrom_list_rest = [] # chromosomes which are valid but not best
 		self.chrom_reproduced = [] # the cromosomes that we will save to database

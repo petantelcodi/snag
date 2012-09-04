@@ -37,11 +37,11 @@ class genetics:
 		self.creature_id = creature_id
 		self.current_generation = current_generation 
 		print("Start reproduce chromosomes")
-		self.crom_list = [] # original chromosomes that have finish correct and on time gived
+		self.task_crom_list = [] # original chromosomes that have finish correct and on time gived
                 self.crom_list_selected = [] # the best time chromosomes
                 self.crom_list_rest = [] # chromosomes which are valid but not best
-		self.crom_list_rest_obj = [] 
 		self.crom_reproduced = [] # the cromosomes that we will save to database
+		self.new_chrom = [] # new chromosomes generated to save in database 
 		print("1. Get complete generation")
 		i = 5
 		for m in Chromosome.objects.filter(creature_id=finished_creature_id): ## TODO: add filter(current_generation 
@@ -50,20 +50,20 @@ class genetics:
 			# Step 1: add to list all cromosomes that has respond good and not out of time
 			if(mytasks.test_ok==1 and mytasks.total_test_time < self.total_test_time):
 				print(l)
-				self.crom_list.append(l)
+				self.task_crom_list.append(l)
 			else:
 				print('chromosome discarted')
 		# Step 2: Get two best time to preserve 
 		# Sort list to get best times first
 		# sort by colum 4		
-		self.crom_list = sorted(self.crom_list, key=operator.itemgetter(4))		
+		self.task_crom_list = sorted(self.task_crom_list, key=operator.itemgetter(4))		
 		print("-----")
-		print(self.crom_list)
+		print(self.task_crom_list)
 		
 		# divide the best cromosomes and the rest that will be use to reproduce
-		bestTime = self.crom_list[0][4]
+		bestTime = self.task_crom_list[0][4]
 		totalBestTimes = 1
-		for m in self.crom_list:
+		for m in self.task_crom_list:
 			if bestTime != m[4]:
 				bestTime = m[4]
 				totalBestTimes +=1

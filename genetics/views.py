@@ -21,6 +21,7 @@ import random
 class genetics:
 	def __init__(self, generationVersion):
 		# gloval vars reproduction
+		self.totalChromosomesXCriature = 50
 		self.total_test_time = 30
 		self.totalBestTimesToPreserve = 4
 		self.maxDepthTree = 4
@@ -79,7 +80,7 @@ class genetics:
 				print("add chromosome to middle list ")
 		
 		# Step 3 : reproduce
-		
+		totalChromToGenerate  = self.totalChromosomesXCriature - len(self.chrom_list_selected)		
 		print("------")
 		testData =["0101", "0202","0303","030104","03010105"]
 		p = self.chromosomesToArray(testData)

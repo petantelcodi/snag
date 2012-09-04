@@ -91,7 +91,7 @@ class genetics:
 		# Step 4 : join reproduce with directaly choose
 		for m in self.chrom_list_selected: 
 			self.new_chrom.append(m)
-		for m in self.crom_reproduced:
+		for m in self.chrom_reproduced:
 			self.new_chrom.append(m)
 
 		# Step 5 : mutation (set to 0.5% cases)

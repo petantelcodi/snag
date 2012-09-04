@@ -37,10 +37,10 @@ class genetics:
 		self.creature_id = creature_id
 		self.current_generation = current_generation 
 		print("Start reproduce chromosomes")
-		self.task_crom_list = [] # original chromosomes that have finish correct and on time gived
-                self.crom_list_selected = [] # the best time chromosomes
-                self.crom_list_rest = [] # chromosomes which are valid but not best
-		self.crom_reproduced = [] # the cromosomes that we will save to database
+		self.task_chrom_list = [] # original chromosomes that have finish correct and on time gived
+                self.chrom_list_selected = [] # the best time chromosomes
+                self.chrom_list_rest = [] # chromosomes which are valid but not best
+		self.chrom_reproduced = [] # the cromosomes that we will save to database
 		self.new_chrom = [] # new chromosomes generated to save in database 
 		print("1. Get complete generation")
 		i = 5
@@ -50,20 +50,20 @@ class genetics:
 			# Step 1: add to list all cromosomes that has respond good and not out of time
 			if(mytasks.test_ok==1 and mytasks.total_test_time < self.total_test_time):
 				print(l)
-				self.task_crom_list.append(l)
+				self.task_chrom_list.append(l)
 			else:
 				print('chromosome discarted')
 		# Step 2: Get two best time to preserve 
 		# Sort list to get best times first
 		# sort by colum 4		
-		self.task_crom_list = sorted(self.task_crom_list, key=operator.itemgetter(4))		
+		self.task_chrom_list = sorted(self.task_chrom_list, key=operator.itemgetter(4))		
 		print("-----")
-		print(self.task_crom_list)
+		print(self.task_chrom_list)
 		
 		# divide the best cromosomes and the rest that will be use to reproduce
-		bestTime = self.task_crom_list[0][4]
+		bestTime = self.task_chrom_list[0][4]
 		totalBestTimes = 1
-		for m in self.task_crom_list:
+		for m in self.task_chrom_list:
 			if bestTime != m[4]:
 				bestTime = m[4]
 				totalBestTimes +=1
@@ -71,11 +71,11 @@ class genetics:
 			# A) The best times
 			# In case there where more from each time
 			# B) # if there is already too many best chromosomes stop 		
-			if self.totalBestTimesToPreserve >=totalBestTimes and len(self.crom_list_selected)>self.totalBestTimesToPreserve:
-				self.crom_list_selected.append(m[1])
+			if self.totalBestTimesToPreserve >=totalBestTimes and len(self.chrom_list_selected)>self.totalBestTimesToPreserve:
+				self.chrom_list_selected.append(m[1])
 				print("best chromosome - time:"+str(m[4]))
 			else:
-				self.crom_list_rest.append(m[1])
+				self.chrom_list_rest.append(m[1])
 				print("add chromosome to middle list ")
 		
 		# Step 3 : reproduce
@@ -89,7 +89,7 @@ class genetics:
 		print(b)		
 
 		# Step 4 : join reproduce with directaly choose
-		for m in self.crom_list_selected: 
+		for m in self.chrom_list_selected: 
 			self.new_chrom.append(m)
 		for m in self.crom_reproduced:
 			self.new_chrom.append(m)
@@ -110,26 +110,26 @@ class genetics:
 		print("parseGen")
 		dataType["id"] = int(id)
 		if(len(posGenAr)==1):
-			self.selfChromosomeAr.append(dataType)
+			self.tempChromosomeAr.append(dataType)
 		if(len(posGenAr)==2):
 			print(posGenAr[0])
-			self.selfChromosomeAr[posGenAr[0]]["child"].append(dataType)
+			self.tempChromosomeAr[posGenAr[0]]["child"].append(dataType)
 		if(len(posGenAr)==3):
-                        self.selfChromosomeAr[posGenAr[0]]["child"][posGenAr[1]]["child"].append(dataType)
+                        self.tempChromosomeAr[posGenAr[0]]["child"][posGenAr[1]]["child"].append(dataType)
 		if(len(posGenAr)==4):
-                        self.selfChromosomeAr[posGenAr[0]]["child"][posGenAr[1]]["child"][posGenAr[2]]["child"].append(dataType)
+                        self.tempChromosomeAr[posGenAr[0]]["child"][posGenAr[1]]["child"][posGenAr[2]]["child"].append(dataType)
 		if(len(posGenAr)==5):
-                        self.selfChromosomeAr[posGenAr[0]]["child"][posGenAr[1]]["child"][posGenAr[2]]["child"][posGenAr[3]]["child"].append(dataType)
+                        self.tempChromosomeAr[posGenAr[0]]["child"][posGenAr[1]]["child"][posGenAr[2]]["child"][posGenAr[3]]["child"].append(dataType)
 
 	# Receive a list of chromosomes in string and return array
 	def chromosomesToArray(self, l):
 		# To convert i need sort from levels in array (from level 0 to more deep levels)
 		lSorted = sorted(l,key=len)
-		self.selfChromosomeAr = []
+		self.tempChromosomeAr = []
 		for i in lSorted:
 			self.parseAndAddGen(i)
 		print("chromosomes")
-		return self.selfChromosomeAr
+		return self.tempChromosomeAr
 
 	def cPrepare(self,value):
 		v = str(value)
@@ -201,12 +201,13 @@ class genetics:
 		
 	def saveToBD(self):
 		print("Save chromosomes reproduced")
-		print(self.crom_reproduced)
-		
+		print(self.new_chrom)
+		# add one to define that is a newer generation
+		self.current_generation +=1 
 		# Inserting new creature (generation 0) in Creature Table
 		now = datetime.datetime.now()
 		datenow = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
-		new = Creature.objects.create(creation_date=datenow, current_generation=0)
+		new = Creature.objects.create(creation_date=datenow, current_generation=.self.current_generation)
 		new.save()
 		# Inserting the new 50 chromosome and the new 50 pending tasks in Tasks
 		mycreature = Creature.objects.latest('id')

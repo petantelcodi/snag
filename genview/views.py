@@ -1,15 +1,13 @@
-from debian.debtags import output
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
-from snag.genview import models
-from sys import *
 from snag.genview.models import Tasks, Contents, Chromosome
 from snag.snagadmin.views import  config
+from snag.genetics.views import genetics
 from django.utils.encoding import smart_str, smart_unicode
 import math
 import operator
-import json
+from django.db import connection
 
 #######################################################
 # Home page
@@ -49,26 +47,27 @@ def endtest(request):
             output= '<h1>Thanks. The test has been recorded!</h1>'
 
             ########################################
-            ## Checking if a generation is complete:
-            # getting :
+            ## Checking if the generation is complete:
+
+            # getting the chromosome:
             last_chromosome_modif = Chromosome.objects.get(id=mychromosome_id)
             last_creature = last_chromosome_modif.creature_id
             current_generation = last_chromosome_modif.generation
-
             output = output +" <h1>CREATURE_id -----> "+str(last_creature)+"</h1>"
             output = output +" <h1>CURRENT GENERATION -----> "+str(current_generation)+"</h1>"
+
             # Checking if creature is over
             if current_generation < generation_x_creature:
 
                 # counting the number of chromosomes not done for the creature id and highest generation
                 number_chromosomes = Chromosome.objects.filter(creature_id=last_creature, generation=current_generation).count()
-                from django.db import connection
                 cursor = connection.cursor()
                 cursor.execute("SELECT COUNT(  `genview_chromosome`.id ) FROM snag.`genview_chromosome` INNER JOIN snag.`genview_tasks` ON  `genview_chromosome`.`id` =  `genview_tasks`.`chromosome_id_id` WHERE  `genview_chromosome`.`creature_id_id` =%s AND  `genview_tasks`.`test_done` =1 AND `genview_chromosome`.`generation`=%s ", [last_creature, current_generation])
                 total_rows = cursor.fetchone()
                 output = output +" <h1>NUMBER CHROMOSOMES -----> "+str(number_chromosomes)+"</h1>"
                 if int(list(total_rows)[0]) >= int(config("CHROMOSOMES_X_GENERATION")):
                     ## Call to genetics(last_creature, current_generation)
+                    genetics(last_creature, current_generation)
                     output = output +" <h1>GENERATION FINISHED!! NEEDS REPRODUCTION <br />-----> "+str(config("CHROMOSOMES_X_GENERATION"))+"</h1>"
                 else:
                     output = output +" <h1>GENERATION NOT FINISHED -----> "+str(config("CHROMOSOMES_X_GENERATION"))+" | len chromosomes ="+str(int(list(total_rows)[0]))+"<br /> REMAINS = "+str(int(config("CHROMOSOMES_X_GENERATION")) -  int(list(total_rows)[0]))+" </h1>"

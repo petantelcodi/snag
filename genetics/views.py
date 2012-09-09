@@ -81,10 +81,9 @@ class genetics:
 		print(self.chrom_list_rest)		
 		# Step 3 : reproduce
 		self.reproductionTime()
-
-
 		
 		'''
+		# just for testing step 3
 		print("------")
 		testData =["0101", "0202","0303","030104","03010105"]
 		p = self.chromosomesToArray(testData)
@@ -103,6 +102,11 @@ class genetics:
 		for m in self.new_chrom:			
 			if(random(200)==32 or  random(200)==100):
 				m = self.mutateOneGen(m)
+		# Step 6: Save to database all new generation
+		self.new_chrom.append(["0101", "0202","0303","030104","03010105"])
+		self.new_chrom.append(["0102", "0202","0303","030104","03010105"])
+		self.new_chrom.append(["0103", "0202","0303","030104","03010105"])
+		self.saveToBD()
 
 	def parseAndAddGen(self, gen):	
 		print(gen)

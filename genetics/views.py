@@ -242,7 +242,7 @@ class genetics:
 		new.save()
 		# Inserting the new 50 chromosome and the new 50 pending tasks in Tasks
 		mycreature = Creature.objects.latest('id')
-		for c in chromosomes:
+		for c in self.new_chrom:
 			newChromosomes = Chromosome(data=str(c), creature_id_id=str(mycreature))
 			newChromosomes.save()
 			latestId=newChromosomes.id

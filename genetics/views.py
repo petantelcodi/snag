@@ -103,9 +103,9 @@ class genetics:
 			if(random(200)==32 or  random(200)==100):
 				m = self.mutateOneGen(m)
 		# Step 6: Save to database all new generation
-		self.new_chrom.append(["0101", "0202","0303","030104","03010105"])
-		self.new_chrom.append(["0102", "0202","0303","030104","03010105"])
-		self.new_chrom.append(["0103", "0202","0303","030104","03010105"])
+		#self.new_chrom.append(["0101", "0202","0303","030104","03010105"])
+		#self.new_chrom.append(["0102", "0202","0303","030104","03010105"])
+		#self.new_chrom.append(["0103", "0202","0303","030104","03010105"])
 		self.saveToBD()
 
 	def parseAndAddGen(self, gen):	
@@ -195,7 +195,7 @@ class genetics:
 			iFather = 0
 			iMother = 0
 			# loop until find a random numbers not equal father and mother
-			while iFather ¡==iMot and len(p)>:
+			while iFather !=iMother and len(p)>2:
                         	iFather = randrange(0,len(p))
                         	iMother = randrange(0,len(p))
 				if iFather!=iMother:
@@ -243,7 +243,7 @@ class genetics:
 		# Inserting the new 50 chromosome and the new 50 pending tasks in Tasks
 		mycreature = Creature.objects.latest('id')
 		for c in self.new_chrom:
-			newChromosomes = Chromosome(data=str(c), creature_id_id=str(mycreature))
+			newChromosomes = Chromosome(data=str(c), creature_id_id=str(mycreature), generation=self.current_generation)
 			newChromosomes.save()
 			latestId=newChromosomes.id
 			newTasks = Tasks(user_id_id=0, chromosome_id_id=str(latestId))

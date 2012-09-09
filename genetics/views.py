@@ -227,15 +227,15 @@ class genetics:
 		temp2 = ar[r2]
 		ar[r1] = temp1[:-2] + temp2[-2:]
 		ar[r2] = temp2[:-2] + temp1[-2:]
-		return ar
-		print("The chromosome had mutated!") 
+		print("The chromosome had mutated!")
+		return ar 
 		
 	def saveToBD(self):
 		print("Save chromosomes reproduced")
 		print(self.new_chrom)
 		# add one to define that is a newer generation
 		self.current_generation +=1 
-		# Inserting new creature (generation 0) in Creature Table
+		# Inserting new creature (generation +1) in Creature Table
 		now = datetime.datetime.now()
 		datenow = str(now.year)+'-'+str(now.month)+'-'+str(now.day)
 		new = Creature.objects.create(creation_date=datenow, current_generation=self.current_generation)
@@ -248,4 +248,4 @@ class genetics:
 			latestId=newChromosomes.id
 			newTasks = Tasks(user_id_id=0, chromosome_id_id=str(latestId))
             		newTasks.save()					
-		# TODO: update Creatures table with "current_generation"
+

@@ -39,8 +39,8 @@ class genetics:
         self.current_generation = current_generation
         print("Start reproduce chromosomes")
         self.task_chrom_list = [] # task with original chromosomes that have finish correct and on time gived
-                self.chrom_list_selected = [] # the best time chromosomes
-                self.chrom_list_rest = [] # chromosomes which are valid but not best
+        self.chrom_list_selected = [] # the best time chromosomes
+        self.chrom_list_rest = [] # chromosomes which are valid but not best
         self.chrom_reproduced = [] # the cromosomes that we will save to database
         self.new_chrom = [] # new chromosomes generated to save in database
         print("1. Get complete generation")
@@ -161,25 +161,25 @@ class genetics:
             out.append(cs1+self.cPrepare(id1))
             for b in a["child"]:
                 if 'c2' not in locals():
-                                    c2=0
-                            c2 += 1
+                    c2=0
+                    c2 += 1
                 id2 = b["id"]
                 cs2 = cs1+self.cPrepare(c2)
                 out.append(cs2+self.cPrepare(id2))
                 for c in b["child"]:
                     if 'c3' not in locals():
-                                            c3=0
-                    c3 += 1
-                    id3 = c["id"]
-                    cs3 = cs2+self.cPrepare(c3)
-                    out.append(cs3+self.cPrepare(id3))
+                        c3=0
+                        c3 += 1
+                        id3 = c["id"]
+                        cs3 = cs2+self.cPrepare(c3)
+                        out.append(cs3+self.cPrepare(id3))
                     for d in c["child"]:
                         if 'c4' not in locals():
-                                                c4=0
-                        c4 += 1
-                        id4 = d["id"]
-                        cs4 = cs3+self.cPrepare(c4)
-                        out.append(cs4+self.cPrepare(id4))
+                            c4=0
+                            c4 += 1
+                            id4 = d["id"]
+                            cs4 = cs3+self.cPrepare(c4)
+                            out.append(cs4+self.cPrepare(id4))
                 print("chromosomes")
         return out
 
@@ -191,16 +191,16 @@ class genetics:
                     p.append(self.chromosomesToArray(i))
         print(p)
 
-                for i in range(0,totalChromToGenerate):
+        for i in range(0,totalChromToGenerate):
             iFather = 0
             iMother = 0
             # loop until find a random numbers not equal father and mother
             while iFather !=iMother and len(p)>2:
-                            iFather = randrange(0,len(p))
-                            iMother = randrange(0,len(p))
+                iFather = randrange(0,len(p))
+                iMother = randrange(0,len(p))
                 if iFather!=iMother:
-                                pFather = p[iFather]
-                                pMonther = p[iMother]
+                    pFather = p[iFather]
+                    pMonther = p[iMother]
 
 
     def cutPure(self):

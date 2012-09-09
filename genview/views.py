@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404, get_list_or_
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from random import randint, shuffle, random, seed
 from snag.genview.models import Tasks, Contents, Chromosome
-from snag.snagadmin.views import  config
+from snag.snagadmin.views import config
 from snag.genetics.views import genetics
 from django.utils.encoding import smart_str, smart_unicode
 import math

@@ -39,7 +39,6 @@ def main(request):
         go = 'main.html'
         # Check if this is an AJAX call and proceed:
         if request.is_ajax() or request.method == 'POST':
-            #return HttpResponse("Success")
             myCreatureId = request.POST.get('chr')
             myUserId_name = request.POST.get('s')
             myUserIdl = myUserId_name.split("-")

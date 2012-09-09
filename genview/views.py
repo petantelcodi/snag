@@ -98,6 +98,8 @@ def starttest(request):
     idQuestion = ''
     chromosome_id = ''
     genId = ''
+    data1 = []
+    time_test_max = ''
 
     #First, check if user is autetificated:
     if not request.user.is_authenticated():

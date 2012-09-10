@@ -16,9 +16,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', home),
 
-    # Page just for testing:
-    (r'^myexample/', myexample),
-
     # Main user chromosome test
     (r'^starttest/', starttest),
 

@@ -1,6 +1,7 @@
 {% extends "snag_base.html" %}
 
 {% block title %}:: SNAG ::{% endblock %}
+{% block redirect_endtest %}<meta http-equiv="refresh" content="3;url=/snagadmin/user">{% endblock %}
 {% block content %}
 <p>{{output|safe}}</p>
 {% endblock %}

@@ -53,8 +53,8 @@ def endtest(request):
             last_chromosome_modif = Chromosome.objects.get(id=mychromosome_id)
             last_creature = last_chromosome_modif.creature_id
             current_generation = last_chromosome_modif.generation
-            output = output +" <h1>CREATURE_id -----> "+str(last_creature)+"</h1>"
-            output = output +" <h1>CURRENT GENERATION -----> "+str(current_generation)+"</h1>"
+            ##output = output +" <h1>CREATURE_id -----> "+str(last_creature)+"</h1>"
+            ##output = output +" <h1>CURRENT GENERATION -----> "+str(current_generation)+"</h1>"
 
             # Checking if creature is over
             if current_generation < generation_x_creature:
@@ -64,19 +64,20 @@ def endtest(request):
                 cursor = connection.cursor()
                 cursor.execute("SELECT COUNT(  `genview_chromosome`.id ) FROM snag.`genview_chromosome` INNER JOIN snag.`genview_tasks` ON  `genview_chromosome`.`id` =  `genview_tasks`.`chromosome_id_id` WHERE  `genview_chromosome`.`creature_id_id` =%s AND  `genview_tasks`.`test_done` =1 AND `genview_chromosome`.`generation`=%s ", [last_creature, current_generation])
                 total_rows = cursor.fetchone()
-                output = output +" <h1>NUMBER CHROMOSOMES -----> "+str(number_chromosomes)+"</h1>"
+                ##output = output +" <h1>NUMBER CHROMOSOMES -----> "+str(number_chromosomes)+"</h1>"
                 if int(list(total_rows)[0]) >= int(config("CHROMOSOMES_X_GENERATION")):
                     ## Call to genetics(last_creature, current_generation)
                     genetics(last_creature, current_generation)
-                    output = output +" <h1>GENERATION FINISHED!! NEEDS REPRODUCTION <br />-----> "+str(config("CHROMOSOMES_X_GENERATION"))+"</h1>"
+                    ##output = output +" <h1>GENERATION FINISHED!! NEEDS REPRODUCTION <br />-----> "+str(config("CHROMOSOMES_X_GENERATION"))+"</h1>"
                 else:
-                    output = output +" <h1>GENERATION NOT FINISHED -----> "+str(config("CHROMOSOMES_X_GENERATION"))+" | len chromosomes ="+str(int(list(total_rows)[0]))+"<br /> REMAINS = "+str(int(config("CHROMOSOMES_X_GENERATION")) -  int(list(total_rows)[0]))+" </h1>"
+                    ##output = output +" <h1>GENERATION NOT FINISHED -----> "+str(config("CHROMOSOMES_X_GENERATION"))+" | len chromosomes ="+str(int(list(total_rows)[0]))+"<br /> REMAINS = "+str(int(config("CHROMOSOMES_X_GENERATION")) -  int(list(total_rows)[0]))+" </h1>"
+                    pass
             else:
                 output = output +"<h1>This creature is over; it reached the maximum number of generetion ( <b>"+str(generation_x_creature)+"</b> )</h1>"
 
         else:
             output = "<h1>Sorry, there is no more tests assigned to you or this page cannot be accessed directly!</h1>"
-
+        output = output+"<h2>... you will be redirected to the user page in 4 seconds...</h2>"
         template = 'endtest.html'
         username = request.user.username
 
@@ -330,81 +331,3 @@ def profile(request):
         auth = "<p>User is anonymous</p>"
 
     return render_to_response('profile.html', {'auth': auth })
-
-#######################################################
-def myexample(request):
-    '''
-    test getting data from ddbb
-    '''
-    #Base emptey chromosome 3x3x3 structure:
-    data_base = ["01", "0101", "010101", "010102", "010103", "0102", "010201", "010202", "010203", "0103", "010301", "010302", "010303", "02", "0201","020101", "020102", "020103", "0202", "020201", "020202", "020203", "0203", "020301", "020302", "020303", "03", "0301", "030101","030102", "030103","0302", "030201", "030202", "030203","0303", "030301", "030302", "030303",];
-    tags = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"]
-    shuffle(tags)
-    mydata = []
-    c = 0
-    for d in data_base:
-        mydata.append(d+tags[c])
-        c = c + 1
-
-    return render_to_response('myexample.html', {'mydata': mydata})
-
-#######################################################
-def testpage(request):
-    if request.user.is_authenticated():
-        auth = "<p>User is authenticated</p>"
-    else:
-        auth = "<p>User is anonymous</p>"
-
-    return render_to_response('testpage.html', {'testpage': testpage, 'auth': auth})
-
-'''
-# Conversations
-def conversations_list(request):
-    about = models.Page.objects.get(id=1)
-    conversations_list = models.Conversation.objects.order_by('-date')
-    ##pics_in_conversation = get_list_or_404(models.Pic.objects.order_by('-conversation'))
-    paginator = Paginator(conversations_list, 4)
-
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    # If page request (9999) is out of range, deliver last page of results.
-    try:
-        conversations_list_pag = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        conversations_list_pag = paginator.page(paginator.num_pages)
-    return render_to_response('latest_conversations.html', {'about': about, 'conversations_list': conversations_list, 'conversations_list_pag': conversations_list_pag })
-
-def conversation_item(request, conversation_id):
-    conversation_item = get_object_or_404(models.Conversation, pk=conversation_id)
-    return render_to_response('conversation_item.html', { 'conversation_item' : conversation_item })
-    #parts = get_list_or_404(models.Participant, conversation=conversation_id)
-    #return render_to_response('conversation_item.html', { 'parts': parts, 'conversation_item' : conversation_item,})
-
-# Participants
-def participants_list(request):
-    participants_list = models.Participant.objects.order_by('-last_name')
-    paginator = Paginator(participants_list, 4)
-
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    # If page request (9999) is out of range, deliver last page of results.
-    try:
-        participants_list_pag = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        participants_list_pag = paginator.page(paginator.num_pages)
-
-    return render_to_response('participants_list.html', {'participants_list': participants_list, 'participants_list_pag': participants_list_pag})
-
-def participant_item(request, participant_id):
-    participant_item = get_object_or_404(models.Participant, pk=participant_id)
-    in_conversations = get_list_or_404(models.Conversation.objects.order_by('-date'), participants=participant_id)
-    #in_conversations =''
-    return render_to_response('participant_item.html', {'participant_item': participant_item, 'in_conversations': in_conversations })
-
-'''

@@ -254,6 +254,10 @@ def starttest(request):
                     c = 1
                     for i in contents[knum].split("</li><li>"):
                         button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
+                        if i[:4] == "<li>":
+                            i = i[4:]
+                        if i[-5:] == "</li>":
+                            i = i[:-5]
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k[0])+"-"+k[1]+"'>"+infos+"</div>"
@@ -274,6 +278,10 @@ def starttest(request):
                     c = 1
                     for i in contents[knum].split("</li><li>"):
                         button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
+                        if i[:4] == "<li>":
+                            i = i[4:]
+                        if i[-5:] == "</li>":
+                            i = i[:-5]
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k[0])+"-"+k[1]+"'>"+infos+"</div>"
@@ -296,6 +304,10 @@ def starttest(request):
                     c = 1
                     for i in contents[knum].split("</li><li>"):
                         button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                        if i[:4] == "<li>":
+                            i = i[4:]
+                        if i[-5:] == "</li>":
+                            i = i[:-5]
                         infos = infos+"<li>"+i+button+"</li>"
                         c = c+1
                     con = con+"\n\t<div id='c-"+str(k)+"-"+mytree[k]+"'>"+infos+"</div>"

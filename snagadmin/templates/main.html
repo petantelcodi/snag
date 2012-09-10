@@ -31,10 +31,16 @@
     </script>
     <style>
         td {border:0px solid red;padding:5px;background-color:grey;}
-        #form_esponse {padding: 20px;background-color: #dcdcdc;border: 1px solid green;width:50%; }
+        #form_response {padding: 20px;background-color: #dcdcdc;border: 1px solid green;width:50%; }
     </style>
 </head>
 <body>
+<h1>Welcome to snag</h1>
+<!--    <div class="roundbox">-->
+<div id="features_bar">
+    <p><a href="/">home</a> - <a href="/accounts/register/">register here</a></a> - <a href="/accounts/logout/">logout</a> - <a href="/accounts/login/">login</a> - <a href="/snagadmin/main">admin</a></p>
+    <hr />
+</div>
 <h1>SNAG Admin interface</h1>
 {{ auth|safe }}
 <h2>Admin actions:</h2>
@@ -43,10 +49,7 @@
 </ul>
 
 <hr />
-
 {{ form_response|safe }}
-
-
 <hr />
 
 <h2>List of generations waiting for assignement to a users:</h2>

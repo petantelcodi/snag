@@ -19,7 +19,7 @@ import math
 def config(key):
     mydict = dict()
     mydict["CHROMOSOMES_X_GENERATION"] = 7
-    mydict["TIME_TEST_MAX"] = 300 # in seconds
+    mydict["TIME_TEST_MAX"] = 30000000 # in seconds
     mydict["GENERATION_X_CREATURE"] = 10
     return mydict[key]
 

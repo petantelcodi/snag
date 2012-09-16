@@ -13,6 +13,8 @@ from random import randint, shuffle, random, seed
 from django.db import reset_queries, close_connection
 from sys import *
 
+from genetic_cross import genetic_cross
+
 import datetime
 import math
 import operator

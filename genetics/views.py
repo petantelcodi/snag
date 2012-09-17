@@ -28,6 +28,7 @@ class genetics:
         self.totalBestTimesToPreserve = 4
         self.maxDepthTree = 4
         self.minDepthTree = 2
+        self.totalGens = 39 # total gens -> 3 (nivel 1) + 9 (level 2) + 27 (level 3) = 39
         print("_init_")
         self.test1()
 
@@ -200,25 +201,26 @@ class genetics:
             while iFather !=iMother and len(p)>2:
                 iFather = randrange(0,len(p))
                 iMother = randrange(0,len(p))
+                # father lower number because is the better gen
                 if iFather!=iMother:
-                    pFather = p[iFather]
-                    pMonther = p[iMother]
-
-
-    def cutPure(self):
-        print("CutPure")
-
-    def cutByEditSameLevel(self):
-        print("CuteByEditSameLevel")
-
-    def cutByEditLowerLevel(self):
-        print("CuteByEditLowerLevel")
-
-    def findTreeRepitedGens(self):
-        print("findRepitedGens")
-
-    def fillTreeGaps(self):
-        print("fillTreeGaps")
+                	if iFather > iMother:
+                    	pFather = p[iMother]
+                    	pMonther = p[iFather]
+                    else:
+                    	pFather = p[iFather]
+                    	pMonther = p[iMother]
+                    
+        			# cross methods : PURE - 50%
+                    if math.ceil(totalChromToGenerate/2)<i:
+                    	newGenReproduced = genetic_cross(pFather,pMonther,"pure", self.totalGens)
+                    # cross methods : Same Level - 25%
+                    elif math.floor(totalChromToGenerate/2)/2< i-math.ceil(totalChromToGenerate/2)):
+                    	newGenReproduced = genetic_cross(pFather,pMonther,"same_level", self.totalGens)
+                    # cross methods : Inferior Level - 25%
+                    else:
+                    	newGenReproduced = genetic_cross(pFather,pMonther,"inferior_level", self.totalGens)
+					# add new gen To Array 
+					self.chrom_reproduced.append(newGenReproduced)
 
     # Wants an array json, but convert internally in list
     def mutateOneGen(self, ar):

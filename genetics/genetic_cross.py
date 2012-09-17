@@ -8,7 +8,14 @@ class genetic_cross{
 			self.sameLevelCross()
 		else if type=="inferior_level":
 			self.sameLevelCross()
-			
+	
+	def deleteArrayDeptherThan4Levels:
+		print "delete more than 4 levels"
+	
+	def repetedGens(self):
+		print repeatedGens
+		
+		
 	def pureCross(self):
 		print "pureCross"
 		

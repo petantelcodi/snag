@@ -8,6 +8,7 @@ from django.utils.encoding import smart_str, smart_unicode
 import math
 import operator
 from django.db import connection
+from snag.settings import MEDIA_URL
 
 #######################################################
 # Home page
@@ -234,7 +235,7 @@ def starttest(request):
                 infos = ""
                 c = 1
                 for i in contents[knum].split("</li><li>"):
-                    button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
+                    button = "&nbsp;<input type='image' src='"+MEDIA_URL+"/button.png' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
                     infos = infos+"<li>"+i+button+"</li>"
                     c = c+1
                 con = con+"\n\t<div id='c-"+str(k[0])+"-"+k[1]+"'>"+infos[4:]+"</div>"
@@ -254,7 +255,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='image' src='"+MEDIA_URL+"/button.png' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
                         if i[:4] == "<li>":
                             i = i[4:]
                         if i[-5:] == "</li>":
@@ -278,7 +279,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='image' src='"+MEDIA_URL+"/button.png' class='b' size='10' value='"+str(k[0])+"-"+str(c)+"'>"
                         if i[:4] == "<li>":
                             i = i[4:]
                         if i[-5:] == "</li>":
@@ -304,7 +305,7 @@ def starttest(request):
                     infos = ""
                     c = 1
                     for i in contents[knum].split("</li><li>"):
-                        button = "&nbsp;<input type='button' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
+                        button = "&nbsp;<input type='image' src='"+MEDIA_URL+"/button.png' class='b' size='10' value='"+str(k)+"-"+str(c)+"'>"
                         if i[:4] == "<li>":
                             i = i[4:]
                         if i[-5:] == "</li>":

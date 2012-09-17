@@ -196,11 +196,11 @@ class genetics:
 
         for i in range(0,totalChromToGenerate):
             iFather = 0
-            iMother = 0
+            iMother = 1
             # loop until find a random numbers not equal father and mother
             while iFather !=iMother and len(p)>2:
-                iFather = randrange(0,len(p))
-                iMother = randrange(0,len(p))
+                iFather = random.randrange(0,len(p))
+                iMother = random.randrange(0,len(p))
                 # father lower number because is the better gen
                 if iFather!=iMother:
                 	if iFather > iMother:

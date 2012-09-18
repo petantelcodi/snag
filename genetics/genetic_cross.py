@@ -15,11 +15,27 @@ class genetic_cross:
 
 	def deleteArrayDeptherThan4Levels(self):
 		print "delete from list hight than 4th level"
+		iLevel1 = -1
+		iLevel2 = -1
+		iLevel3 = -1
+		iLevel4 = -1
 		for a in self.son:
+			iLevel1 +=1
+			iLevel2 = -1
+			iLevel3 = -1
+			iLevel4 = -1
 			for b in a["child"]:
+				iLevel2 +=1
+				iLevel3 = -1
+				iLevel4 = -1
 				for c in b["child"]:
+					iLevel3 +=1
+					iLevel4 = -1
 					for d in c["child"]:
-						d["child"] = []
+						iLevel4 +=1
+						if len(self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"][iLevel4]["child"])>0:
+							self.gensDeleted.append(self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"][iLevel4]["child"])
+						self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"][iLevel4]["child"]=[]
 		
 	def fillEmptyGens(self):
 		print "fill empty gens"
@@ -40,26 +56,32 @@ class genetic_cross:
 					return l
 					
 					
-	def deletedSimpleGen(self, genId):
+	def deletedSimpleGen(self, genId,shiftGen):
 		iLevel1 = -1
 		iLevel2 = -1
 		iLevel3 = -1
 		iLevel4 = -1
 		for a in self.son:
 			iLevel1 +=1
-			if int(a["id"])==genId:
+			iLevel2 = -1
+			iLevel3 = -1
+			iLevel4 = -1
+			if a!=shiftGen and int(a["id"])==genId:
 				self.son.pop(iLevel1) 
 			for b in a["child"]:
 				iLevel2 +=1
-				if int(b["id"])==genId:
+				iLevel3 = -1
+				iLevel4 = -1
+				if b!=shiftGen and int(b["id"])==genId:
 					self.son[iLevel1]["child"].pop(iLevel2)
 					for c in b["child"]:
 						iLevel3 +=1
-						if int(c["id"])==genId:
+						iLevel4 = -1
+						if c!=shiftGen and int(c["id"])==genId:
 							self.son[iLevel1]["child"][iLevel2]["child"].pop(iLevel3)
 						for d in c["child"]:
 							iLevel4 +=1
-							if int(d["id"])==genId:
+							if d!=shiftGen and int(d["id"])==genId:
 								self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"].pop(iLevel4)
 	
 	def deletedGetChildGen(self, genId):
@@ -69,21 +91,25 @@ class genetic_cross:
 		iLevel4 = -1
 		for a in self.son:
 			iLevel1 +=1
+			iLevel2 = -1
 			if int(a["id"])==genId:
 				self.son[iLevel1] = self.son[iLevel1]["child"] 
 				break
 			for b in a["child"]:
 				iLevel2 +=1
+				iLevel3 = -1
 				if int(b["id"])==genId:
 					self.son[iLevel1]["child"][iLevel2] = self.son[iLevel1]["child"][iLevel2]["child"]
 					break
 					for c in b["child"]:
 						iLevel3 +=1
+						iLevel4 = -1
 						if int(c["id"])==genId:
 							self.son[iLevel1]["child"][iLevel2]["child"][iLevel3] = self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"]
 							break
 						for d in c["child"]:
 							iLevel4 +=1
+							print "d:",d
 							if int(d["id"])==genId:
 								self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"].pop(iLevel4)
 								break
@@ -100,17 +126,17 @@ class genetic_cross:
 						for d in c["child"]:
 							deletedGetChildGen(d["id"])
 							
-	def repeatedGens(self, gens):
+	def repeatedGens(self, gens,shiftGen):
 		print "repeatedGens"
 		if len(gens)>0:
 			for a in gens:
-				deletedSimpleGen(a["id"])
+				self.deletedSimpleGen(a["id"],shiftGen)
 				for b in a["child"]:
-					deletedSimpleGen(b["id"])
+					self.deletedSimpleGen(b["id"],shiftGen)
 					for c in b["child"]:
-						deletedSimpleGen(c["id"])
+						self.deletedSimpleGen(c["id"],shiftGen)
 						for d in c["child"]:
-							deletedSimpleGen(d["id"])
+							self.deletedSimpleGen(d["id"],shiftGen)
 							
 			
 		
@@ -177,15 +203,24 @@ class genetic_cross:
 		print "gen-mother:", genMother
 		
 		#take gens that will be duplicated
-		self.repeatedGens(genMother[1]["child"])
+		
 		
 		self.setGen(genFather[0],genMother[1],idGen)
 		print "new son:", self.father
 		
 		# 2. Clean errors and fill empty
 		self.deleteArrayDeptherThan4Levels()
+		self.repeatedGens(genMother[1]["child"],genMother[1])
+		
 		self.fillEmptyGens()
 
+	
+	def shiftInferiorLevelGens(self, gen1, gen2):
+		print "shiftInferiorLevelGens"
+		
+	def shiftSameLevelGens(self, gen1, gen2):
+		print "shiftSameLevelGens"
+	
 	def pureCross(self):
 		print "pureCross"
 		rGens = self.randomGens()
@@ -199,10 +234,13 @@ class genetic_cross:
 	def sameLevelCross(self):
 		print "same level cross"
 		rGens = self.randomGens()
+		self.shiftSameLevelGens(rGens[0],rGens[1])
+
 
 	def inferiorLevelCross(self):
 		print "inferior level cross"
 		rGens = self.randomGens()
+		self.shiftInferiorLevelGens(rGens[0],rGens[1])
 
 if __name__=="__main__":
 	father = [{'id': 1, 'child': [{'id': 5, 'child': [{'id': 4, 'child': []}]}]},{'id': 2, 'child': []},{'id': 3, 'child': []}]

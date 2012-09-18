@@ -40,7 +40,7 @@ class genetic_cross:
 					return l
 					
 					
-	def deletedGen(self, genId):
+	def deletedSimpleGen(self, genId):
 		iLevel1 = -1
 		iLevel2 = -1
 		iLevel3 = -1
@@ -62,17 +62,55 @@ class genetic_cross:
 							if int(d["id"])==genId:
 								self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"].pop(iLevel4)
 	
+	def deletedGetChildGen(self, genId):
+		iLevel1 = -1
+		iLevel2 = -1
+		iLevel3 = -1
+		iLevel4 = -1
+		for a in self.son:
+			iLevel1 +=1
+			if int(a["id"])==genId:
+				self.son[iLevel1] = self.son[iLevel1]["child"] 
+				break
+			for b in a["child"]:
+				iLevel2 +=1
+				if int(b["id"])==genId:
+					self.son[iLevel1]["child"][iLevel2] = self.son[iLevel1]["child"][iLevel2]["child"]
+					break
+					for c in b["child"]:
+						iLevel3 +=1
+						if int(c["id"])==genId:
+							self.son[iLevel1]["child"][iLevel2]["child"][iLevel3] = self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"]
+							break
+						for d in c["child"]:
+							iLevel4 +=1
+							if int(d["id"])==genId:
+								self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"].pop(iLevel4)
+								break
+								
+	def repeatedGensSmart(self, gens):
+		print "repeatedGens"
+		if len(gens)>0:
+			for a in gens:
+				deletedGetChildGen(a["id"])
+				for b in a["child"]:
+					deletedGetChildGen(b["id"])
+					for c in b["child"]:
+						deletedGetChildGen(c["id"])
+						for d in c["child"]:
+							deletedGetChildGen(d["id"])
+							
 	def repeatedGens(self, gens):
 		print "repeatedGens"
 		if len(gens)>0:
 			for a in gens:
-				deletedGen(a["id"])
+				deletedSimpleGen(a["id"])
 				for b in a["child"]:
-					deletedGen(b["id"])
+					deletedSimpleGen(b["id"])
 					for c in b["child"]:
-						deletedGen(c["id"])
+						deletedSimpleGen(c["id"])
 						for d in c["child"]:
-							deletedGen(d["id"])
+							deletedSimpleGen(d["id"])
 							
 			
 		
@@ -154,7 +192,9 @@ class genetic_cross:
 		print self.father
 	
 		print "gens:",rGens
+		# shift two gens
 		self.shiftFatherToMotherGens(rGens[0])
+		self.shiftFatherToMotherGens(rGens[1])
 
 	def sameLevelCross(self):
 		print "same level cross"

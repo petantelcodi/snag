@@ -56,7 +56,11 @@ class genetic_cross:
 					return l
 					
 					
+	def compressGens(self):
+		print "compress gens"
+		
 	def deletedSimpleGen(self, genId,shiftGen):
+		print "gen to delete:",genId, " Shift gen:",shiftGen
 		iLevel1 = -1
 		iLevel2 = -1
 		iLevel3 = -1
@@ -64,25 +68,30 @@ class genetic_cross:
 		for a in self.son:
 			iLevel1 +=1
 			iLevel2 = -1
-			iLevel3 = -1
-			iLevel4 = -1
-			if a!=shiftGen and int(a["id"])==genId:
-				self.son.pop(iLevel1) 
+			if a!=shiftGen and int(a["id"])==int(genId):
+				print "level1 id:",a["id"], "genId:",genId
+				#self.son.pop(iLevel1) 
+				self.son["id"] = 0
 			for b in a["child"]:
 				iLevel2 +=1
 				iLevel3 = -1
-				iLevel4 = -1
-				if b!=shiftGen and int(b["id"])==genId:
-					self.son[iLevel1]["child"].pop(iLevel2)
+				if b!=shiftGen and int(b["id"])==int(genId):
+					print "level2 id:",b["id"], "genId:",genId
+					#self.son[iLevel1]["child"].pop(iLevel2)
+					self.son[iLevel1]["child"][iLevel2]["id"] = 0
+				for c in b["child"]:
+					iLevel3 +=1
+					iLevel4 = -1
+					if c!=shiftGen and int(c["id"])==int(genId):
+						print "level3 id:",c["id"], "genId:",genId
+						#self.son[iLevel1]["child"][iLevel2]["child"].pop(iLevel3)
+						self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["id"] = 0
 					for c in b["child"]:
-						iLevel3 +=1
-						iLevel4 = -1
-						if c!=shiftGen and int(c["id"])==genId:
-							self.son[iLevel1]["child"][iLevel2]["child"].pop(iLevel3)
-						for d in c["child"]:
-							iLevel4 +=1
-							if d!=shiftGen and int(d["id"])==genId:
-								self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"].pop(iLevel4)
+						iLevel4 +=1
+						if d!=shiftGen and int(d["id"])==int(genId):
+							print "level4 id:",d["id"], "genId:",genId
+							#self.son[iLevel1]["child"].son[iLevel2]["child"][iLevel3]["child"].pop(iLevel4)
+							self.son[iLevel1]["child"].son[iLevel2]["child"][iLevel3]["child"][iLevel4]["id"] = 0
 	
 	def deletedGetChildGen(self, genId):
 		iLevel1 = -1
@@ -202,17 +211,14 @@ class genetic_cross:
 		print "gen-father:", genFather
 		print "gen-mother:", genMother
 		
-		#take gens that will be duplicated
-		
-		
 		self.setGen(genFather[0],genMother[1],idGen)
 		print "new son:", self.father
 		
 		# 2. Clean errors and fill empty
-		self.deleteArrayDeptherThan4Levels()
 		self.repeatedGens(genMother[1]["child"],genMother[1])
-		
+		self.deleteArrayDeptherThan4Levels()
 		self.fillEmptyGens()
+		self.compressGens()
 
 	
 	def shiftInferiorLevelGens(self, gen1, gen2):
@@ -229,7 +235,7 @@ class genetic_cross:
 		print "gens:",rGens
 		# shift two gens
 		self.shiftFatherToMotherGens(rGens[0])
-		self.shiftFatherToMotherGens(rGens[1])
+		#self.shiftFatherToMotherGens(rGens[1])
 
 	def sameLevelCross(self):
 		print "same level cross"

@@ -6,21 +6,8 @@
 
     <div id="mydiv">
         <div id="auth">
-            <p>Login?<p> {{ auth|safe }}
+            {{ auth|safe }}
         </div>
-        <div id="myajax">
-            <div onclick="Dajaxice.app.assign_test(Dajax.process);">Ajax call!</div>
-            <p>is ajax here?<p>
-            <ul>><li></li></ul
-        </div>
-        {% for i in about %}
-        <h1>{{ i }}</h1>
-        {% endfor %}
-        <h1>
-        {% for i in gen %}
-             {{ i }},
-        {% endfor %}
-        </h1>
     </div>
 
 {% endblock content %}

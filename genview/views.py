@@ -18,7 +18,7 @@ def home(request):
         auth = "<p>User is authenticated as: <b>"+request.user.username+"</b></p>"
 
     else:
-        auth = "<p>User is anonymous</p><p>Instructions for anonymous users here.</p>"
+        auth = "<p>You are an anonymous user.</p><p>Login is required in order to participate. Please register or login.</p><p>Instructions for anonymous users here ...</p><p>...</p><p>...</p><p>...</p>"
 
     return render_to_response('home.html', {'home': home, 'auth': auth})
 

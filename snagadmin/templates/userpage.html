@@ -3,8 +3,18 @@
 <html>
 <head>
     <title>SNAG :: user page</title>
-    <style>
+    <style type="text/css">
         td {border:0px solid red;padding:5px;background-color:grey;}
+        html {font-family: "DejaVu Sans",verdana,serif;}
+        html {background-color: #5454C2; ;color: #ffffff;font-weight: bold;}
+        a{color:#ffffff;}
+        <!--/*Colors
+        #nav1 {background-color: #333366 ;color: #ffffff;}
+        #nav2 {background-color: #333366;color: #ffffff;}
+        #nav3 {background-color: #333366;color: #ffffff;}
+        #nav4 {background-color: #333366;color: #ffffff;}
+        */-->
+
     </style>
 </head>
 <body>
@@ -17,8 +27,22 @@
     </div>
     <h1>Welcome, <b>{{username|safe}}</b> this is your User page</h1>
 
+    <h2>Pending tasks assigned to you:</h2>
+    <table>
+        <tr><td>Chromosome id</td><td>Test date</td><td>Total test time</td><td>Test ok? (0/1)</td></tr>
+        {% for cre in tasksPending %}
+        <tr>
+            {% for c in cre %}
+            <td>{{c|safe}}</td>
+            {% endfor %}
+            <td><a href="/starttest/?cid={{cre.0|safe}}">Do it now</a></td>
+        </tr>
+        {% endfor %}q
+    </table>
+
+    <hr />
+
     <h2>Creatures assigned to you and unfinished:</h2>
-    <p><span style="color:white;background-color: red;">[FIX THIS]</span> - NOTE: remmember, each creature has 50 chromosomes (that's navegation trees) and the life of a creature is 10 generations. That means a total of 50 x 10 = 500 tests per creature</p>
     <table>
         <tr><td>Creature id</td><td>Generation</td></tr>
         {% for chr in chromosomeListInProcess %}
@@ -45,19 +69,6 @@
     </table>
 
     <hr />
-
-    <h2>Pending tasks assigned to you:</h2>
-    <table>
-        <tr><td>Chromosome id</td><td>Test date</td><td>Total test time</td><td>Test ok? (0/1)</td></tr>
-        {% for cre in tasksPending %}
-        <tr>
-            {% for c in cre %}
-            <td>{{c|safe}}</td>
-            {% endfor %}
-            <td><a href="/starttest/?cid={{cre.0|safe}}">Do it now</a></td>
-        </tr>
-        {% endfor %}q
-    </table>
 
     <h2>Tests you did, by Task</h2>
     <table>

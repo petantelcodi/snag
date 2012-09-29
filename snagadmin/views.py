@@ -24,12 +24,14 @@ def config(key):
     return mydict[key]
 
 def main(request):
+    global totaltime
     tasksList = []
     userList = []
     chromosomesList = []
     creatureListInProcess = []
     creatureListFinished = []
     form_response = ''
+    analisys1 = ''
     auth = ''
     go = ''
     new_creature = ''
@@ -108,11 +110,38 @@ def main(request):
             submit_b = '<input type="submit" id="send_form-'+str(creature.creature_id)+'" name="chr" value="'+str(creature.creature_id)+'"></form>'  # submit button to assig user to chromosome/generation
             creatureListInProcess.append([smart_str(creature.creature_id), smart_str(creature.generation), smart_str(creature.user_id_id), smart_str(myusername), submit_b])
 
+        ## getting analisys I: Creature id, Generation, Time per test average, OK's test.
+        analisys1 = []
+        totaltime = 0
+        mytest_ok = ''
+        ## 1) We get the distinc pairs of  Creature id and Generation
+        for chromo in Creature.objects.values('id', 'current_generation').distinct().order_by('-id'):
+            mychromo = Chromosome.objects.filter(creature_id=chromo['id'], generation=chromo['current_generation'])
+            totaltime = 0
+            mytest_ok = 0
+            for i in mychromo:
+                #f = Tasks.objects.get(chromosome_id=i.id)
+                f = Tasks.objects.values('chromosome_id', 'total_test_time',  'test_ok', 'test_done').get(chromosome_id=i.id)
+                mytotal = f['total_test_time']
+                if mytotal >= 0:
+                    totaltime += mytotal
+                test_ok = f['test_ok']
+                if test_ok == 1:
+                    mytest_ok +=   1
+            if len(mychromo) > 0:
+                totaltime = totaltime/len(mychromo)
+                mytest_ok = str("%.2f" % (100*float(mytest_ok)/len(mychromo)))+" %"
+
+            analisys1.append([smart_str(chromo['id']), smart_str(chromo['current_generation']), smart_str(totaltime), smart_str(mytest_ok)])
+
+            #rebuild list appending totaltime
+
+
 
     else:
         auth = "<p>This page is only accessible for admin users</p>"
         go = "noaccess.html"
-    return render_to_response(go, {'form_response':form_response, 'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList, 'creatureListInProcess': creatureListInProcess, 'creatureListFinished': creatureListFinished})
+    return render_to_response(go, {'analisys1':analisys1, 'form_response':form_response, 'auth': auth, 'tasksList': tasksList, 'userList': userList, 'chromosomesList': chromosomesList, 'creatureListInProcess': creatureListInProcess, 'creatureListFinished': creatureListFinished})
 
 #######################################################
 # Create creature page

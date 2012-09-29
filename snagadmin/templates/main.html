@@ -69,6 +69,7 @@
 
 <hr />
 
+<!--
 <h2>List of Chromosomes to users:</h2>
 <table>
     <tr><td>Chromosome id</td><td>Creature id</td><td>Generation</td><td>User name</td></tr>
@@ -82,6 +83,7 @@
 </table>
 
 <hr />
+-->
 
 <h2>Creatures with 20 generations (finished):</h2>
 <table>
@@ -107,6 +109,18 @@
 </table>
 
 <hr />
+
+<h2>Analisys table I:</h2>
+<table>
+    <tr><td>Creature id</td><td>Generation</td><td>Time per test average</td><td>% OK's test </td></tr>
+    {% for row in analisys1 %}
+    <tr>
+        {% for c in row %}
+        <td>{{c|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
 
 <h2>List of Tasks:</h2>
 <table>

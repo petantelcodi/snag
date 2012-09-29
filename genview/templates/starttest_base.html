@@ -58,7 +58,10 @@
             // Maximum = 5 levels
             $(".first, .second, .third, .fourth").click(function() {
                 idd = $(this).attr('id').split("-");
-                //alert("id: "+idd[1]);
+
+                $(this).siblings().css('backgroundColor','#5454C2').css('color','#ffffff');
+                $(this).css('backgroundColor','#ffffff').css('color','#5454C2');
+
                 $("."+idd[1]).siblings().hide();
                 $("."+idd[1]).toggle();
 

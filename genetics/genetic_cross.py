@@ -1,17 +1,22 @@
 import random
 
 class genetic_cross:
-	def __init__(self, father, mother, type, totalGens):
+	def __init__(self, father, mother, type, totalGens, rGens):
 		self.totalGens = totalGens
 		self.father = father
 		self.mother = mother
 		self.son = self.father
+		
 		if type=="pure":
-			self.pureCross()
+			#rGens = self.randomGens()
+			self.pureCross(rGens)
 		elif type=="same_level":
-			self.sameLevelCross()
+			#rGens = self.randomGens(rGens)
+			self.sameLevelCross(rGens)
 		elif type=="inferior_level":
-			self.sameLevelCross()
+			#rGens = self.randomGens()
+			self.inferiorLevelCross(rGens)
+		
 
 	def deleteArrayDeptherThan4Levels(self):
 		print "delete from list hight than 4th level"
@@ -221,35 +226,60 @@ class genetic_cross:
 		self.compressGens()
 
 	
-	def shiftInferiorLevelGens(self, gen1, gen2):
+	def shiftInferiorLevelGens(self, idGen1, idGen2):
 		print "shiftInferiorLevelGens"
+		genFather = self.getGen(self.father,idGen1)
+		genMother = self.getGen(self.mother,idGen2)
 		
-	def shiftSameLevelGens(self, gen1, gen2):
-		print "shiftSameLevelGens"
+		genSon = genFather
+		genSon[1]["child"].append(genMother) 
+		
+		self.setGen(genFather[0],genSon[1],idGen1 )
+		
+		# 2. Clean errors and fill empty
+		self.repeatedGens(genSon[1]["child"],genSon[1])
+		self.deleteArrayDeptherThan4Levels()
+		self.fillEmptyGens()
+		self.compressGens()
+		
+	def shiftSameLevelGens(self, idGen1, idGen2):
+		print "shiftInferiorLevelGens"
+		genFather = self.getGen(self.father,idGen1)
+		genMother = self.getGen(self.mother,idGen2)
+		
+		genSon = genFather
+		genSon[1]["child"].append(genMother) 
+		
+		self.setGen(genFather[0],genSon[1],idGen1 )
+		
+		# 2. Clean errors and fill empty
+		self.repeatedGens(genSon[1]["child"],genSon[1])
+		self.deleteArrayDeptherThan4Levels()
+		self.fillEmptyGens()
+		self.compressGens()
 	
-	def pureCross(self):
+	def pureCross(self, rGens):
 		print "pureCross"
-		rGens = self.randomGens()
-		print self.father
-	
-		print "gens:",rGens
 		# shift two gens
 		self.shiftFatherToMotherGens(rGens[0])
 		#self.shiftFatherToMotherGens(rGens[1])
 
-	def sameLevelCross(self):
+	def sameLevelCross(self, rGens):
 		print "same level cross"
-		rGens = self.randomGens()
 		self.shiftSameLevelGens(rGens[0],rGens[1])
 
-
-	def inferiorLevelCross(self):
+	def inferiorLevelCross(self, rGens):
 		print "inferior level cross"
-		rGens = self.randomGens()
 		self.shiftInferiorLevelGens(rGens[0],rGens[1])
 
 if __name__=="__main__":
+	print "--------------------------------- test 1"
 	father = [{'id': 1, 'child': [{'id': 5, 'child': [{'id': 4, 'child': []}]}]},{'id': 2, 'child': []},{'id': 3, 'child': []}]
 	mother = [{'id': 2, 'child': [{'id': 4, 'child': [{'id': 5, 'child': []}]}]},{'id': 1, 'child': []},{'id': 3, 'child': []}]
-	g = genetic_cross(father,mother,"pure",5)
+	g = genetic_cross(father,mother,"pure",5,[1,2])
+	print g
+	print "--------------------------------- test 2"
+	father = [{'id': 1, 'child': [{'id': 5, 'child': [{'id': 4, 'child': []}]}]},{'id': 2, 'child': []},{'id': 3, 'child': []}]
+	mother = [{'id': 2, 'child': [{'id': 4, 'child': [{'id': 5, 'child': []}]}]},{'id': 1, 'child': []},{'id': 3, 'child': []}]
+	g = genetic_cross(father,mother,"pure",5,[2,5])
 	print g

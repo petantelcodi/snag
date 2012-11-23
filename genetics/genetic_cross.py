@@ -17,6 +17,14 @@ class genetic_cross:
 			#rGens = self.randomGens()
 			self.inferiorLevelCross(rGens)
 		
+	# need to be tested
+	def areGensInsideTheirTree(self, rGens):
+		print "gen in this tree"
+		treeGen1 = getGen(self,self.father,rGens[0])
+		if getGen(self,treeGen1,rGens[1]) is None:
+			return False
+		else:
+			return True		
 
 	def deleteArrayDeptherThan4Levels(self):
 		print "delete from list hight than 4th level"
@@ -52,12 +60,12 @@ class genetic_cross:
 				print "while"
 				iFather = random.randrange(0,self.totalGens)
 				iMother = random.randrange(0,self.totalGens)
+				l = list()
+				# add 1 to random number because our ids start from 1 not 0
+				l.append(iFather+1)
+				l.append(iMother+1)
 				# father lower number because is the better gen
-				if iFather!=iMother:
-					l = list()
-					# add 1 to random number because our ids start from 1 not 0
-					l.append(iFather+1)
-					l.append(iMother+1)
+				if iFather!=iMother: #and self.areGensInsideTheirTree(l):
 					return l
 					
 					
@@ -91,11 +99,10 @@ class genetic_cross:
 						print "level3 id:",c["id"], "genId:",genId
 						#self.son[iLevel1]["child"][iLevel2]["child"].pop(iLevel3)
 						self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["id"] = 0
-					for c in b["child"]:
+					for d in c["child"]:
 						iLevel4 +=1
 						if d!=shiftGen and int(d["id"])==int(genId):
 							print "level4 id:",d["id"], "genId:",genId
-							#self.son[iLevel1]["child"].son[iLevel2]["child"][iLevel3]["child"].pop(iLevel4)
 							self.son[iLevel1]["child"].son[iLevel2]["child"][iLevel3]["child"][iLevel4]["id"] = 0
 	
 	def deletedGetChildGen(self, genId):
@@ -220,7 +227,9 @@ class genetic_cross:
 		print "new son:", self.father
 		
 		# 2. Clean errors and fill empty
+		
 		self.repeatedGens(genMother[1]["child"],genMother[1])
+		print "after repeat"
 		self.deleteArrayDeptherThan4Levels()
 		self.fillEmptyGens()
 		self.compressGens()

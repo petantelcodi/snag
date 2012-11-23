@@ -195,7 +195,7 @@ class RegistrationViewTests(TestCase):
                                'password2': 'secret'})
         expired_user = User.objects.get(username='bob')
         expired_user.date_joined = expired_user.date_joined - datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)
-        expired_user.save()
+        expired_user.save()º
 
         expired_profile = RegistrationProfile.objects.get(user=expired_user)
         response = self.client.get(reverse('registration_activate',

@@ -110,7 +110,7 @@ class RegistrationFormUniqueEmail(RegistrationForm):
         
         """
         if User.objects.filter(email__iexact=self.cleaned_data['email']):
-            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
+            pass # JAUME -> raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
         return self.cleaned_data['email']
 
 

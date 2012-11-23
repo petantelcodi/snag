@@ -103,7 +103,7 @@ class RegistrationManager(models.Manager):
             username = username.encode('utf-8')
         activation_key = hashlib.sha1(salt+username).hexdigest()
         return self.create(user=user,
-                           activation_key=activation_key)
+                    activation_key=activation_key)
         
     def delete_expired_users(self):
         """
@@ -264,7 +264,7 @@ class RegistrationProfile(models.Model):
         self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
 
 from django.contrib.auth.models import User
-
+from django.contrib.auth.models import User
 class UserProfile(models.Model):
     # This field is required.
     user = models.OneToOneField(User)
@@ -283,8 +283,9 @@ class UserProfile(models.Model):
         ('F', 'Female'),
         )
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-
-    from django.contrib.auth.models import User
+    ###
+    def __str__(self):
+        return "%s %s %s %s %s %s" % (self.user,self.name ,self.registration_date ,self.group ,self.age ,self.gender)
 
 from django.db.models.signals import post_save
 
@@ -292,7 +293,8 @@ from django.db.models.signals import post_save
 # ...
 
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
+    ##if created:
+    ##UserProfile.objects.create(user=instance)
+    profile, created = UserProfile.objects.get_or_create(user=instance)
 
-post_save.connect(create_user_profile, sender=User)
+post_save.connect(create_user_profile, sender=User, dispatch_uid='autocreate_nuser')

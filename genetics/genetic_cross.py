@@ -6,6 +6,7 @@ class genetic_cross:
 		self.father = father
 		self.mother = mother
 		self.son = self.father
+		self.gensNotUse = []
 		
 		if type=="pure":
 			#rGens = self.randomGens()
@@ -16,6 +17,29 @@ class genetic_cross:
 		elif type=="inferior_level":
 			#rGens = self.randomGens()
 			self.inferiorLevelCross(rGens)
+			
+	def getUnusedGen(self):
+		allId =[]
+		for i in range(1,self.totalGens+1):
+			allId.append(i)
+		print allId
+		allGensId=[]
+		for a in self.son:
+			allGensId.append(a["id"])
+			for b in a["child"]:
+				allGensId.append(b["id"])
+				for c in b["child"]:
+					allGensId.append(c["id"])
+					for d in c["child"]:
+						allGensId.append(d["id"])
+		print allGensId
+		# get id's that are in one but not in the other
+		notUseId = list(set(allId) - set(allGensId))
+		print "notUseId"
+		print notUseId 
+
+	def getSon(self):		
+		return self.son
 		
 	# need to be tested
 	def areGensInsideTheirTree(self, rGens):
@@ -51,8 +75,20 @@ class genetic_cross:
 						self.son[iLevel1]["child"][iLevel2]["child"][iLevel3]["child"][iLevel4]["child"]=[]
 		
 	def fillEmptyGens(self):
+		self.getUnusedGen()
 		print "fill empty gens"
-
+		'''
+		if len(self.son)>0:
+			for a in self.son:
+				if a["id"]==0:
+					a["id"] = self.gensNotUse.pop()
+				for b in a["child"]:
+					self.deletedSimpleGen(b["id"],shiftGen)
+					for c in b["child"]:
+						self.deletedSimpleGen(c["id"],shiftGen)
+						for d in c["child"]:
+							self.deletedSimpleGen(d["id"],shiftGen)	
+		'''
 	def randomGens(self):
 		iFatherGen = 0
 		iMotherGen = 1
@@ -157,9 +193,7 @@ class genetic_cross:
 					for c in b["child"]:
 						self.deletedSimpleGen(c["id"],shiftGen)
 						for d in c["child"]:
-							self.deletedSimpleGen(d["id"],shiftGen)
-							
-			
+							self.deletedSimpleGen(d["id"],shiftGen)				
 		
 	def setGen(self,arId,gen,idGen ):
 		print "setGen"
@@ -227,14 +261,20 @@ class genetic_cross:
 		print "new son:", self.father
 		
 		# 2. Clean errors and fill empty
-		
 		self.repeatedGens(genMother[1]["child"],genMother[1])
 		print "after repeat"
-		self.deleteArrayDeptherThan4Levels()
+		self.deleteArrayDeptherThan4Levels() 
 		self.fillEmptyGens()
 		self.compressGens()
 
-	
+	def pureCross(self, rGens):
+		print "pureCross"
+		# shift two gens
+		self.shiftFatherToMotherGens(rGens[0])
+		print "--------<> "
+		#self.shiftFatherToMotherGens(rGens[1])
+		
+	'''
 	def shiftInferiorLevelGens(self, idGen1, idGen2):
 		print "shiftInferiorLevelGens"
 		genFather = self.getGen(self.father,idGen1)
@@ -242,9 +282,7 @@ class genetic_cross:
 		
 		genSon = genFather
 		genSon[1]["child"].append(genMother) 
-		
-		self.setGen(genFather[0],genSon[1],idGen1 )
-		
+		self.setGen(genFather[0],genSon[1],idGen1 )	
 		# 2. Clean errors and fill empty
 		self.repeatedGens(genSon[1]["child"],genSon[1])
 		self.deleteArrayDeptherThan4Levels()
@@ -266,13 +304,9 @@ class genetic_cross:
 		self.deleteArrayDeptherThan4Levels()
 		self.fillEmptyGens()
 		self.compressGens()
-	
-	def pureCross(self, rGens):
-		print "pureCross"
-		# shift two gens
-		self.shiftFatherToMotherGens(rGens[0])
-		#self.shiftFatherToMotherGens(rGens[1])
+	'''
 
+	'''
 	def sameLevelCross(self, rGens):
 		print "same level cross"
 		self.shiftSameLevelGens(rGens[0],rGens[1])
@@ -280,15 +314,17 @@ class genetic_cross:
 	def inferiorLevelCross(self, rGens):
 		print "inferior level cross"
 		self.shiftInferiorLevelGens(rGens[0],rGens[1])
-
+	'''
 if __name__=="__main__":
 	print "--------------------------------- test 1"
 	father = [{'id': 1, 'child': [{'id': 5, 'child': [{'id': 4, 'child': []}]}]},{'id': 2, 'child': []},{'id': 3, 'child': []}]
 	mother = [{'id': 2, 'child': [{'id': 4, 'child': [{'id': 5, 'child': []}]}]},{'id': 1, 'child': []},{'id': 3, 'child': []}]
 	g = genetic_cross(father,mother,"pure",5,[1,2])
-	print g
+	print g.getSon()
+	'''
 	print "--------------------------------- test 2"
 	father = [{'id': 1, 'child': [{'id': 5, 'child': [{'id': 4, 'child': []}]}]},{'id': 2, 'child': []},{'id': 3, 'child': []}]
 	mother = [{'id': 2, 'child': [{'id': 4, 'child': [{'id': 5, 'child': []}]}]},{'id': 1, 'child': []},{'id': 3, 'child': []}]
 	g = genetic_cross(father,mother,"pure",5,[2,5])
-	print g
+	print g.getSon()
+	'''

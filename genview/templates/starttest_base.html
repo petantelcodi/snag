@@ -148,7 +148,7 @@
 
 <body>
     <div style="display:none;">
-        <form id="testEndForm" method="POST" action="/endtest/">
+        <form id="testEndForm" method="POST" action="/endtest/">{% csrf_token %}
                 <input type='text' name='time' />
                 <input type='text' name='user_id' />
                 <input type='text' name='test_ok' />    
